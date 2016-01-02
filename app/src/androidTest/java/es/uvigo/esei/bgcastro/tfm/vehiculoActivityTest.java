@@ -1,14 +1,12 @@
 package es.uvigo.esei.bgcastro.tfm;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import es.uvigo.esei.bgcastro.tfm.DAO.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.activitys.VehiculosActivity;
 
 /**
@@ -28,7 +26,7 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
         super.setUp();
 
         for (int i = 0; i < 5; i++) {
-            listaDePruebas.add(new Vehiculo(R.drawable.ic_directions_car_black_48dp, "marca", "modelo", "matricula",  80000, "combustible", 1598, 115,  "color", new Date(), "estado"));
+            //listaDePruebas.add(new Vehiculo(R.drawable.ic_directions_car_black_48dp, "marca", "modelo", "matricula",  80000, "combustible", 1598, 115,  "color", new Date(), "estado"));
         }
 
         activity = this.getActivity();

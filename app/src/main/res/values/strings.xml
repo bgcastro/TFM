@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">TFM</string>
+    <string name="marca">marca</string>
+    <string name="hintMarca">marca</string>
+    <string name="modelo">modelo</string>
+    <string name="hintModelo">modelo</string>
+    <string name="modeloHint">modelo</string>
+    <string name="matricula">matricula</string>
+    <string name="hintMatricula">matricula</string>
+    <string name="kilometraje">kilometraje</string>
+    <string name="kilometrajeHint">Kms</string>
+    <string name="combustibleHint">tipo de combustible</string>
+    <string name="combustible">combustible</string>
+    <string name="cilindrada">cilindrada</string>
+    <string name="hintCilindrada">cilindrada</string>
+    <string name="color">color</string>
+    <string name="potencia">potencia</string>
+    <string name="hintPotencia">potencia</string>
+    <string name="anho">año</string>
+    <string name="hintAnho">año</string>
+    <string name="action_add_vehiculo">añadir vehiculo</string>
+    <string name="action_settings">opciones</string>
 </resources>
