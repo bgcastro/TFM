@@ -1,12 +1,14 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -27,6 +29,10 @@ public class VehiculosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //carga de la fuente para iconos
+        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+
         setContentView(R.layout.activity_vehiculos);
 
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarVehiculos);
@@ -41,10 +47,30 @@ public class VehiculosActivity extends AppCompatActivity {
         botonAnadirVehiculo = (AppCompatImageButton) findViewById(R.id.anadirVehiculo);
 
         //creamos un adapter para manejar los datos
-        VehiculoAdapter adapter = new VehiculoAdapter(this, R.layout.vehiculo_item,listaVehiculos);
+        final VehiculoAdapter adapter = new VehiculoAdapter(this, R.layout.vehiculo_item,listaVehiculos);
 
         //vinculamos un adapter
         listViewVehiculos.setAdapter(adapter);
+
+        //gestionamos el click en la lista;
+        listViewVehiculos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intentModificacionItem = new Intent(VehiculosActivity.this,GestionVehiculosActivity.class);
+                Bundle bundle = new Bundle();
+
+                //enviamos el vehiculo a modificar
+                bundle.putParcelable("VEHICULO", adapter.getItem(position));
+                intentModificacionItem.putExtras(bundle);
+
+                Log.d(TAG, "onItemClick: position" + position);
+
+                //lanzamos un intent para modificar un vehiculo
+                startActivity(intentModificacionItem);
+
+
+            }
+        });
 
         //onclicklistener para el boton de añadir
         botonAnadirVehiculo.setOnClickListener(new OnClickListener() {
@@ -65,11 +91,15 @@ public class VehiculosActivity extends AppCompatActivity {
     }
 
     public void inicializar() {
+        
+        //// TODO: 4/1/16 otro hilo
         //recuperamos de la BBDD
         VehiculoBDD bdd = new VehiculoBDD(this);
         bdd .openForReading();
         this.listaVehiculos = bdd.getAllVehiculos();
+        if(this.listaVehiculos == null){
+            this.listaVehiculos = new ArrayList();
+        }
         bdd.close();
-        //this.listaVehiculos.add(new Vehiculo(new byte[0], "marca", "modelo", "matricula",  80000, "combustible", 1598, 115,  "color", new Date(), "estado"));
     }
 }

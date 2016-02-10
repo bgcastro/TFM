@@ -1,7 +1,6 @@
 package es.uvigo.esei.bgcastro.tfm.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.viewholder.VehiculoViewHolder;
 
 /**

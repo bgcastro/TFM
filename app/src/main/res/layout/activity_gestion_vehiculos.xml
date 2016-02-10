@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="es.uvigo.esei.bgcastro.tfm.activitys.GestionVehiculosActivity"
     android:orientation="vertical"
     android:id="@+id/layoutGestion">
@@ -24,11 +20,14 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/layoutSuperiorGestion"
+        android:layout_below="@+id/toolbarGestionVehiculos"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:id="@+id/layoutSuperiorGestion">
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:weightSum="2">
 
         <ImageView
             android:layout_width="match_parent"
@@ -41,6 +40,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_weight="1">
 
             <TextView
@@ -54,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextMarca"
                 android:hint="@string/hintMarca"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                android:inputType="textCapWords" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextModelo"
                 android:selectAllOnFocus="false"
-                android:hint="@string/hintModelo" />
+                android:hint="@string/hintModelo"
+                android:inputType="textCapWords" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,16 +82,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextMatricula"
-                android:hint="@string/hintMatricula" />
+                android:hint="@string/hintMatricula"
+                android:inputType="textCapCharacters|text" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_kilometraje"
+        android:layout_below="@+id/layoutSuperiorGestion"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:weightSum="4">
 
         <TextView
@@ -104,13 +111,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/editTextKilometraje"
             android:layout_weight="3"
-            android:hint="@string/kilometrajeHint" />
+            android:hint="@string/kilometrajeHint"
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_gasolina"
+        android:layout_below="@+id/layout_kilometraje"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:weightSum="4">
 
         <TextView
@@ -120,18 +132,22 @@
             android:id="@+id/combustible"
             android:layout_weight="1" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextCombustible"
-            android:layout_weight="3"
-            android:hint="@string/combustibleHint" />
+        <Spinner
+            android:id="@+id/tipoCombustible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </Spinner>
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_cilindrada"
+        android:layout_below="@+id/layout_gasolina"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:weightSum="4">
 
         <TextView
@@ -146,13 +162,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/editTextCilindrada"
             android:layout_weight="3"
-            android:hint="@string/hintCilindrada" />
+            android:hint="@string/hintCilindrada"
+            android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_color"
+        android:layout_below="@+id/layout_cilindrada"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:weightSum="4">
 
         <TextView
@@ -162,18 +183,22 @@
             android:id="@+id/color"
             android:layout_weight="1" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <SurfaceView
             android:id="@+id/selectorDeColor"
-            android:layout_weight="1" />
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@android:color/background_dark"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_potencia"
+        android:layout_below="@+id/layout_color"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:weightSum="4">
 
         <TextView
@@ -188,13 +213,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/editTextPotencia"
             android:layout_weight="3"
-            android:hint="@string/hintPotencia" />
+            android:hint="@string/hintPotencia"
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_anho"
+        android:layout_below="@+id/layout_potencia"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:weightSum="4">
 
         <TextView
@@ -209,7 +239,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/editTextAnho"
             android:layout_weight="3"
-            android:hint="@string/hintAnho" />
+            android:hint="@string/hintAnho"
+            android:inputType="number" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

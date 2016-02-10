@@ -38,7 +38,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             COL_CILINDRADA + " INTEGER, " +
             COL_POTENCIA + " REAL, " +
             COL_COLOR + " TEXT, " +
-            COL_ANHO + " NUMERIC, " +
+            COL_ANHO + " INTEGER, " +
             COL_ESTADO + " TEXT" +
             ")";
 

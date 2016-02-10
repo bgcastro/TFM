@@ -1,23 +1,42 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
-import java.util.Date;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoBDD;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
+import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
-public class GestionVehiculosActivity extends AppCompatActivity{
+import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
+import static android.view.View.OnClickListener;
+import static android.view.View.OnFocusChangeListener;
+
+public class GestionVehiculosActivity extends AppCompatActivity implements ColorPickerDialog.NoticeDialogListener{
     private static final String TAG = "GesVehiculosActivity";
+    private static final int TOMAR_FOTO_REQUEST = 1;
+    private byte[] foto = new byte[0];
     private Vehiculo vehiculo;
 
     private ImageView imagenVehiculo;
@@ -25,16 +44,24 @@ public class GestionVehiculosActivity extends AppCompatActivity{
     private EditText editTextModelo;
     private EditText editTextMatricula;
     private EditText editTextKilometraje;
-    private EditText editTextCombustible;
+    private Spinner spinnerCombustible;
     private EditText editTextCilindrada;
-    private ImageView selectorDeColor;
+    private SurfaceView selectorDeColor;
     private EditText editTextPotencia;
     private EditText editTextAnho;
 
+    private SpinnerAdapter spinnerAdapter;
+
+    private Intent intent;
+    private int color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OnFocusChangeListener focusChangeListenerCambios;
+
+        intent = getIntent();
+
         setContentView(R.layout.activity_gestion_vehiculos);
 
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionVehiculos);
@@ -47,18 +74,73 @@ public class GestionVehiculosActivity extends AppCompatActivity{
         editTextModelo = (EditText) findViewById(R.id.editTextModelo);
         editTextMatricula = (EditText) findViewById(R.id.editTextMatricula);
         editTextKilometraje = (EditText) findViewById(R.id.editTextKilometraje);
-        editTextCombustible = (EditText) findViewById(R.id.editTextCombustible);
+        spinnerCombustible = (Spinner) findViewById(R.id.tipoCombustible);
         editTextCilindrada = (EditText) findViewById(R.id.editTextCilindrada);
-        selectorDeColor = (ImageView) findViewById(R.id.selectorDeColor);
+        selectorDeColor = (SurfaceView) findViewById(R.id.selectorDeColor);
         editTextPotencia = (EditText) findViewById(R.id.editTextPotencia);
         editTextAnho = (EditText) findViewById(R.id.editTextAnho);
 
-        imagenVehiculo.setOnClickListener(new View.OnClickListener() {
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.tipos_combustible, R.layout.support_simple_spinner_dropdown_item);
+        spinnerCombustible.setAdapter(spinnerAdapter);
+
+        imagenVehiculo.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: imagenVehiculo");
+
+                tomarFoto();
             }
         });
+
+        selectorDeColor.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick selectorDeColor: color" + color);
+                ColorPickerDialog colorPickerDialog = ColorPickerDialog.newInstace(color); // new ColorPickerDialog();
+
+                Log.d(TAG, "onClick: selectorDeColor");
+
+                colorPickerDialog.show(getFragmentManager(),"colorPickerDialog");
+            }
+        });
+
+        if (intent.hasExtra("VEHICULO")){
+            vehiculo = intent.getParcelableExtra("VEHICULO");
+            rellenarUI(vehiculo);
+
+            focusChangeListenerCambios = new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        modificarVehiculo(v);
+                    }
+                }
+            };
+
+            editTextMarca.setOnFocusChangeListener(focusChangeListenerCambios);
+            editTextModelo.setOnFocusChangeListener(focusChangeListenerCambios);
+            editTextMatricula.setOnFocusChangeListener(focusChangeListenerCambios);
+            editTextKilometraje.setOnFocusChangeListener(focusChangeListenerCambios);
+            //spinnerCombustible.setOnFocusChangeListener(focusChangeListenerCambios);
+            editTextCilindrada.setOnFocusChangeListener(focusChangeListenerCambios);
+            //selectorDeColor.setOnFocusChangeListener(focusChangeListenerCambios);
+            editTextPotencia.setOnFocusChangeListener(focusChangeListenerCambios);
+            editTextAnho.setOnFocusChangeListener(focusChangeListenerCambios);
+
+            spinnerCombustible.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    Log.d(TAG, "onItemSelected: position " + position);
+                    modificarVehiculo(parent);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
 
     }
 
@@ -87,13 +169,22 @@ public class GestionVehiculosActivity extends AppCompatActivity{
             }
         }
     }
-    
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (vehiculo != null){
+            menu.removeItem(R.id.action_add_vehiculo);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void nuevoVehiculo(){
         //TODO Revisar argumentos
 
         float kilometraje;
         float potencia;
         int cilindrada;
+        int anho;
 
         if (editTextKilometraje.getText().toString().isEmpty()){
             kilometraje = 0;
@@ -113,20 +204,34 @@ public class GestionVehiculosActivity extends AppCompatActivity{
             cilindrada = Integer.parseInt(editTextCilindrada.getText().toString());
         }
 
-        vehiculo = new Vehiculo(new byte[0],
-                editTextMarca.getText().toString(),
+        if (editTextAnho.getText().toString().isEmpty()){
+            anho = 0;
+        }else{
+            anho = Integer.parseInt(editTextAnho.getText().toString());
+        }
+
+        if (foto.length == 0){
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+            Bitmap bitmap = ((BitmapDrawable)imagenVehiculo.getDrawable()).getBitmap();
+            bitmap.compress(Bitmap.CompressFormat.PNG, DRAWING_CACHE_QUALITY_AUTO, stream);
+            foto = stream.toByteArray();
+        }
+
+        vehiculo = new Vehiculo(foto, editTextMarca.getText().toString(),
                 editTextModelo.getText().toString(),
                 editTextMatricula.getText().toString(),
                 kilometraje,
-                editTextCombustible.getText().toString(),
+                (String) spinnerCombustible.getSelectedItem(),
                 cilindrada,
                 potencia,
-                "color",
-                new Date(),
-                "sin estado");
+                color,
+                anho,
+                getString(R.string.fa_wrench));
 
-        Log.d(TAG, vehiculo.toString());
+        Log.d(TAG, "nuevoVehiculo" + vehiculo.toString());
 
+        //// TODO: 4/1/16 otro hilo
         //guardamos en la BBDD
         VehiculoBDD bdd = new VehiculoBDD(this);
         bdd .openForWriting();
@@ -134,8 +239,165 @@ public class GestionVehiculosActivity extends AppCompatActivity{
         bdd.close();
     }
 
+    private void modificarVehiculo(View v) {
+        //TODO Revisar argumentos
+        //creamos el vehiculo si no existe
+        // if (vehiculo == null) {
+        //     vehiculo = new Vehiculo();
+        // }
+
+        switch (v.getId()){
+            case R.id.imagenGestionVehiculos:
+                //TODO ver como utilizar imagenes
+                vehiculo.setImagenVehiculo(foto);
+                break;
+
+            case R.id.editTextMarca:
+                vehiculo.setMarca(editTextMarca.getText().toString());
+                break;
+
+            case R.id.editTextModelo:
+                vehiculo.setModelo(editTextModelo.getText().toString());
+                break;
+
+            case R.id.editTextMatricula:
+                vehiculo.setMatricula(editTextMatricula.getText().toString());
+                break;
+
+            case R.id.editTextKilometraje:
+                float kilometraje;
+
+                if (editTextKilometraje.getText().toString().isEmpty()){
+                    kilometraje = 0;
+                }else {
+                    kilometraje = Float.parseFloat(editTextKilometraje.getText().toString());
+                }
+                vehiculo.setKilometraje(kilometraje);
+                break;
+
+            case R.id.tipoCombustible:
+                vehiculo.setCombustible((String) spinnerCombustible.getSelectedItem());
+                Log.d(TAG, "modificarVehiculo: "+ spinnerCombustible.getSelectedItem());
+                break;
+
+            case R.id.editTextCilindrada:
+                int cilindrada;
+
+                if (editTextCilindrada.getText().toString().isEmpty()){
+                    cilindrada = 0;
+                }else{
+                    cilindrada = Integer.parseInt(editTextCilindrada.getText().toString());
+                }
+                vehiculo.setCilindrada(cilindrada);
+                break;
+
+            case R.id.selectorDeColor:
+                //TODO revisar lo de selector de color
+                vehiculo.setColor(color);
+                break;
+
+            case R.id.editTextPotencia:
+                float potencia;
+
+                if (editTextPotencia.getText().toString().isEmpty()) {
+                    potencia = 0;
+                }else {
+                    potencia = Float.parseFloat(editTextPotencia.getText().toString());
+                }
+                vehiculo.setPotencia(potencia);
+                break;
+
+            case R.id.editTextAnho:
+                int anho;
+
+                if (editTextAnho.getText().toString().isEmpty()){
+                    anho = 0;
+                }else{
+                    anho = Integer.parseInt(editTextAnho.getText().toString());
+                }
+                vehiculo.setAño(anho);
+                break;
+
+        }
+
+        Log.d(TAG, "modificarVehiculo: " + vehiculo.toString());
+
+        //// TODO: 4/1/16 otro hilo
+        //guardamos en la BBDD
+        VehiculoBDD bdd = new VehiculoBDD(this);
+        bdd .openForWriting();
+        int bdOutput = bdd.updateVehiculo(vehiculo.getId(),vehiculo);
+        bdd.close();
+
+        Log.d(TAG, "modificarVehiculo: bd output " + bdOutput);
+    }
+
     private void abrirOpciones() {
         Log.d(TAG, "abrirOpciones: ");
     }
-    
+
+    private void rellenarUI(Vehiculo vehiculo) {
+        foto = vehiculo.getImagenVehiculo();
+        this.imagenVehiculo.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
+        this.editTextMarca.setText(vehiculo.getMarca());
+        this.editTextModelo.setText(vehiculo.getModelo());
+        this.editTextMatricula.setText(vehiculo.getMatricula());
+        this.editTextKilometraje.setText(Float.toString(vehiculo.getKilometraje()));
+        this.spinnerCombustible.setSelection( new ArrayList<String>(Arrays.asList( getResources().getStringArray(R.array.tipos_combustible))).indexOf(vehiculo.getCombustible()));
+        this.editTextCilindrada.setText(Integer.toString(vehiculo.getCilindrada()));
+        //// TODO: 4/1/16 revisar el color
+        color = vehiculo.getColor();
+        this.selectorDeColor.setBackgroundColor(color);
+        this.editTextPotencia.setText(Float.toString(vehiculo.getPotencia()));
+        this.editTextAnho.setText(Integer.toString(vehiculo.getAño()));
+    }
+
+    private void tomarFoto() {
+        Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intentFoto, TOMAR_FOTO_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == TOMAR_FOTO_REQUEST && resultCode == RESULT_OK){
+            Log.d(TAG, "onActivityResult: se ha tomado la foto");
+
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            imagenVehiculo.setImageBitmap(imageBitmap);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, DRAWING_CACHE_QUALITY_AUTO, stream);
+
+            foto = stream.toByteArray();
+
+            //comprobamos que tenemos creado un vehiculo recibido por el intent
+            if (vehiculo != null) {
+                modificarVehiculo(imagenVehiculo);
+            }
+
+            //vehiculo.setImagenVehiculo(stream.toByteArray());
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    public void setPositiveButton(ColorPickerDialog dialog) {
+        color = dialog.getSelectedColor();
+        Log.d(TAG, "setPositiveButton: color" + color);
+
+        selectorDeColor.setBackgroundColor(color);
+
+        if (vehiculo != null) {
+            modificarVehiculo(selectorDeColor);
+        }
+    }
+
+    @Override
+    public void setNegativeButton(ColorPickerDialog dialog) {
+
+    }
 }

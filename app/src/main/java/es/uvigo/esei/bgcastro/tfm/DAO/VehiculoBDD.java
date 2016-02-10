@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -88,7 +89,7 @@ public class VehiculoBDD {
         contentValues.put(COL_CILINDRADA, vehiculo.getCilindrada());
         contentValues.put(COL_POTENCIA, vehiculo.getPotencia());
         contentValues.put(COL_COLOR, vehiculo.getColor());
-        contentValues.put(COL_ANHO, vehiculo.getAño().toString());
+        contentValues.put(COL_ANHO, vehiculo.getAño());
         contentValues.put(COL_ESTADO, vehiculo.getEstado());
 
         return bbdd.insert(TABLA_VEHICULOS, null, contentValues);
@@ -106,7 +107,7 @@ public class VehiculoBDD {
         contentValues.put(COL_CILINDRADA, vehiculo.getCilindrada());
         contentValues.put(COL_POTENCIA, vehiculo.getPotencia());
         contentValues.put(COL_COLOR, vehiculo.getColor());
-        contentValues.put(COL_ANHO, vehiculo.getAño().toString());
+        contentValues.put(COL_ANHO, vehiculo.getAño());
         contentValues.put(COL_ESTADO, vehiculo.getEstado());
 
         return bbdd.update(TABLA_VEHICULOS, contentValues, COL_ID + "=" + id, null);
@@ -137,7 +138,8 @@ public class VehiculoBDD {
             return null;
 
         }else {
-             vehiculo = new  Vehiculo(cursor.getBlob(NUM_COL_IMAGEN_VEHICULO),
+             vehiculo = new  Vehiculo(cursor.getInt(NUM_COL_ID),
+                     cursor.getBlob(NUM_COL_IMAGEN_VEHICULO),
                     cursor.getString(NUM_COL_MARCA),
                     cursor.getString(NUM_COL_MODELO),
                     cursor.getString(NUM_COL_MATRICULA),
@@ -145,8 +147,8 @@ public class VehiculoBDD {
                     cursor.getString(NUM_COL_COMBUSTIBLE),
                     cursor.getInt(NUM_COL_CILINDRADA),
                     cursor.getFloat(NUM_COL_POTENCIA),
-                    cursor.getString(NUM_COL_COLOR),
-                    new Date(cursor.getLong(NUM_COL_ANHO)),
+                    cursor.getInt(NUM_COL_COLOR),
+                    cursor.getInt(NUM_COL_ANHO),
                     cursor.getString(NUM_COL_ESTADO)
                     );
             cursor.close();
@@ -166,7 +168,8 @@ public class VehiculoBDD {
             Vehiculo vehiculo;
 
             while (cursor.moveToNext()){
-                vehiculo = new  Vehiculo(cursor.getBlob(NUM_COL_IMAGEN_VEHICULO),
+                vehiculo = new  Vehiculo(cursor.getInt(NUM_COL_ID),
+                        cursor.getBlob(NUM_COL_IMAGEN_VEHICULO),
                         cursor.getString(NUM_COL_MARCA),
                         cursor.getString(NUM_COL_MODELO),
                         cursor.getString(NUM_COL_MATRICULA),
@@ -174,8 +177,8 @@ public class VehiculoBDD {
                         cursor.getString(NUM_COL_COMBUSTIBLE),
                         cursor.getInt(NUM_COL_CILINDRADA),
                         cursor.getFloat(NUM_COL_POTENCIA),
-                        cursor.getString(NUM_COL_COLOR),
-                        new Date(cursor.getLong(NUM_COL_ANHO)),
+                        cursor.getInt(NUM_COL_COLOR),
+                        cursor.getInt(NUM_COL_ANHO),
                         cursor.getString(NUM_COL_ESTADO)
                 );
 

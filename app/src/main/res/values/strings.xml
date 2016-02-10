@@ -20,4 +20,8 @@
     <string name="hintAnho">año</string>
     <string name="action_add_vehiculo">añadir vehiculo</string>
     <string name="action_settings">opciones</string>
+    <string name="action_modify_vehiculo">modificar vehiculo</string>
+    <string name="titulo_color_picker">selector de color</string>
+    <string name="aceptar">aceptar</string>
+    <string name="cancelar">cancelar</string>
 </resources>

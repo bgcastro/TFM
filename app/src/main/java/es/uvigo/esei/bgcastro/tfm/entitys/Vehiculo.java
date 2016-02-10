@@ -1,12 +1,15 @@
 package es.uvigo.esei.bgcastro.tfm.entitys;
 
-import java.util.Date;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by braisgallegocastro on 23/12/15.
  * Clase que representa los vehiculos
  */
-public class Vehiculo {
+public class Vehiculo implements Parcelable{
+    private int id;
+
     private byte[] imagenVehiculo;
     private String marca;
     private String modelo;
@@ -15,9 +18,26 @@ public class Vehiculo {
     private String combustible;
     private int cilindrada;
     private float potencia;
-    private String color;
-    private Date anho;
+    private int color;
+    private int anho;
     private String estado;
+
+    /**
+     * constructor por defecto
+     */
+    public Vehiculo() {
+        this.imagenVehiculo = new byte[0];
+        this.marca = "";
+        this.modelo = "";
+        this.matricula = "";
+        this.kilometraje = 0;
+        this.combustible = "";
+        this.cilindrada = 0;
+        this.potencia = 0;
+        this.color = 0;
+        this.anho = 0;
+        this.estado = "";
+    }
 
     /**
      *  Constructor de la clase vehiculo
@@ -31,7 +51,7 @@ public class Vehiculo {
      * @param color color del vehiculo
      * @param anho año de matriculacion
      */
-    public Vehiculo(byte[] imagenVehiculo, String marca, String modelo, String matricula, float kilometraje, String combustible, int cilindrada, float potencia, String color, Date anho, String estado) {
+    public Vehiculo(byte[] imagenVehiculo, String marca, String modelo, String matricula, float kilometraje, String combustible, int cilindrada, float potencia, int color, int anho, String estado) {
         this.imagenVehiculo = imagenVehiculo;
         this.marca = marca;
         this.modelo = modelo;
@@ -45,6 +65,55 @@ public class Vehiculo {
         this.estado = estado;
     }
 
+    /**
+     * Constructor para utilizar cuando se recupera de la base de datos
+     * @param id
+     * @param imagenVehiculo
+     * @param marca
+     * @param modelo
+     * @param matricula
+     * @param kilometraje
+     * @param combustible
+     * @param cilindrada
+     * @param potencia
+     * @param color
+     * @param anho
+     * @param estado
+     */
+    public Vehiculo(int id, byte[] imagenVehiculo, String marca, String modelo, String matricula, float kilometraje, String combustible, int cilindrada, float potencia, int color, int anho, String estado) {
+        this.id = id;
+        this.imagenVehiculo = imagenVehiculo;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.matricula = matricula;
+        this.kilometraje = kilometraje;
+        this.combustible = combustible;
+        this.cilindrada = cilindrada;
+        this.potencia = potencia;
+        this.color = color;
+        this.anho = anho;
+        this.estado = estado;
+    }
+
+    /**
+     * Constructor a partir de un parcel para ser reconstruido en el paso entre actividades
+     * @param sourceParcel
+     */
+    public Vehiculo(Parcel sourceParcel){
+        this.id = sourceParcel.readInt();
+        this.imagenVehiculo = sourceParcel.createByteArray();
+        this.marca = sourceParcel.readString();
+        this.modelo = sourceParcel.readString();
+        this.matricula = sourceParcel.readString();
+        this.kilometraje = sourceParcel.readFloat();
+        this.combustible = sourceParcel.readString();
+        this.cilindrada = sourceParcel.readInt();
+        this.potencia = sourceParcel.readFloat();
+        this.color = sourceParcel.readInt();
+        this.anho = sourceParcel.readInt();
+        this.estado = sourceParcel.readString();
+    }
+
     public byte[] getImagenVehiculo() {
         return imagenVehiculo;
     }
@@ -53,11 +122,11 @@ public class Vehiculo {
         this.imagenVehiculo = imagenVehiculo;
     }
 
-    public Date getAño() {
+    public int getAño() {
         return anho;
     }
 
-    public void setAño(Date año) {
+    public void setAño(int año) {
         this.anho = año;
     }
 
@@ -101,7 +170,7 @@ public class Vehiculo {
         this.combustible = combustible;
     }
 
-    public float getCilindrada() {
+    public int getCilindrada() {
         return cilindrada;
     }
 
@@ -117,11 +186,11 @@ public class Vehiculo {
         this.potencia = potencia;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 
@@ -133,10 +202,19 @@ public class Vehiculo {
         this.estado = estado;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Vehiculo{" +
-                "imagenVehiculo=" + imagenVehiculo +
+                "id=" + id +
+                "imagenVehiculo=" + imagenVehiculo + '\'' +
                 ", marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", matricula='" + matricula + '\'' +
@@ -149,4 +227,37 @@ public class Vehiculo {
                 ", estado='" + estado + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeByteArray(this.imagenVehiculo);
+        dest.writeString(this.marca);
+        dest.writeString(this.modelo);
+        dest.writeString(this.matricula);
+        dest.writeFloat(this.kilometraje);
+        dest.writeString(this.combustible);
+        dest.writeInt(this.cilindrada);
+        dest.writeFloat(this.potencia);
+        dest.writeInt(this.color);
+        dest.writeInt(this.anho);
+        dest.writeString(this.estado);
+    }
+
+    public static final Parcelable.Creator<Vehiculo> CREATOR = new Parcelable.Creator<Vehiculo>(){
+        @Override
+        public Vehiculo createFromParcel(Parcel source) {
+            return new Vehiculo(source);
+        }
+
+        @Override
+        public Vehiculo[] newArray(int size) {
+            return new Vehiculo[size];
+        }
+    };
 }

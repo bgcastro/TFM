@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="tipos_combustible">
+        <item>Gasolina</item>
+        <item>Diesel</item>
+        <item>Hibrido</item>
+        <item>Electrico</item>
+    </string-array>
+
+</resources>
