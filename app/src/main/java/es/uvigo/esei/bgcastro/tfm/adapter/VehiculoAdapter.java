@@ -2,6 +2,7 @@ package es.uvigo.esei.bgcastro.tfm.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,9 @@ public class VehiculoAdapter extends ArrayAdapter<Vehiculo> {
             holder.getEstadoVehiculo().setText(vehiculo.getEstado());
 
         }
+
+        Typeface font = Typeface.createFromAsset(view.getContext().getAssets(), "fontawesome-webfont.ttf");
+        holder.getEstadoVehiculo().setTypeface(font);
 
         return view;
     }

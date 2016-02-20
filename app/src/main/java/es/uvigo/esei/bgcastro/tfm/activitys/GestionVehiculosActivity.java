@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +32,7 @@ import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
 import static android.view.View.OnClickListener;
 import static android.view.View.OnFocusChangeListener;
 
-public class GestionVehiculosActivity extends AppCompatActivity implements ColorPickerDialog.NoticeDialogListener{
+public class GestionVehiculosActivity extends BaseActivity implements ColorPickerDialog.NoticeDialogListener{
     private static final String TAG = "GesVehiculosActivity";
     private static final int TOMAR_FOTO_REQUEST = 1;
     private byte[] foto = new byte[0];
@@ -159,8 +158,8 @@ public class GestionVehiculosActivity extends AppCompatActivity implements Color
                 return true;
             }
 
-            case R.id.action_settings:{
-                abrirOpciones();
+            case R.id.action_remove_vehiculo: {
+                removeVehiculo(vehiculo.getId());
                 return true;
             }
 
@@ -170,10 +169,15 @@ public class GestionVehiculosActivity extends AppCompatActivity implements Color
         }
     }
 
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (vehiculo != null){
+            //si el vehiculo se modifica
             menu.removeItem(R.id.action_add_vehiculo);
+        }else {
+            //si el vehiculo se añade
+            menu.removeItem(R.id.action_remove_vehiculo);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -332,8 +336,17 @@ public class GestionVehiculosActivity extends AppCompatActivity implements Color
         Log.d(TAG, "modificarVehiculo: bd output " + bdOutput);
     }
 
-    private void abrirOpciones() {
-        Log.d(TAG, "abrirOpciones: ");
+    private void removeVehiculo(int id) {
+        Log.d(TAG, "removeVehiculo: " + id);
+
+        //// TODO: 4/1/16 otro hilo
+        //guardamos en la BBDD
+        VehiculoBDD bdd = new VehiculoBDD(this);
+        bdd .openForWriting();
+        bdd.removeVehiculo(id);
+        bdd.close();
+
+        finish();
     }
 
     private void rellenarUI(Vehiculo vehiculo) {

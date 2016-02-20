@@ -1,7 +1,6 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
@@ -12,26 +11,25 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoBDD;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.adapter.VehiculoAdapter;
+import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.OnClickListener;
 
 public class VehiculosActivity extends AppCompatActivity {
+    public static final String VEHICULO = "VEHICULO";
+    public static final int MODIFICAR_VEHICULO = 1;
     private static String TAG = "VehiculosActivity";
     private ArrayList <Vehiculo> listaVehiculos;
     private AppCompatImageButton botonAnadirVehiculo;
+    private VehiculoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //carga de la fuente para iconos
-        Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
 
         setContentView(R.layout.activity_vehiculos);
 
@@ -47,7 +45,8 @@ public class VehiculosActivity extends AppCompatActivity {
         botonAnadirVehiculo = (AppCompatImageButton) findViewById(R.id.anadirVehiculo);
 
         //creamos un adapter para manejar los datos
-        final VehiculoAdapter adapter = new VehiculoAdapter(this, R.layout.vehiculo_item,listaVehiculos);
+        adapter = new VehiculoAdapter(this, R.layout.vehiculo_item,listaVehiculos);
+
 
         //vinculamos un adapter
         listViewVehiculos.setAdapter(adapter);
@@ -60,13 +59,13 @@ public class VehiculosActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
 
                 //enviamos el vehiculo a modificar
-                bundle.putParcelable("VEHICULO", adapter.getItem(position));
+                bundle.putParcelable(VEHICULO, adapter.getItem(position));
                 intentModificacionItem.putExtras(bundle);
 
                 Log.d(TAG, "onItemClick: position" + position);
 
                 //lanzamos un intent para modificar un vehiculo
-                startActivity(intentModificacionItem);
+                startActivityForResult(intentModificacionItem, MODIFICAR_VEHICULO);
 
 
             }
@@ -86,6 +85,15 @@ public class VehiculosActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: tamaño lista" + listaVehiculos.size());
+
+        inicializar();
+        adapter.notifyDataSetChanged();
+    }
+
     public void setListaVehiculos(ArrayList<Vehiculo> listaVehiculos) {
         this.listaVehiculos = listaVehiculos;
     }
@@ -97,9 +105,10 @@ public class VehiculosActivity extends AppCompatActivity {
         VehiculoBDD bdd = new VehiculoBDD(this);
         bdd .openForReading();
         this.listaVehiculos = bdd.getAllVehiculos();
-        if(this.listaVehiculos == null){
-            this.listaVehiculos = new ArrayList();
-        }
+        this.listaVehiculos = new ArrayList();
+
         bdd.close();
     }
 }
+
+

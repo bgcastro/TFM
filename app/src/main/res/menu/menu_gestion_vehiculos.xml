@@ -8,9 +8,9 @@
         android:title="@string/action_add_vehiculo"
         app:showAsAction="always"/>
 
-    <!-- opcion de settings -->
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_remove_vehiculo"
+        android:title="@string/action_remove_vehicle"
+        app:showAsAction="always"/>
 
 </menu>
