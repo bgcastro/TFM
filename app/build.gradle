@@ -25,4 +25,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.0'
     //dependencias para color picker
     compile 'com.github.LarsWerkman:Lobsterpicker:1.0.1'
+    //dependencias para date picker
+    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+
 }

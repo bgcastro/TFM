@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/estadoMantenimientoItem"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/nombreMantenimientoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/estadoMantenimientoItem"/>
+    <TextView
+        android:id="@+id/descripcionMantenimientoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombreMantenimientoItem"/>
+    <TextView
+        android:id="@+id/kilometrajeMantenimientoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descripcionMantenimientoItem"/>
+    <TextView
+        android:id="@+id/estadoSincronizacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/kilometrajeMantenimientoItem"/>
+</RelativeLayout>

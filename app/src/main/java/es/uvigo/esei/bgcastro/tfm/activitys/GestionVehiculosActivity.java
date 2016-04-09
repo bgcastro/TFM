@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -23,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoBDD;
+import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
@@ -49,6 +50,8 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private EditText editTextPotencia;
     private EditText editTextAnho;
 
+    private ImageButton botonMantenimientos;
+
     private SpinnerAdapter spinnerAdapter;
 
     private Intent intent;
@@ -58,7 +61,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OnFocusChangeListener focusChangeListenerCambios;
-
+        
         intent = getIntent();
 
         setContentView(R.layout.activity_gestion_vehiculos);
@@ -79,6 +82,8 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         editTextPotencia = (EditText) findViewById(R.id.editTextPotencia);
         editTextAnho = (EditText) findViewById(R.id.editTextAnho);
 
+        botonMantenimientos = (ImageButton) findViewById(R.id.botonMantenimientos);
+
         spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.tipos_combustible, R.layout.support_simple_spinner_dropdown_item);
         spinnerCombustible.setAdapter(spinnerAdapter);
 
@@ -88,6 +93,15 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                 Log.d(TAG, "onClick: imagenVehiculo");
 
                 tomarFoto();
+            }
+        });
+
+        botonMantenimientos.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: botonMantenimientos");
+
+                showMantenimientos();
             }
         });
 
@@ -102,11 +116,12 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                 colorPickerDialog.show(getFragmentManager(),"colorPickerDialog");
             }
         });
+        
+        if (intent.hasExtra(VehiculosActivity.VEHICULO)){
+            
+            vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
 
-        if (intent.hasExtra("VEHICULO")){
-            vehiculo = intent.getParcelableExtra("VEHICULO");
             rellenarUI(vehiculo);
-
             focusChangeListenerCambios = new OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -150,6 +165,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -164,11 +180,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             }
 
             default: {
-                return super.onOptionsItemSelected(item);
+                return false;
             }
         }
     }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -180,6 +195,23 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             menu.removeItem(R.id.action_remove_vehiculo);
         }
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.d(TAG, "onSaveInstanceState: " + vehiculo);
+        
+        outState.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        savedInstanceState.putParcelable(VehiculosActivity.VEHICULO, vehiculo);
+        Log.d(TAG, "onRestoreInstanceState: " + vehiculo);
     }
 
     private void nuevoVehiculo(){
@@ -237,9 +269,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         //// TODO: 4/1/16 otro hilo
         //guardamos en la BBDD
-        VehiculoBDD bdd = new VehiculoBDD(this);
+        VehiculoDAO bdd = new VehiculoDAO(this);
         bdd .openForWriting();
-        bdd.insertVehiculo(vehiculo);
+        long idVehiculo = bdd.insertVehiculo(vehiculo);
+        vehiculo.setId((int) idVehiculo);
         bdd.close();
     }
 
@@ -328,7 +361,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         //// TODO: 4/1/16 otro hilo
         //guardamos en la BBDD
-        VehiculoBDD bdd = new VehiculoBDD(this);
+        VehiculoDAO bdd = new VehiculoDAO(this);
         bdd .openForWriting();
         int bdOutput = bdd.updateVehiculo(vehiculo.getId(),vehiculo);
         bdd.close();
@@ -341,7 +374,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         //// TODO: 4/1/16 otro hilo
         //guardamos en la BBDD
-        VehiculoBDD bdd = new VehiculoBDD(this);
+        VehiculoDAO bdd = new VehiculoDAO(this);
         bdd .openForWriting();
         bdd.removeVehiculo(id);
         bdd.close();
@@ -370,6 +403,15 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         startActivityForResult(intentFoto, TOMAR_FOTO_REQUEST);
     }
 
+    private void showMantenimientos() {
+        Log.d(TAG, "showMantenimientos: ");
+        Intent intentMantenimientos = new Intent(GestionVehiculosActivity.this,MantenimientosActivity.class);
+
+        intentMantenimientos.putExtra(VehiculosActivity.VEHICULO,vehiculo);
+
+        startActivity(intentMantenimientos);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -395,7 +437,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     public void setPositiveButton(ColorPickerDialog dialog) {

@@ -25,4 +25,10 @@
     <string name="aceptar">aceptar</string>
     <string name="cancelar">cancelar</string>
     <string name="action_remove_vehicle">eliminar</string>
+    <string name="nombre_mantenimiento">nombre</string>
+    <string name="descripcionMantenimiento">descripción</string>
+    <string name="kilometrosMantenimiento">kilometraje</string>
+    <string name="action_add_mantenimiento">añadir</string>
+    <string name="action_remove_mantenimiento">eliminar</string>
+    <string name="editTextFechaMantenimiento">fecha</string>
 </resources>

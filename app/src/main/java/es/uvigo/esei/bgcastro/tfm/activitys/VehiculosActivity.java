@@ -3,16 +3,16 @@ package es.uvigo.esei.bgcastro.tfm.activitys;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoBDD;
+import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.adapter.VehiculoAdapter;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
@@ -24,25 +24,25 @@ public class VehiculosActivity extends AppCompatActivity {
     public static final int MODIFICAR_VEHICULO = 1;
     private static String TAG = "VehiculosActivity";
     private ArrayList <Vehiculo> listaVehiculos;
-    private AppCompatImageButton botonAnadirVehiculo;
+    private ImageButton botonAnadirVehiculo;
     private VehiculoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         setContentView(R.layout.activity_vehiculos);
 
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarVehiculos);
         setSupportActionBar(actionBar);
 
-        listaVehiculos = new ArrayList<>();
+        //listaVehiculos = new ArrayList<>();
 
         inicializar();
 
         //asociamos elementos de la vista
         ListView listViewVehiculos = (ListView) findViewById(R.id.listViewVehiculos);
-        botonAnadirVehiculo = (AppCompatImageButton) findViewById(R.id.anadirVehiculo);
+        botonAnadirVehiculo = (ImageButton) findViewById(R.id.anadirVehiculo);
 
         //creamos un adapter para manejar los datos
         adapter = new VehiculoAdapter(this, R.layout.vehiculo_item,listaVehiculos);
@@ -85,30 +85,21 @@ public class VehiculosActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart: tamaño lista" + listaVehiculos.size());
-
-        inicializar();
-        adapter.notifyDataSetChanged();
-    }
-
     public void setListaVehiculos(ArrayList<Vehiculo> listaVehiculos) {
         this.listaVehiculos = listaVehiculos;
     }
 
     public void inicializar() {
-        
         //// TODO: 4/1/16 otro hilo
         //recuperamos de la BBDD
-        VehiculoBDD bdd = new VehiculoBDD(this);
-        bdd .openForReading();
+        VehiculoDAO bdd = new VehiculoDAO(this);
+        bdd.openForReading();
         this.listaVehiculos = bdd.getAllVehiculos();
-        this.listaVehiculos = new ArrayList();
+        if(this.listaVehiculos == null) {
+            this.listaVehiculos = new ArrayList();
+        }
+        Log.d(TAG, "inicializar: " + listaVehiculos.size());
 
         bdd.close();
     }
 }
-
-
