@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">TFM</string>
-    <string name="marca">marca</string>
-    <string name="hintMarca">marca</string>
-    <string name="modelo">modelo</string>
-    <string name="hintModelo">modelo</string>
-    <string name="modeloHint">modelo</string>
+    <string name="nombreVehiculo">nombreVehiculo</string>
+    <string name="hintMarca">nombreVehiculo</string>
     <string name="matricula">matricula</string>
+    <string name="hintModelo">matricula</string>
+    <string name="modeloHint">matricula</string>
     <string name="hintMatricula">matricula</string>
     <string name="kilometraje">kilometraje</string>
     <string name="kilometrajeHint">Kms</string>

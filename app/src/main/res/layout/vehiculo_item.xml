@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    style="app">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:id="@+id/imagenVehiculo" />
@@ -21,35 +22,38 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <TextView
+            android:id="@+id/nombreVehiculo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_bottom_datosVehiculo"
-            android:text="New Text"
-            android:id="@+id/marca" />
+            android:text="@string/nombreVehiculo"
+            android:theme="@style/vehiculo_bold" />
 
         <TextView
-            android:layout_below="@+id/marca"
+            android:id="@+id/matricula"
+            android:layout_below="@+id/nombreVehiculo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_bottom_datosVehiculo"
-            android:text="New Text"
-            android:id="@+id/modelo" />
+            android:text="@string/matricula"
+            android:theme="@style/vehiculo_regular"/>
 
         <TextView
-            android:layout_below="@+id/modelo"
+            android:id="@+id/kilometraje"
+            android:layout_below="@+id/matricula"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_bottom_datosVehiculo"
-            android:text="New Text"
-            android:id="@+id/kilometraje" />
+            android:text="@string/kilometraje"
+            android:theme="@style/vehiculo_thin"/>
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/estadoVehiculo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/datosVehiculo"
-        android:layout_marginBottom="@dimen/margin_bottom_datosVehiculo"
-        android:text="@string/fa_wrench"
-        android:id="@+id/estadoVehiculo"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:text="@string/fa_wrench" />
 </RelativeLayout>

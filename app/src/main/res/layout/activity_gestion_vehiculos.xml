@@ -46,8 +46,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/marca"
-                android:id="@+id/marca" />
+                android:text="@string/nombreVehiculo"
+                android:id="@+id/nombreVehiculo" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -60,8 +60,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/modelo"
-                android:id="@+id/modelo" />
+                android:text="@string/matricula"
+                android:id="@+id/matricula" />
 
             <EditText
                 android:layout_width="wrap_content"
