@@ -11,6 +11,9 @@ import android.util.Log;
 public class VehiculosSQLite extends SQLiteOpenHelper {
     private static final String TAG = "VehiculosSQLite";
 
+    //version de la BD
+    public static int VERSION = 1;
+
     //Nombres de la tablas
     public static final String TABLA_VEHICULOS = "tabla_vehiculos";
     public static final String TABLA_MANTENIMIENTOS = "tabla_mantenimientos";
@@ -93,6 +96,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP" + TABLA_VEHICULOS);
+        VERSION = newVersion;
         onCreate(db);
     }
 }

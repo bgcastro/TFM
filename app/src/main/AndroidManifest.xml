@@ -32,6 +32,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MantenimientosActivity"/>
         </activity>
+        
+        <provider
+            android:authorities="es.uvigo.esei.bgcastro.tfm"
+            android:name=".content_provider.VehiculoContentProvider"/>
+        
     </application>
 
 </manifest>

@@ -1,6 +1,10 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,9 +23,10 @@ import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.OnClickListener;
 
-public class VehiculosActivity extends AppCompatActivity {
+public class VehiculosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public static final String VEHICULO = "VEHICULO";
     public static final int MODIFICAR_VEHICULO = 1;
+    private static final int URL_LOADER = 0;
     private static String TAG = "VehiculosActivity";
     private ArrayList <Vehiculo> listaVehiculos;
     private ImageButton botonAnadirVehiculo;
@@ -36,9 +41,9 @@ public class VehiculosActivity extends AppCompatActivity {
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarVehiculos);
         setSupportActionBar(actionBar);
 
-        //listaVehiculos = new ArrayList<>();
+        //inicializar();
 
-        inicializar();
+        getLoaderManager().initLoader(URL_LOADER, null, this);
 
         //asociamos elementos de la vista
         ListView listViewVehiculos = (ListView) findViewById(R.id.listViewVehiculos);
@@ -66,8 +71,6 @@ public class VehiculosActivity extends AppCompatActivity {
 
                 //lanzamos un intent para modificar un vehiculo
                 startActivityForResult(intentModificacionItem, MODIFICAR_VEHICULO);
-
-
             }
         });
 
@@ -101,5 +104,35 @@ public class VehiculosActivity extends AppCompatActivity {
         Log.d(TAG, "inicializar: " + listaVehiculos.size());
 
         bdd.close();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        switch (id) {
+            case URL_LOADER:
+                // Returns a new CursorLoader
+                return new CursorLoader(
+                        getApplicationContext(),   // Parent activity context
+                        mDataUrl,        // Table to query
+                        mProjection,     // Projection to return
+                        null,            // No selection clause
+                        null,            // No selection arguments
+                        null             // Default sort order
+                );
+            default:
+                // An invalid id was passed in
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
