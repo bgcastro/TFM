@@ -15,13 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
-import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
-import es.uvigo.esei.bgcastro.tfm.adapter.VehiculoArrayAdapter;
+import es.uvigo.esei.bgcastro.tfm.adapter.VehiculoCursorAdapter;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.OnClickListener;
 
@@ -32,10 +28,9 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
     public static final int MODIFICAR_VEHICULO = 1;
     private static final int URL_LOADER = 0;
 
-    private ArrayList <Vehiculo> listaVehiculos;
     private ImageButton botonAnadirVehiculo;
-    //private VehiculoCursorAdapter adapter;
-    private VehiculoArrayAdapter adapter;
+    private VehiculoCursorAdapter adapter;
+    //private VehiculoArrayAdapter adapter;
 
 
     @Override
@@ -47,12 +42,6 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarVehiculos);
         setSupportActionBar(actionBar);
 
-        //inicializar();
-        listaVehiculos = new ArrayList<>();
-
-        //para pruebas
-        listaVehiculos.add(new Vehiculo(new byte[0], "marca", "modelo ", "matricula ", 1, "combustible ", 1, 1, 1, 1, ""));
-
         LoaderManager loaderManager = getLoaderManager();
 
         loaderManager.initLoader(URL_LOADER, null, this);
@@ -61,9 +50,7 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
         ListView listViewVehiculos = (ListView) findViewById(R.id.listViewVehiculos);
         botonAnadirVehiculo = (ImageButton) findViewById(R.id.anadirVehiculo);
 
-        //creamos un adapter para manejar los datos
-        //TODO falta añadir un adapter
-        adapter = new VehiculoArrayAdapter(this, R.layout.vehiculo_item,listaVehiculos);
+        adapter = new VehiculoCursorAdapter(this,null,VehiculoCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER,R.layout.vehiculo_item);
 
         //vinculamos un adapter
         listViewVehiculos.setAdapter(adapter);
@@ -106,24 +93,6 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
         getLoaderManager().restartLoader(0, null, this);
     }
 
-    public void setListaVehiculos(ArrayList<Vehiculo> listaVehiculos) {
-        this.listaVehiculos = listaVehiculos;
-    }
-
-    public void inicializar() {
-        //// TODO: 4/1/16 otro hilo
-        //recuperamos de la BBDD
-        VehiculoDAO bdd = new VehiculoDAO(this);
-        bdd.openForReading();
-        this.listaVehiculos = bdd.getAllVehiculos();
-        if(this.listaVehiculos == null) {
-            this.listaVehiculos = new ArrayList();
-        }
-        Log.d(TAG, "inicializar: " + listaVehiculos.size());
-
-        bdd.close();
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Construct the new query in the form of a Cursor Loader. Use the id
@@ -147,7 +116,7 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
 
     }
 
-    /*@Override
+    @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Replace the result Cursor displayed by the Cursor Adapter with the new result set.
         adapter.swapCursor(data);
@@ -155,10 +124,12 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
         // will need to synchronize it before modifying any UI elements directly.
 
     }
-*/
 
-    @Override
+
+   /* @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(TAG, "onLoadFinished: result count" + data.getCount());
+
         listaVehiculos.clear();
 
         while (data.moveToNext()) {
@@ -166,21 +137,21 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
             listaVehiculos.add(newItem);
         }
 
-    }
-
-/*    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        // Remove the existing result Cursor from the List Adapter.
-        adapter.swapCursor(null);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }*/
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // Remove the existing result Cursor from the List Adapter.
-        adapter.clear();
+        adapter.swapCursor(null);
         // This handler is not synchronized with the UI thread, so you
         // will need to synchronize it before modifying any UI elements directly.
     }
+
+/*    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Remove the existing result Cursor from the List Adapter.
+        adapter.clear();
+        // This handler is not synchronized with the UI thread, so you
+        // will need to synchronize it before modifying any UI elements directly.
+    }*/
 }

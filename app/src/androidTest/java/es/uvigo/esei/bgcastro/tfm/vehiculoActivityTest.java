@@ -12,6 +12,8 @@ import es.uvigo.esei.bgcastro.tfm.activitys.VehiculosActivity;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Created by braisgallegocastro on 24/12/15.
@@ -48,15 +50,6 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
             listaDePruebas.add(vehiculo);
         }
 
-        VehiculoDAO bdd = new VehiculoDAO(activity.getApplicationContext());
-        bdd .openForWriting();
-        for (Vehiculo v:listaDePruebas
-             ) {
-            long idVehiculo = bdd.insertVehiculo(v);
-        }
-
-        bdd.close();
-
     }
 
     public void testPreconditions(){
@@ -64,6 +57,22 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
         assertNotNull(activity);
     }
 
+    public void testTestInsertDAO() throws Exception {
+        long [] resultado = new long[3];
+        int cont = 0;
 
+        VehiculoDAO bdd = new VehiculoDAO(activity.getApplicationContext());
+        bdd .openForWriting();
+        for (Vehiculo v:listaDePruebas
+                ) {
+            resultado[cont] = bdd.insertVehiculo(v);
+            cont++;
+        }
 
+        bdd.close();
+
+        for (int i = 0; i < resultado.length; i++) {
+            assertNotSame(i,is(not(1)));
+        }
+    }
 }

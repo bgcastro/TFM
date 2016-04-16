@@ -28,4 +28,5 @@ dependencies {
     //dependencias para date picker
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
 
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
 }

@@ -14,12 +14,15 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     //version de la BD
     public static int VERSION = 1;
 
+    //Nombre BD
+    public static final String NOMBRE_BBDD = "vehiculos.db";
+
     //Nombres de la tablas
     public static final String TABLA_VEHICULOS = "tabla_vehiculos";
     public static final String TABLA_MANTENIMIENTOS = "tabla_mantenimientos";
 
     //Campos tabla vehiculos
-    public static final String COL_ID = "id";
+    public static final String COL_ID = "_id";
     public static final String COL_IMAGEN_VEHICULO = "imagen_vehiculo";
     public static final String COL_MARCA = "marca";
     public static final String COL_MODELO = "modelo";
@@ -33,7 +36,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_ESTADO = "estado";
 
     //Campos tabla mantenimientos
-    public static final String COL_ID_MANTENIMIENTO = "id";
+    public static final String COL_ID_MANTENIMIENTO = "_id";
     public static final String COL_ID_VEHICULO = "id_vehiculo";
     public static final String COL_ESTADO_REPARACION = "estado";
     public static final String COL_NOMBRE = "nombre";
