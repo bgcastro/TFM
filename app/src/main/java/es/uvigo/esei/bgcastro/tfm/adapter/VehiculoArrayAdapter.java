@@ -20,18 +20,25 @@ import es.uvigo.esei.bgcastro.tfm.viewholder.VehiculoViewHolder;
 /**
  * Created by braisgallegocastro on 23/12/15.
  */
-public class VehiculoAdapter extends ArrayAdapter<Vehiculo> {
+public class VehiculoArrayAdapter extends ArrayAdapter<Vehiculo> {
     private ArrayList<Vehiculo> vehiculoArrayList;
     private Context contexto;
     private int vistaItem;
 
-    public VehiculoAdapter(Context context, int resource, ArrayList<Vehiculo> vehiculos) {
+    public VehiculoArrayAdapter(Context context, int resource) {
+        super(context, resource);
+
+        this.vehiculoArrayList = new ArrayList<>();
+        this.contexto = context;
+        vistaItem = resource;
+    }
+
+    public VehiculoArrayAdapter(Context context, int resource, ArrayList<Vehiculo> vehiculos) {
         super(context, resource, vehiculos);
 
         this.vehiculoArrayList = vehiculos;
         this.contexto = context;
         this.vistaItem = resource;
-
     }
 
 

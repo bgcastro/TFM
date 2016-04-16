@@ -5,6 +5,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,19 +19,24 @@ import java.util.ArrayList;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
-import es.uvigo.esei.bgcastro.tfm.adapter.VehiculoAdapter;
+import es.uvigo.esei.bgcastro.tfm.adapter.VehiculoArrayAdapter;
+import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.OnClickListener;
 
 public class VehiculosActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static String TAG = "VehiculosActivity";
+
     public static final String VEHICULO = "VEHICULO";
     public static final int MODIFICAR_VEHICULO = 1;
     private static final int URL_LOADER = 0;
-    private static String TAG = "VehiculosActivity";
+
     private ArrayList <Vehiculo> listaVehiculos;
     private ImageButton botonAnadirVehiculo;
-    private VehiculoAdapter adapter;
+    //private VehiculoCursorAdapter adapter;
+    private VehiculoArrayAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +48,22 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
         setSupportActionBar(actionBar);
 
         //inicializar();
+        listaVehiculos = new ArrayList<>();
 
-        getLoaderManager().initLoader(URL_LOADER, null, this);
+        //para pruebas
+        listaVehiculos.add(new Vehiculo(new byte[0], "marca", "modelo ", "matricula ", 1, "combustible ", 1, 1, 1, 1, ""));
+
+        LoaderManager loaderManager = getLoaderManager();
+
+        loaderManager.initLoader(URL_LOADER, null, this);
 
         //asociamos elementos de la vista
         ListView listViewVehiculos = (ListView) findViewById(R.id.listViewVehiculos);
         botonAnadirVehiculo = (ImageButton) findViewById(R.id.anadirVehiculo);
 
         //creamos un adapter para manejar los datos
-        adapter = new VehiculoAdapter(this, R.layout.vehiculo_item,listaVehiculos);
-
+        //TODO falta añadir un adapter
+        adapter = new VehiculoArrayAdapter(this, R.layout.vehiculo_item,listaVehiculos);
 
         //vinculamos un adapter
         listViewVehiculos.setAdapter(adapter);
@@ -64,7 +76,7 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
                 Bundle bundle = new Bundle();
 
                 //enviamos el vehiculo a modificar
-                bundle.putParcelable(VEHICULO, adapter.getItem(position));
+               // bundle.putParcelable(VEHICULO, adapter.getItem(position));
                 intentModificacionItem.putExtras(bundle);
 
                 Log.d(TAG, "onItemClick: position" + position);
@@ -88,6 +100,12 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(0, null, this);
+    }
+
     public void setListaVehiculos(ArrayList<Vehiculo> listaVehiculos) {
         this.listaVehiculos = listaVehiculos;
     }
@@ -108,31 +126,61 @@ public class VehiculosActivity extends AppCompatActivity implements LoaderManage
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
+        // Construct the new query in the form of a Cursor Loader. Use the id
+        // parameter to construct and return different loaders.
         switch (id) {
             case URL_LOADER:
-                // Returns a new CursorLoader
-                return new CursorLoader(
-                        getApplicationContext(),   // Parent activity context
-                        mDataUrl,        // Table to query
-                        mProjection,     // Projection to return
-                        null,            // No selection clause
-                        null,            // No selection arguments
-                        null             // Default sort order
-                );
+                String[] projection = null;
+                String where = null;
+                String[] whereArgs = null;
+                String sortOrder = null;
+
+                // Query URI
+                Uri queryUri = VehiculoContentProvider.CONTENT_URI;
+
+                // Create the new Cursor loader.
+                return new CursorLoader(VehiculosActivity.this, queryUri, projection, where, whereArgs, sortOrder);
+
             default:
-                // An invalid id was passed in
                 return null;
         }
+
     }
+
+    /*@Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Replace the result Cursor displayed by the Cursor Adapter with the new result set.
+        adapter.swapCursor(data);
+        // This handler is not synchronized with the UI thread, so you
+        // will need to synchronize it before modifying any UI elements directly.
+
+    }
+*/
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        listaVehiculos.clear();
+
+        while (data.moveToNext()) {
+            Vehiculo newItem = new Vehiculo(data);
+            listaVehiculos.add(newItem);
+        }
 
     }
 
+/*    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Remove the existing result Cursor from the List Adapter.
+        adapter.swapCursor(null);
+        // This handler is not synchronized with the UI thread, so you
+        // will need to synchronize it before modifying any UI elements directly.
+    }*/
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        // Remove the existing result Cursor from the List Adapter.
+        adapter.clear();
+        // This handler is not synchronized with the UI thread, so you
+        // will need to synchronize it before modifying any UI elements directly.
     }
 }

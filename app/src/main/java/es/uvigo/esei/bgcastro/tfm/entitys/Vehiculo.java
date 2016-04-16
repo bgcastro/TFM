@@ -1,7 +1,10 @@
 package es.uvigo.esei.bgcastro.tfm.entitys;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 
 /**
  * Created by braisgallegocastro on 23/12/15.
@@ -112,6 +115,31 @@ public class Vehiculo implements Parcelable{
         this.color = sourceParcel.readInt();
         this.anho = sourceParcel.readInt();
         this.estado = sourceParcel.readString();
+    }
+
+    /**
+     * Constructor para construir un vehiculos a partir de un cursor
+     * @param cursor
+     */
+    public Vehiculo(Cursor cursor){
+        if (cursor.getCount() != 0)
+        {
+            id = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_ID));
+            imagenVehiculo = cursor.getBlob(cursor.getColumnIndex(VehiculosSQLite.COL_IMAGEN_VEHICULO));
+            marca = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_MARCA));
+            modelo = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_MODELO));
+            matricula =cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_MATRICULA));
+            kilometraje = cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_KILOMETRAJE));
+            combustible = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_COMBUSTIBLE));
+            cilindrada = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_CILINDRADA));
+            potencia = cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_POTENCIA));
+            color = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_COLOR));
+            anho = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_ANHO));
+            estado = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO));
+        }
+
+        cursor.close();
+
     }
 
     public byte[] getImagenVehiculo() {
