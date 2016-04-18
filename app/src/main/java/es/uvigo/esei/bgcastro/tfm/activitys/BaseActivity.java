@@ -17,7 +17,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
     //carga de la fuente para iconos
-    private Typeface font;
+    private static Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
