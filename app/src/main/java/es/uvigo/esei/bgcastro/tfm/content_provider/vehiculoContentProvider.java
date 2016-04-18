@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
@@ -19,6 +20,7 @@ import es.uvigo.esei.bgcastro.tfm.R;
  * Created by braisgallegocastro on 11/4/16.
  */
 public class VehiculoContentProvider extends ContentProvider{
+    private static final String TAG = "VehiculoContentProvider";
     private VehiculosSQLite bddHelper;
 
     private final String CONTENT_PROVIDER_MIME_ALLROWS = "vnd.android.cursor.dir/es.uvigo.esei.bgcastro.tfm.vehiculos";
@@ -40,7 +42,7 @@ public class VehiculoContentProvider extends ContentProvider{
     public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm/vehiculos");
     @Override
     public boolean onCreate() {
-        bddHelper = new VehiculosSQLite(getContext(),VehiculosSQLite.TABLA_VEHICULOS,null,VehiculosSQLite.VERSION);
+        bddHelper = new VehiculosSQLite(getContext(),VehiculosSQLite.NOMBRE_BBDD,null,VehiculosSQLite.VERSION);
 
         if (bddHelper == null) {
             return false;
@@ -75,6 +77,8 @@ public class VehiculoContentProvider extends ContentProvider{
         String groupBy = null;
         String having = null;
         Cursor cursor = queryBuilder.query(bdd, projection, selection, selectionArgs, groupBy, having, sortOrder);
+
+        Log.d(TAG, "query: cursor count " + cursor.getCount());
 
         return cursor;
     }
