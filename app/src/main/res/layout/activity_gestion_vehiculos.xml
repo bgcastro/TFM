@@ -19,231 +19,250 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layoutSuperiorGestion"
         android:layout_below="@+id/toolbarGestionVehiculos"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:weightSum="2">
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/imagenGestionVehiculos"
-            android:layout_weight="1"
+            android:layout_width="170dp"
+            android:layout_height="150dp"
+            android:layout_margin="0dp"
             android:src="@drawable/ic_directions_car_black_48dp" />
 
         <LinearLayout
+            android:layout_toRightOf="@+id/imagenGestionVehiculos"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/nombreVehiculo"
-                android:id="@+id/nombreVehiculo" />
+                android:id="@+id/nombreVehiculo"
+                android:theme="@style/vehiculo_bold"
+                android:layout_marginBottom="10dp"/>
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextMarca"
                 android:hint="@string/hintMarca"
+                android:inputType="textCapWords"
+                android:theme="@style/vehiculo_regular"
                 android:background="@android:color/transparent"
-                android:inputType="textCapWords" />
+                android:layout_marginBottom="10dp"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/modelo"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/matricula"
-                android:id="@+id/matricula" />
+                android:text="@string/modeloHint"
+                android:theme="@style/vehiculo_bold"
+                android:layout_marginBottom="10dp"/>
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/editTextModelo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:selectAllOnFocus="false"
                 android:hint="@string/hintModelo"
-                android:inputType="textCapWords" />
+                android:inputType="textCapWords"
+                android:theme="@style/vehiculo_regular"
+                android:background="@android:color/transparent"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/Matricula"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/matricula"
-                android:id="@+id/Matricula"
-                android:hint="@string/modeloHint" />
+                android:hint="@string/modeloHint"
+                android:theme="@style/vehiculo_bold"
+                android:layout_marginBottom="10dp"/>
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/editTextMatricula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="@string/hintMatricula"
-                android:inputType="textCapCharacters|text" />
+                android:inputType="textCapCharacters|text"
+                android:theme="@style/vehiculo_regular"
+                android:background="@android:color/transparent"/>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_kilometraje"
-        android:layout_below="@+id/layoutSuperiorGestion"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kilometraje"
-            android:id="@+id/kilometraje"
-            android:layout_weight="1" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextKilometraje"
-            android:layout_weight="3"
-            android:hint="@string/kilometrajeHint"
-            android:inputType="numberDecimal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_gasolina"
-        android:layout_below="@+id/layout_kilometraje"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/combustible"
-            android:id="@+id/combustible"
-            android:layout_weight="1" />
-
-        <Spinner
-            android:id="@+id/tipoCombustible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </Spinner>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_cilindrada"
-        android:layout_below="@+id/layout_gasolina"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cilindrada"
-            android:id="@+id/cilindrada"
-            android:layout_weight="1" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextCilindrada"
-            android:layout_weight="3"
-            android:hint="@string/hintCilindrada"
-            android:inputType="number" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_color"
-        android:layout_below="@+id/layout_cilindrada"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/color"
-            android:id="@+id/color"
-            android:layout_weight="1" />
-
-        <SurfaceView
-            android:id="@+id/selectorDeColor"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@android:color/background_dark"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_potencia"
-        android:layout_below="@+id/layout_color"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/potencia"
-            android:id="@+id/potencia"
-            android:layout_weight="1" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextPotencia"
-            android:layout_weight="3"
-            android:hint="@string/hintPotencia"
-            android:inputType="numberDecimal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_anho"
-        android:layout_below="@+id/layout_potencia"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:weightSum="4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/anho"
-            android:id="@+id/anho"
-            android:layout_weight="1" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextAnho"
-            android:layout_weight="3"
-            android:hint="@string/hintAnho"
-            android:inputType="number" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/mitad"
+        android:layout_below="@+id/layoutSuperiorGestion"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/primeraFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/kilometraje"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/kilometraje"
+                android:theme="@style/vehiculo_bold"/>
+
+            <EditText
+                android:id="@+id/editTextKilometraje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/kilometrajeHint"
+                android:inputType="numberDecimal"
+                android:layout_toRightOf="@id/kilometraje"
+                android:theme="@style/vehiculo_regular"
+                android:background="@android:color/transparent"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/segundaFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/primeraFila"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/combustible"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/combustible"
+                android:theme="@style/vehiculo_bold"
+                android:layout_marginTop="3dp"/>
+
+            <Spinner
+                android:id="@+id/tipoCombustible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/combustible"
+                android:theme="@style/vehiculo_regular"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/terceraFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/segundaFila"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/cilindrada"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cilindrada"
+                android:theme="@style/vehiculo_bold"/>
+
+            <EditText
+                android:id="@+id/editTextCilindrada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hintCilindrada"
+                android:inputType="number"
+                android:layout_toRightOf="@id/cilindrada"
+                android:theme="@style/vehiculo_regular"
+                android:background="@android:color/transparent"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cuartaFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/terceraFila"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/color"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/color"
+                android:theme="@style/vehiculo_bold"/>
+
+            <SurfaceView
+                android:id="@+id/selectorDeColor"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@android:color/background_dark"
+                android:layout_toRightOf="@id/color"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/quintaFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cuartaFila"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/potencia"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/potencia"
+                android:theme="@style/vehiculo_bold"/>
+
+            <EditText
+                android:id="@+id/editTextPotencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hintPotencia"
+                android:inputType="numberDecimal"
+                android:layout_toRightOf="@id/potencia"
+                android:theme="@style/vehiculo_regular"
+                android:background="@android:color/transparent"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/sextaFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/quintaFila"
+            android:paddingTop="10dp">
+            <TextView
+                android:id="@+id/anho"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/anho"
+                android:theme="@style/vehiculo_bold"/>
+
+            <EditText
+                android:id="@+id/editTextAnho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hintAnho"
+                android:inputType="number"
+                android:layout_toRightOf="@id/anho"
+                android:theme="@style/vehiculo_regular"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grisClaro"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/mitad"/>
+
+    <RelativeLayout
+        android:layout_below="@+id/mitad"
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -255,4 +274,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_circle_outline_white_24dp"/>
     </RelativeLayout>
+
+    <!-- incluir fragment o algo asi -->
 </RelativeLayout>

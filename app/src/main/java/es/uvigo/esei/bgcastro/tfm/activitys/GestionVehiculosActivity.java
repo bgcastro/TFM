@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
     private ImageButton botonMantenimientos;
 
-    private SpinnerAdapter spinnerAdapter;
+    private ArrayAdapter spinnerAdapter;
 
     private Intent intent;
     private int color;
@@ -84,7 +83,8 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         botonMantenimientos = (ImageButton) findViewById(R.id.botonMantenimientos);
 
-        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.tipos_combustible, R.layout.support_simple_spinner_dropdown_item);
+        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.tipos_combustible, R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinnerCombustible.setAdapter(spinnerAdapter);
 
         imagenVehiculo.setOnClickListener(new OnClickListener() {
