@@ -94,8 +94,12 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
                 Bundle bundle = new Bundle();
 
                 //TODO arreglar para que el se pase el vehiculo a modificar
+                Cursor c = adapter.getCursor();
+                c.moveToPosition(position);
                 //enviamos el vehiculo a modificar
-                bundle.putParcelable(VEHICULO, (Vehiculo) adapter.getItem(position));
+                Vehiculo veh = new Vehiculo(c);
+
+                bundle.putParcelable(VEHICULO, veh);
                 intentModificacionItem.putExtras(bundle);
 
                 Log.d(TAG, "onItemClick: position" + position);
