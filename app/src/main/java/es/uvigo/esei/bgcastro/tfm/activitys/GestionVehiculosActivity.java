@@ -25,7 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
@@ -134,9 +133,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             editTextModelo.setOnFocusChangeListener(focusChangeListenerCambios);
             editTextMatricula.setOnFocusChangeListener(focusChangeListenerCambios);
             editTextKilometraje.setOnFocusChangeListener(focusChangeListenerCambios);
-            //spinnerCombustible.setOnFocusChangeListener(focusChangeListenerCambios);
             editTextCilindrada.setOnFocusChangeListener(focusChangeListenerCambios);
-            //selectorDeColor.setOnFocusChangeListener(focusChangeListenerCambios);
             editTextPotencia.setOnFocusChangeListener(focusChangeListenerCambios);
             editTextAnho.setOnFocusChangeListener(focusChangeListenerCambios);
 
@@ -393,25 +390,35 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         Log.d(TAG, "modificarVehiculo: " + vehiculo.toString());
 
-        //// TODO: 4/1/16 otro hilo
-        //guardamos en la BBDD
-        VehiculoDAO bdd = new VehiculoDAO(this);
-        bdd .openForWriting();
-        int bdOutput = bdd.updateVehiculo(vehiculo.getId(),vehiculo);
-        bdd.close();
-
-        Log.d(TAG, "modificarVehiculo: bd output " + bdOutput);
-    }
-
-    private void removeVehiculo(int id) {
-        Log.d(TAG, "removeVehiculo: " + id);
-
         /*//// TODO: 4/1/16 otro hilo
         //guardamos en la BBDD
         VehiculoDAO bdd = new VehiculoDAO(this);
         bdd .openForWriting();
-        bdd.removeVehiculo(id);
+        int bdOutput = bdd.updateVehiculo(vehiculo.getId(),vehiculo);
         bdd.close();*/
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(VehiculoContentProvider.IMAGEN_VEHICULO, vehiculo.getImagenVehiculo());
+        contentValues.put(VehiculoContentProvider.MARCA, vehiculo.getMarca());
+        contentValues.put(VehiculoContentProvider.MODELO, vehiculo.getModelo());
+        contentValues.put(VehiculoContentProvider.MATRICULA, vehiculo.getMatricula());
+        contentValues.put(VehiculoContentProvider.KILOMETRAJE, vehiculo.getKilometraje());
+        contentValues.put(VehiculoContentProvider.COMBUSTIBLE, vehiculo.getCombustible());
+        contentValues.put(VehiculoContentProvider.CILINDRADA, vehiculo.getCilindrada());
+        contentValues.put(VehiculoContentProvider.POTENCIA, vehiculo.getPotencia());
+        contentValues.put(VehiculoContentProvider.COLOR, vehiculo.getColor());
+        contentValues.put(VehiculoContentProvider.ANHO, vehiculo.getAño());
+        contentValues.put(VehiculoContentProvider.ESTADO, vehiculo.getEstado());
+
+        String updateID = Integer.toString(vehiculo.getId());
+
+        int resultado = getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,updateID),contentValues,null,null);
+
+        Log.d(TAG, "modificarVehiculo: bd output " + resultado);
+    }
+
+    private void removeVehiculo(int id) {
+        Log.d(TAG, "removeVehiculo: " + id);
 
         String deleteID = Integer.toString(id);
         getContentResolver().delete( Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,deleteID), null, null);
