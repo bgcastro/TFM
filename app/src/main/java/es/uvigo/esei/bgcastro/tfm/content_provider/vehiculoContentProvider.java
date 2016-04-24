@@ -39,6 +39,20 @@ public class VehiculoContentProvider extends ContentProvider{
         uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm", "vehiculos/#", SINGLE_ROW);
     }
 
+    public static final String ID = "_id";
+    public static final String IMAGEN_VEHICULO = "imagen_vehiculo";
+    public static final String MARCA = "marca";
+    public static final String MODELO = "modelo";
+    public static final String MATRICULA = "matricula";
+    public static final String KILOMETRAJE = "kilometraje";
+    public static final String COMBUSTIBLE = "combustible";
+    public static final String CILINDRADA = "cilindrada";
+    public static final String POTENCIA = "potencia";
+    public static final String COLOR = "color";
+    public static final String ANHO = "anho";
+    public static final String ESTADO = "estado";
+
+
     public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm/vehiculos");
     @Override
     public boolean onCreate() {

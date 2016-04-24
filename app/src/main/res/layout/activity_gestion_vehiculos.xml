@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/imagenGestionVehiculos"
-            android:layout_width="170dp"
-            android:layout_height="150dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_margin="0dp"
             android:src="@drawable/ic_directions_car_black_48dp" />
 
@@ -44,8 +44,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/nombreVehiculo"
-                android:id="@+id/nombreVehiculo"
+                android:text="@string/marca"
+                android:id="@+id/nombreMarca"
                 android:theme="@style/vehiculo_bold"
                 android:layout_marginBottom="10dp"/>
 
@@ -121,7 +121,7 @@
 
             <EditText
                 android:id="@+id/editTextKilometraje"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/kilometrajeHint"
                 android:inputType="numberDecimal"

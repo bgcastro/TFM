@@ -1,9 +1,11 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
@@ -49,19 +52,15 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private EditText editTextPotencia;
     private EditText editTextAnho;
 
-    private ImageButton botonMantenimientos;
-
-    private ArrayAdapter spinnerAdapter;
-
-    private Intent intent;
     private int color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         OnFocusChangeListener focusChangeListenerCambios;
-        
-        intent = getIntent();
+
+        Intent intent = getIntent();
 
         setContentView(R.layout.activity_gestion_vehiculos);
 
@@ -81,9 +80,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         editTextPotencia = (EditText) findViewById(R.id.editTextPotencia);
         editTextAnho = (EditText) findViewById(R.id.editTextAnho);
 
-        botonMantenimientos = (ImageButton) findViewById(R.id.botonMantenimientos);
+        ImageButton botonMantenimientos = (ImageButton) findViewById(R.id.botonMantenimientos);
 
-        spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.tipos_combustible, R.layout.simple_spinner_item);
+        ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.tipos_combustible, R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         spinnerCombustible.setAdapter(spinnerAdapter);
 
@@ -216,16 +215,29 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         Log.d(TAG, "onRestoreInstanceState: " + vehiculo);
     }
 
-    private void nuevoVehiculo(){
-        //TODO Revisar argumentos
+    private boolean nuevoVehiculo(){
 
-        float kilometraje;
+        float kilometraje = 0;
         float potencia;
         int cilindrada;
         int anho;
+        String nombre = editTextModelo.getText().toString();
+        String marca = editTextMarca.getText().toString();
+        boolean success = true;
+
+        if (nombre.isEmpty()){
+            editTextModelo.setError(getString(R.string.error_modelo_vacio));
+            success = false;
+        }
+
+        if (marca.isEmpty()){
+            editTextMarca.setError(getString(R.string.error_marca_vacio));
+            success = false;
+        }
 
         if (editTextKilometraje.getText().toString().isEmpty()){
-            kilometraje = 0;
+            editTextKilometraje.setError(getString(R.string.error_kilometraje_vacio));
+            success = false;
         }else {
             kilometraje = Float.parseFloat(editTextKilometraje.getText().toString());
         }
@@ -256,26 +268,46 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             foto = stream.toByteArray();
         }
 
-        vehiculo = new Vehiculo(foto, editTextMarca.getText().toString(),
-                editTextModelo.getText().toString(),
-                editTextMatricula.getText().toString(),
-                kilometraje,
-                (String) spinnerCombustible.getSelectedItem(),
-                cilindrada,
-                potencia,
-                color,
-                anho,
-                getString(R.string.fa_wrench));
+        if (success) {
+            vehiculo = new Vehiculo(foto, marca,
+                    nombre,
+                    editTextMatricula.getText().toString(),
+                    kilometraje,
+                    (String) spinnerCombustible.getSelectedItem(),
+                    cilindrada,
+                    potencia,
+                    color,
+                    anho,
+                    getString(R.string.fa_wrench));
 
-        Log.d(TAG, "nuevoVehiculo" + vehiculo.toString());
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(VehiculoContentProvider.IMAGEN_VEHICULO, vehiculo.getImagenVehiculo());
+            contentValues.put(VehiculoContentProvider.MARCA, vehiculo.getMarca());
+            contentValues.put(VehiculoContentProvider.MODELO, vehiculo.getModelo());
+            contentValues.put(VehiculoContentProvider.MATRICULA, vehiculo.getMatricula());
+            contentValues.put(VehiculoContentProvider.KILOMETRAJE, vehiculo.getKilometraje());
+            contentValues.put(VehiculoContentProvider.COMBUSTIBLE, vehiculo.getCombustible());
+            contentValues.put(VehiculoContentProvider.CILINDRADA, vehiculo.getCilindrada());
+            contentValues.put(VehiculoContentProvider.POTENCIA, vehiculo.getPotencia());
+            contentValues.put(VehiculoContentProvider.COLOR, vehiculo.getColor());
+            contentValues.put(VehiculoContentProvider.ANHO, vehiculo.getAño());
+            contentValues.put(VehiculoContentProvider.ESTADO, vehiculo.getEstado());
 
-        //// TODO: 4/1/16 otro hilo
-        //guardamos en la BBDD
-        VehiculoDAO bdd = new VehiculoDAO(this);
-        bdd .openForWriting();
-        long idVehiculo = bdd.insertVehiculo(vehiculo);
-        vehiculo.setId((int) idVehiculo);
-        bdd.close();
+            Uri uri = getContentResolver().insert(VehiculoContentProvider.CONTENT_URI,contentValues);
+            String idNuevoVehiculo = uri.getLastPathSegment();
+            if (!idNuevoVehiculo.isEmpty()){
+                vehiculo.setId((int) Integer.parseInt(uri.getLastPathSegment()));
+
+                invalidateOptionsMenu();
+
+                success = true;
+
+                Log.d(TAG, "nuevoVehiculo" + vehiculo.toString());
+            }
+
+        }
+
+        return success;
     }
 
     private void modificarVehiculo(View v) {
@@ -374,12 +406,15 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private void removeVehiculo(int id) {
         Log.d(TAG, "removeVehiculo: " + id);
 
-        //// TODO: 4/1/16 otro hilo
+        /*//// TODO: 4/1/16 otro hilo
         //guardamos en la BBDD
         VehiculoDAO bdd = new VehiculoDAO(this);
         bdd .openForWriting();
         bdd.removeVehiculo(id);
-        bdd.close();
+        bdd.close();*/
+
+        String deleteID = Integer.toString(id);
+        getContentResolver().delete( Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,deleteID), null, null);
 
         finish();
     }
@@ -393,7 +428,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         this.editTextKilometraje.setText(Float.toString(vehiculo.getKilometraje()));
         this.spinnerCombustible.setSelection( new ArrayList<String>(Arrays.asList( getResources().getStringArray(R.array.tipos_combustible))).indexOf(vehiculo.getCombustible()));
         this.editTextCilindrada.setText(Integer.toString(vehiculo.getCilindrada()));
-        //// TODO: 4/1/16 revisar el color
         color = vehiculo.getColor();
         this.selectorDeColor.setBackgroundColor(color);
         this.editTextPotencia.setText(Float.toString(vehiculo.getPotencia()));
@@ -413,6 +447,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         startActivity(intentMantenimientos);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

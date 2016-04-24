@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">TFM</string>
     <string name="nombreVehiculo">nombre</string>
-    <string name="hintMarca">nombre vehiculo</string>
+    <string name="hintMarca">nombre marca</string>
     <string name="matricula">matricula</string>
-    <string name="hintModelo">modelo</string>
+    <string name="hintModelo">nombre modelo</string>
     <string name="modeloHint">modelo</string>
     <string name="hintMatricula">matricula</string>
     <string name="kilometraje">kilometraje</string>
@@ -31,4 +31,8 @@
     <string name="action_remove_mantenimiento">eliminar</string>
     <string name="editTextFechaMantenimiento">fecha</string>
     <string name="ilegalArgument">Uri no soportada</string>
+    <string name="marca">marca</string>
+    <string name="error_marca_vacio">Por favor introduce una marca para tu nuevo vehiculo</string>
+    <string name="error_modelo_vacio">Por favor introduce un modelo para tu nuevo vehiculo</string>
+    <string name="error_kilometraje_vacio">Por favor introduce el valor del kilometraje para tu nuevo vehiculo</string>
 </resources>
