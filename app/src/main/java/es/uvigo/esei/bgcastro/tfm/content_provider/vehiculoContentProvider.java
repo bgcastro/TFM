@@ -171,8 +171,8 @@ public class VehiculoContentProvider extends ContentProvider{
         // If this is a row URI, limit the deletion to the specified row.
         switch (uriMatcher.match(uri)) {
             case SINGLE_ROW :
-                String rowID = uri.getPathSegments().get(1); selection = VehiculosSQLite.COL_ID + "=" + rowID
-                    + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ")" : "");
+                String rowID = uri.getPathSegments().get(1);
+                selection = VehiculosSQLite.COL_ID + "=" + rowID + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ")" : "");
             default: break;
         }
 
