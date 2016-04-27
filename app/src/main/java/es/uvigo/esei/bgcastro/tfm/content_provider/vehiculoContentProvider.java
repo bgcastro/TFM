@@ -35,11 +35,11 @@ public class VehiculoContentProvider extends ContentProvider{
     // and ‘elements/[rowID]’ represents a single row.
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm","vehiculos", ALLROWS);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm", "vehiculos/#", SINGLE_ROW);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.vehiculos","vehiculos", ALLROWS);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.vehiculos", "vehiculos/#", SINGLE_ROW);
     }
 
-    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm/vehiculos");
+    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm.vehiculos/vehiculos");
     @Override
     public boolean onCreate() {
         bddHelper = new VehiculosSQLite(getContext(),VehiculosSQLite.NOMBRE_BBDD,null,VehiculosSQLite.VERSION);

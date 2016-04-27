@@ -6,9 +6,11 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.activitys.VehiculosActivity;
+import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
@@ -21,6 +23,7 @@ import static org.hamcrest.CoreMatchers.not;
 public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<VehiculosActivity> {
     private VehiculosActivity activity;
     private ArrayList<Vehiculo> listaDePruebas = new ArrayList<Vehiculo>();
+    private ArrayList<Mantenimiento> listaDeMantenimientos = new ArrayList<Mantenimiento>();
 
     public vehiculoActivityTest() {
         super(VehiculosActivity.class);
@@ -48,7 +51,14 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
             }
 
             listaDePruebas.add(vehiculo);
+
+            for (int j = 0; j < 3; j++) {
+                Mantenimiento mantenimiento = new Mantenimiento("estado" + j,"nombre" + j,"descripcion" + j, j, new Date(),"estado sincronizacion" + j,vehiculo);
+                listaDeMantenimientos.add(mantenimiento);
+            }
         }
+
+
 
     }
 
@@ -75,4 +85,5 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
             assertNotSame(i,is(not(1)));
         }
     }
+
 }

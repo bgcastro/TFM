@@ -132,7 +132,9 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
                 Uri queryUri = VehiculoContentProvider.CONTENT_URI;
 
                 // Create the new Cursor loader.
-                return new CursorLoader(VehiculosActivity.this, queryUri, projection, where, whereArgs, sortOrder);
+                CursorLoader cursorLoader = new CursorLoader(VehiculosActivity.this, queryUri, projection, where, whereArgs, sortOrder);
+                Log.d(TAG, "onCreateLoader: " + cursorLoader.getUri());
+                return cursorLoader;
 
             default:
                 return null;

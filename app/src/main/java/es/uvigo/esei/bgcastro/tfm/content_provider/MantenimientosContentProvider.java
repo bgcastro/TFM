@@ -36,11 +36,20 @@ public class MantenimientosContentProvider extends ContentProvider {
     // and ‘elements/[rowID]’ represents a single row.
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm","matenimientos", ALLROWS);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm", "matenimientos/#", SINGLE_ROW);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.mantenimientos","matenimientos", ALLROWS);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.mantenimientos", "matenimientos/#", SINGLE_ROW);
     }
 
-    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm/matenimientos");
+    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm.mantenimientos/matenimientos");
+
+    public static final String ID_MANTENIMIENTO = "_id";
+    public static final String ID_VEHICULO = "id_vehiculo";
+    public static final String ESTADO_REPARACION = "estado";
+    public static final String NOMBRE = "nombre";
+    public static final String DESCRIPCION = "descripcion";
+    public static final String KILOMETRAJE_REPARACION = "kilometraje_reparacion";
+    public static final String FECHA = "reparacion";
+    public static final String ESTADO_SINCRONIZACION = "sincronizacion";
 
     @Override
     public boolean onCreate() {
@@ -112,6 +121,8 @@ public class MantenimientosContentProvider extends ContentProvider {
 
         // Insert the values into the table
         long id = bdd.insert(VehiculosSQLite.TABLA_MANTENIMIENTOS, nullColumnHack, values);
+
+        Log.d(TAG, "insert: "+ id);
 
         // Construct and return the URI of the newly inserted row.
         if (id > -1) {
