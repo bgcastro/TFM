@@ -31,4 +31,5 @@
     <string name="action_remove_mantenimiento">eliminar</string>
     <string name="editTextFechaMantenimiento">fecha</string>
     <string name="ilegalArgument">Uri no soportada</string>
+    <string name="tituloDescripcion">descripcion</string>
 </resources>

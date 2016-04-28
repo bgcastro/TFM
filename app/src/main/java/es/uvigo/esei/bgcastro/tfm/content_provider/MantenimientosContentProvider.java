@@ -30,6 +30,7 @@ public class MantenimientosContentProvider extends ContentProvider {
     // Create the constants used to differentiate between the different URI requests.
     private static final int ALLROWS = 1;
     private static final int SINGLE_ROW = 2;
+
     private static final UriMatcher uriMatcher;
     // Populate the UriMatcher object, where a URI ending in
     // ‘elements’ will correspond to a request for all items,
@@ -77,8 +78,7 @@ public class MantenimientosContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case SINGLE_ROW :
                 String rowID = uri.getPathSegments().get(1);
-                queryBuilder.appendWhere(VehiculosSQLite.COL_ID_MANTENIMIENTO + "=" + rowID);
-
+                queryBuilder.appendWhere(ID_MANTENIMIENTO + "=" + rowID);
                 break;
 
             default: break;
@@ -100,8 +100,10 @@ public class MantenimientosContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case ALLROWS:
                 return CONTENT_PROVIDER_MIME_ALLROWS;
+
             case SINGLE_ROW:
                 return CONTENT_PROVIDER_MIME_SINGLE_ROW;
+
             default:
                 throw new IllegalArgumentException(getContext().getString(R.string.ilegalArgument));
         }
@@ -146,6 +148,7 @@ public class MantenimientosContentProvider extends ContentProvider {
             case SINGLE_ROW :
                 String rowID = uri.getPathSegments().get(1);
                 selection = VehiculosSQLite.COL_ID_MANTENIMIENTO + "=" + rowID + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ")" : "");
+
             default:
                 break;
         }

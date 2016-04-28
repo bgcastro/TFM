@@ -59,18 +59,16 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         }
 
         //simple cursor adapter que rellena la IU
-        String[] fromColumns = new String[]{VehiculosSQLite.COL_ID_MANTENIMIENTO,
+        String[] fromColumns = new String[]{VehiculosSQLite.COL_ESTADO_REPARACION,
                 VehiculosSQLite.COL_NOMBRE,
                 VehiculosSQLite.COL_DESCRIPCION,
                 VehiculosSQLite.COL_KILOMETRAJE_REPARACION,
-                VehiculosSQLite.COL_FECHA,
-                VehiculosSQLite.COL_ESTADO_SINCRONIZACION };
+                VehiculosSQLite.COL_FECHA,};
 
         int[] into = new int[]{R.id.estadoMantenimientoItem,
                 R.id.nombreMantenimientoItem,
                 R.id.descripcionMantenimientoItem,
-                R.id.kilometrajeMantenimientoItem,
-                R.id.estadoSincronizacion};
+                R.id.kilometrajeMantenimientoItem,};
 
         adapter = new SimpleCursorAdapter(this,R.layout.mantenimiento_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
