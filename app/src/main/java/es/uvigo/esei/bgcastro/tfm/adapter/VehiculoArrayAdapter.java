@@ -52,7 +52,7 @@ public class VehiculoArrayAdapter extends ArrayAdapter<Vehiculo> {
 
             holder = new VehiculoViewHolder();
             holder.setImagenVehiculo((ImageView) view.findViewById(R.id.imagenVehiculo));
-            holder.setNombreVehiculo((TextView) view.findViewById(R.id.nombreVehiculo));
+            holder.setNombreVehiculo((TextView) view.findViewById(R.id.nombreMarca));
             holder.setMatricula((TextView) view.findViewById(R.id.matricula));
             holder.setKilometraje((TextView) view.findViewById(R.id.kilometraje));
             holder.setEstadoVehiculo((TextView) view.findViewById(R.id.estadoVehiculo));

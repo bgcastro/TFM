@@ -22,7 +22,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <TextView
-            android:id="@+id/nombreVehiculo"
+            android:id="@+id/nombreMarca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_bottom_datosVehiculo"
@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/matricula"
-            android:layout_below="@+id/nombreVehiculo"
+            android:layout_below="@+id/nombreMarca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_bottom_datosVehiculo"

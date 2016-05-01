@@ -35,11 +35,25 @@ public class VehiculoContentProvider extends ContentProvider{
     // and ‘elements/[rowID]’ represents a single row.
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.vehiculos","vehiculos", ALLROWS);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.vehiculos", "vehiculos/#", SINGLE_ROW);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm","vehiculos", ALLROWS);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm", "vehiculos/#", SINGLE_ROW);
     }
 
-    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm.vehiculos/vehiculos");
+    public static final String ID = "_id";
+    public static final String IMAGEN_VEHICULO = "imagen_vehiculo";
+    public static final String MARCA = "marca";
+    public static final String MODELO = "modelo";
+    public static final String MATRICULA = "matricula";
+    public static final String KILOMETRAJE = "kilometraje";
+    public static final String COMBUSTIBLE = "combustible";
+    public static final String CILINDRADA = "cilindrada";
+    public static final String POTENCIA = "potencia";
+    public static final String COLOR = "color";
+    public static final String ANHO = "anho";
+    public static final String ESTADO = "estado";
+
+
+    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm/vehiculos");
     @Override
     public boolean onCreate() {
         bddHelper = new VehiculosSQLite(getContext(),VehiculosSQLite.NOMBRE_BBDD,null,VehiculosSQLite.VERSION);
@@ -157,8 +171,8 @@ public class VehiculoContentProvider extends ContentProvider{
         // If this is a row URI, limit the deletion to the specified row.
         switch (uriMatcher.match(uri)) {
             case SINGLE_ROW :
-                String rowID = uri.getPathSegments().get(1); selection = VehiculosSQLite.COL_ID + "=" + rowID
-                    + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ")" : "");
+                String rowID = uri.getPathSegments().get(1);
+                selection = VehiculosSQLite.COL_ID + "=" + rowID + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ")" : "");
             default: break;
         }
 

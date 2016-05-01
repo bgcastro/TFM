@@ -55,7 +55,7 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
         //simple cursor adapter que rellena la IU
         String[] fromColumns = new String[]{VehiculosSQLite.COL_IMAGEN_VEHICULO,VehiculosSQLite.COL_MODELO,VehiculosSQLite.COL_MATRICULA,
                 VehiculosSQLite.COL_KILOMETRAJE,VehiculosSQLite.COL_ESTADO};
-        int[] into = new int[]{R.id.imagenVehiculo,R.id.nombreVehiculo,R.id.matricula,R.id.kilometraje,R.id.estadoVehiculo};
+        int[] into = new int[]{R.id.imagenVehiculo,R.id.nombreMarca,R.id.matricula,R.id.kilometraje,R.id.estadoVehiculo};
 
         adapter = new SimpleCursorAdapter(this,R.layout.vehiculo_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
@@ -93,7 +93,6 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
                 Intent intentModificacionItem = new Intent(VehiculosActivity.this,GestionVehiculosActivity.class);
                 Bundle bundle = new Bundle();
 
-                //TODO arreglar para que el se pase el vehiculo a modificar
                 Cursor c = adapter.getCursor();
                 c.moveToPosition(position);
                 //enviamos el vehiculo a modificar
