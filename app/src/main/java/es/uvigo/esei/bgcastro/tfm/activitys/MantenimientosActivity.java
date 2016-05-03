@@ -5,14 +5,18 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
@@ -48,15 +52,15 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
         listViewMantenimientos = (ListView) findViewById(R.id.listViewMantenimientos);
 
-        //load manager que se encarga de recoger los datos en background
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(URL_LOADER, null, this);
-
         Intent intent = getIntent();
 
         if (vehiculo == null) {
             vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
         }
+
+        //load manager que se encarga de recoger los datos en background
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(URL_LOADER, null, this);
 
         //simple cursor adapter que rellena la IU
         String[] fromColumns = new String[]{VehiculosSQLite.COL_ID_MANTENIMIENTO,
@@ -69,10 +73,28 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         int[] into = new int[]{R.id.estadoMantenimientoItem,
                 R.id.nombreMantenimientoItem,
                 R.id.descripcionMantenimientoItem,
-                R.id.kilometrajeMantenimientoItem,
-                R.id.estadoSincronizacion};
+                R.id.kilometrajeMantenimientoItem};
 
         adapter = new SimpleCursorAdapter(this,R.layout.mantenimiento_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
+
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                switch (view.getId()) {
+                    case R.id.estadoMantenimientoItem:
+                        ((TextView)view).setText(cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO)));
+
+                        final Typeface font = Typeface.createFromAsset(view.getContext().getAssets(), "fontawesome-webfont.ttf");
+                        ((TextView)view).setTypeface(font);
+                        ((TextView)view).setTextColor(view.getResources().getColor(R.color.grisClaro));
+                        ((TextView)view).setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+
+                        return true;
+                    
+                    default: return false;
+                }
+            }
+        });
 
         listViewMantenimientos.setAdapter(adapter);
     }
@@ -125,30 +147,6 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
         startActivity(intent);
     }
-    
-    /*private void inicializar(){
-        //TODO otro hilo
-        //recuperamos de la BBDD
-        MantenimientoDAO mantenimientoDAO = new MantenimientoDAO(this);
-
-        try {
-            Log.d(TAG, "inicializar: " + vehiculo);
-
-            mantenimientoDAO.openForReading();
-            mantenimientos = mantenimientoDAO.getManteninimientosFromVehiculo(vehiculo);
-
-            if (mantenimientos == null) {
-                mantenimientos = new ArrayList<>();
-            }
-
-            Log.d(TAG, "inicializar: size" + mantenimientos.size());
-        }catch (SQLiteException e){
-            e.printStackTrace();
-        }finally {
-            mantenimientoDAO.close();
-        }
-
-    }*/
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -156,10 +154,13 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         // parameter to construct and return different loaders.
         switch (id) {
             case URL_LOADER:
+                int idVehiculo = vehiculo.getId();
                 String[] projection = null;
-                String where = null;
-                String[] whereArgs = null;
+                String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?";
+                String[] whereArgs = {Integer.toString(idVehiculo)};
                 String sortOrder = null;
+
+
 
                 // Query URI
                 Uri queryUri = MantenimientosContentProvider.CONTENT_URI;

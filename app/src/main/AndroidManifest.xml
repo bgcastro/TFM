@@ -27,7 +27,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.GestionVehiculosActivity"/>
         </activity>
-        <activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity" android:launchMode="singleTop">
+        <activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity">
+        <!--<activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity" android:launchMode="singleTop"> -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MantenimientosActivity"/>

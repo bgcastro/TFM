@@ -1,23 +1,20 @@
 package es.uvigo.esei.bgcastro.tfm;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.test.ActivityInstrumentationTestCase2;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import es.uvigo.esei.bgcastro.tfm.activitys.MantenimientosActivity;
+import es.uvigo.esei.bgcastro.tfm.activitys.VehiculosActivity;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
-
-import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
 
 /**
  * Created by braisgallegocastro on 26/4/16.
@@ -36,32 +33,39 @@ public class mantenimientosActivityTest extends ActivityInstrumentationTestCase2
     public void setUp() throws Exception {
         super.setUp();
 
-
-        activity = this.getActivity();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Bitmap bitmap = ((BitmapDrawable)activity.getResources().getDrawable(R.drawable.ic_directions_car_black_48dp)).getBitmap();
-        bitmap.compress(Bitmap.CompressFormat.PNG, DRAWING_CACHE_QUALITY_AUTO, stream);
-        byte[] foto = stream.toByteArray();
+        byte[] foto = new byte[]{};
 
         for (int i = 0; i < 3; i++) {
             Vehiculo vehiculo = new Vehiculo(foto, "marca "+i, "modelo "+i, "matricula "+i, i, "combustible "+i, i, i, i, i, "");
             assertNotNull(vehiculo);
-            if (i == 0){
-                vehiculo.setEstado(activity.getString(R.string.fa_wrench));
-            }else if (i == 1){
-                vehiculo.setEstado(activity.getString( R.string.fa_exclamation_triangle));
-            }else{
-                vehiculo.setEstado(activity.getString( R.string.fa_check));
-            }
 
             vehiculo.setId(i+1);
 
             listaDePruebas.add(vehiculo);
 
             for (int j = 0; j < 3; j++) {
-                Mantenimiento mantenimiento = new Mantenimiento("estado" + j,"nombre" + j,"descripcion" + j, j, new Date(),"estado sincronizacion" + j,vehiculo);
+                Mantenimiento mantenimiento = new Mantenimiento("",
+                        "nombre" + j,
+                        "Lorem ipsum dolor sit amet, sapien etiam, " +
+                                "nunc amet dolor ac odio mauris justo. Luctus arcu, " +
+                                "urna praesent at id quisque ac.",
+                        (float) (80000.0 + j),
+                        new Date(),
+                        "estado sincronizacion" + j,
+                        vehiculo);
                 listaDeMantenimientos.add(mantenimiento);
             }
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(VehiculosActivity.VEHICULO,listaDePruebas.get(0));
+        setActivityIntent(intent);
+
+        activity = this.getActivity();
+
+        for (Mantenimiento m:
+             listaDeMantenimientos) {
+            m.setEstado(activity.getString(R.string.fa_square_o));
         }
     }
 

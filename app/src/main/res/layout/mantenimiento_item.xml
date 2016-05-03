@@ -1,30 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+
+<!--    <TextView
+        android:id="@+id/estadoSincronizacion"
+        android:layout_width="40dp"
+        android:layout_height="match_parent" />-->
 
     <TextView
         android:id="@+id/estadoMantenimientoItem"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:gravity="center_vertical" />
+
     <TextView
         android:id="@+id/nombreMantenimientoItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/estadoMantenimientoItem"/>
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_bold"
+        android:paddingTop="10dp"/>
+
+    <TextView
+        android:id="@+id/tituloDescripcionMantenimientosItem"
+        android:text="@string/tituloDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nombreMantenimientoItem"
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_bold"
+        android:layout_marginBottom="10dp"/>
+
     <TextView
         android:id="@+id/descripcionMantenimientoItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nombreMantenimientoItem"/>
+        android:layout_below="@+id/tituloDescripcionMantenimientosItem"
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_regular"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tituloKilometrajeMantenimientoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/kilometraje"
+        android:layout_below="@+id/descripcionMantenimientoItem"
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_bold"
+        android:layout_marginBottom="10dp"/>
+
     <TextView
         android:id="@+id/kilometrajeMantenimientoItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/descripcionMantenimientoItem"/>
-    <TextView
-        android:id="@+id/estadoSincronizacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/kilometrajeMantenimientoItem"/>
+        android:layout_below="@+id/tituloKilometrajeMantenimientoItem"
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_regular"
+        android:paddingBottom="10dp"/>
+
 </RelativeLayout>

@@ -35,4 +35,5 @@
     <string name="error_marca_vacio">Por favor introduce una marca para tu nuevo vehiculo</string>
     <string name="error_modelo_vacio">Por favor introduce un modelo para tu nuevo vehiculo</string>
     <string name="error_kilometraje_vacio">Por favor introduce el valor del kilometraje para tu nuevo vehiculo</string>
+    <string name="tituloDescripcion">descripcion</string>
 </resources>

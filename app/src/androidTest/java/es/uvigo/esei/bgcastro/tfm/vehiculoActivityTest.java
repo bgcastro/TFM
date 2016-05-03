@@ -17,8 +17,6 @@ import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Created by braisgallegocastro on 24/12/15.
@@ -68,7 +66,7 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
         assertNotNull(activity);
     }
 
-    public void testTestInsertDAO() throws Exception {
+    /*public void testTestInsertDAO() throws Exception {
         long [] resultado = new long[3];
         int cont = 0;
 
@@ -85,7 +83,7 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
         for (int i = 0; i < resultado.length; i++) {
             assertNotSame(i,is(not(1)));
         }
-    }
+    }*/
 
 /*    public void testInsertContentProviderMantenimientos() throws Exception {
         long [] resultado = new long[3];
