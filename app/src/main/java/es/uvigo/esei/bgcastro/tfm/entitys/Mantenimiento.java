@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by braisgallegocastro on 20/2/16.
  */
 public class Mantenimiento implements Parcelable{
-    private int id;
+    private int id = -1;
     private String estado;
     private String nombre;
     private String descripcion;
@@ -18,6 +18,9 @@ public class Mantenimiento implements Parcelable{
     private String estadoSincronizacion;
 
     private Vehiculo vehiculo;
+
+    public Mantenimiento() {
+    }
 
     public Mantenimiento(String estado, String nombre, String descripcion, float kilometrajeReparacion, Date fecha, String estadoSincronizacion, Vehiculo vehiculo) {
         this.estado = estado;

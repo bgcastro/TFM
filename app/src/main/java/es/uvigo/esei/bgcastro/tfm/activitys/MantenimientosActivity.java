@@ -54,7 +54,7 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
         Intent intent = getIntent();
 
-        if (vehiculo == null) {
+        if (intent != null) {
             vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
         }
 

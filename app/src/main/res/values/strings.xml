@@ -36,4 +36,7 @@
     <string name="error_modelo_vacio">Por favor introduce un modelo para tu nuevo vehiculo</string>
     <string name="error_kilometraje_vacio">Por favor introduce el valor del kilometraje para tu nuevo vehiculo</string>
     <string name="tituloDescripcion">descripcion</string>
+    <string name="error_descripcion_vacia">Por favor introduce una descripción del nuevo mantenimiento</string>
+    <string name="error_nombre_mantenimiento_vacio">Por favor introduce un nombre para el mantenimiento</string>
+    <string name="error_kilometraje_vacio_mantenimiento">Por favor introduce un kilometraje para programar el mantenimiento</string>
 </resources>

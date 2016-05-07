@@ -61,6 +61,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         Intent intent = getIntent();
 
+        if (intent != null) {
+            vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
+        }
+
         setContentView(R.layout.activity_gestion_vehiculos);
 
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionVehiculos);
@@ -208,7 +212,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        savedInstanceState.putParcelable(VehiculosActivity.VEHICULO, vehiculo);
+        vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
         Log.d(TAG, "onRestoreInstanceState: " + vehiculo);
     }
 

@@ -1,7 +1,8 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,11 +14,12 @@ import android.widget.TextView;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import es.uvigo.esei.bgcastro.tfm.DAO.MantenimientoDAO;
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
@@ -42,10 +44,21 @@ public class GestionMantenimientosActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_gestion_mantenimientos);
+
+        editTextNombreMantenimiento = (EditText) findViewById(R.id.editTextNombreMantenimiento);
+        editTextDescripcionMantenimiento = (EditText) findViewById(R.id.editTextDescripcionMantenimiento);
+        editTextKilometrajeMantenimiento = (EditText) findViewById(R.id.editTextKilometrajeMantenimiento);
+        textViewFechaMantenimiento = (TextView) findViewById(R.id.fechaMantenimiento);
+
         Intent intent = getIntent();
 
         if (intent != null) {
             vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
+        }
+
+        if (mantenimiento == null) {
+            mantenimiento = new Mantenimiento();
         }
 
         calendar.add(Calendar.DATE, 1);
@@ -53,17 +66,11 @@ public class GestionMantenimientosActivity extends BaseActivity{
         StringBuilder diaSiguiente = new StringBuilder();
         diaSiguiente.append(calendar.get(Calendar.DAY_OF_MONTH)).append(" ").append(calendar.get(Calendar.MONTH)).append(" ").append(calendar.get(Calendar.YEAR));
 
-        setContentView(R.layout.activity_gestion_mantenimientos);
 
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionMantenimientos);
         setSupportActionBar(actionBar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        editTextNombreMantenimiento = (EditText) findViewById(R.id.editTextNombreMantenimiento);
-        editTextDescripcionMantenimiento = (EditText) findViewById(R.id.editTextDescripcionMantenimiento);
-        editTextKilometrajeMantenimiento = (EditText) findViewById(R.id.editTextKilometrajeMantenimiento);
-        textViewFechaMantenimiento = (TextView) findViewById(R.id.fechaMantenimiento);
 
         textViewFechaMantenimiento.setText(diaSiguiente.toString());
 
@@ -82,6 +89,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
                 datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
         });
+
     }
 
     @Override
@@ -104,43 +112,88 @@ public class GestionMantenimientosActivity extends BaseActivity{
                 return true;
             }
 
+            case android.R.id.home: {
+                this.onBackPressed();
+                return true;
+            }
+
             default: {
                 return false;
             }
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
+    }
+
     private void nuevoMantenimiento() {
+
+        mantenimiento.setEstado(getString(R.string.fa_square_o));
+
+        if (uiToMantenimiento()) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MantenimientosContentProvider.ID_VEHICULO, vehiculo.getId());
+            contentValues.put(MantenimientosContentProvider.ESTADO_REPARACION, mantenimiento.getEstado());
+            contentValues.put(MantenimientosContentProvider.NOMBRE, mantenimiento.getNombre());
+            contentValues.put(MantenimientosContentProvider.DESCRIPCION, mantenimiento.getDescripcion());
+            contentValues.put(MantenimientosContentProvider.KILOMETRAJE_REPARACION, mantenimiento.getKilometrajeReparacion());
+            contentValues.put(MantenimientosContentProvider.FECHA, simpleDateFormat.format(mantenimiento.getFecha()));
+            contentValues.put(MantenimientosContentProvider.ESTADO_SINCRONIZACION, mantenimiento.getEstadoSincronizacion());
+
+            Uri uri = getContentResolver().insert(MantenimientosContentProvider.CONTENT_URI, contentValues);
+            mantenimiento.setId(Integer.parseInt(uri.getLastPathSegment()));
+
+            Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
+
+        }
+    }
+
+    private boolean uiToMantenimiento(){
+        boolean success = true;
+
         float kilometrajeReparacion;
-        Date fecha = calendar.getTime();
-        if (editTextKilometrajeMantenimiento.getText().toString().isEmpty())
-            kilometrajeReparacion = 0;
-        else
-            kilometrajeReparacion = Float.parseFloat(editTextKilometrajeMantenimiento.getText().toString());
+        Date fecha = new Date();
+        String nombre = editTextNombreMantenimiento.getText().toString();
+        String descripcion = editTextDescripcionMantenimiento.getText().toString();
+        String kilometraje = editTextKilometrajeMantenimiento.getText().toString();
 
-
-        mantenimiento = new Mantenimiento(getString(R.string.fa_square),
-                editTextNombreMantenimiento.getText().toString(),
-                editTextDescripcionMantenimiento.getText().toString(),
-                kilometrajeReparacion,
-                fecha,
-                getString(R.string.fa_wrench),
-                vehiculo);
-
-        Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
-
-        //// TODO: 4/1/16 otro hilo
-        //guardamos en la BBDD
-        MantenimientoDAO bdd = new MantenimientoDAO(this);
-        try {
-            bdd .openForWriting();
-            long idMantenimiento = bdd.insertMantenimiento(mantenimiento);
-            mantenimiento.setId((int) idMantenimiento);
-        }catch (SQLiteException e){
-            e.printStackTrace();
-        }finally {
-            bdd.close();
+        if (kilometraje.isEmpty()) {
+            editTextKilometrajeMantenimiento.setError(getString(R.string.error_kilometraje_vacio_mantenimiento));
+            success = false;
+        } else {
+            kilometrajeReparacion = Float.parseFloat(kilometraje);
+            mantenimiento.setKilometrajeReparacion(kilometrajeReparacion);
         }
 
+        if (nombre.isEmpty()) {
+            editTextNombreMantenimiento.setError(getString(R.string.error_descripcion_vacia));
+            success = false;
+        }else {
+            mantenimiento.setNombre(nombre);
+        }
+
+        if (descripcion.isEmpty()) {
+            editTextDescripcionMantenimiento.setError(getString(R.string.error_nombre_mantenimiento_vacio));
+            success = false;
+        }else {
+            mantenimiento.setDescripcion(descripcion);
+        }
+
+        mantenimiento.setFecha(calendar.getTime());
+
+        return success;
     }
 }

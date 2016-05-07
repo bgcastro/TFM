@@ -22,7 +22,9 @@
         android:layout_below="@+id/toolbarGestionMantenimientos"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:text="@string/nombre_mantenimiento"/>
+        android:layout_marginBottom="10dp"
+        android:text="@string/nombre_mantenimiento"
+        android:theme="@style/vehiculo_bold"/>
 
     <EditText
         android:id="@+id/editTextNombreMantenimiento"
@@ -30,7 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/nombreMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"/>
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="10dp"
+        android:theme="@style/vehiculo_regular"/>
 
     <TextView
         android:id="@+id/descripcionMantenimiento"
@@ -39,7 +43,9 @@
         android:layout_below="@+id/editTextNombreMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:text="@string/descripcionMantenimiento"/>
+        android:text="@string/descripcionMantenimiento"
+        android:layout_marginBottom="10dp"
+        android:theme="@style/vehiculo_bold"/>
 
     <EditText
         android:id="@+id/editTextDescripcionMantenimiento"
@@ -49,7 +55,9 @@
         android:layout_below="@+id/descripcionMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:inputType="textMultiLine"/>
+        android:layout_marginBottom="15dp"
+        android:inputType="textMultiLine"
+        android:theme="@style/vehiculo_regular"/>
 
     <TextView
         android:id="@+id/kilometrajeMantenimiento"
@@ -58,9 +66,10 @@
         android:layout_below="@+id/editTextDescripcionMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="10dp"
         android:numeric="integer"
-
-        android:text="@string/kilometrosMantenimiento" />
+        android:text="@string/kilometrosMantenimiento"
+        android:theme="@style/vehiculo_bold"/>
 
     <EditText
         android:id="@+id/editTextKilometrajeMantenimiento"
@@ -69,14 +78,9 @@
         android:layout_below="@+id/kilometrajeMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:inputType="number" />
-
-    <ImageButton
-        android:id="@+id/botonAnhadirBluetooth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/editTextKilometrajeMantenimiento"
-        android:src="@android:drawable/ic_input_delete"/>
+        android:layout_marginBottom="10dp"
+        android:inputType="number"
+        android:theme="@style/vehiculo_regular"/>
 
     <TextView
         android:id="@+id/editTextFechaMantenimiento"
@@ -85,7 +89,8 @@
         android:layout_below="@+id/editTextKilometrajeMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:text="@string/editTextFechaMantenimiento"/>
+        android:text="@string/editTextFechaMantenimiento"
+        android:theme="@style/vehiculo_bold"/>
 
     <TextView
         android:id="@+id/fechaMantenimiento"
@@ -93,6 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextFechaMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"/>
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:theme="@style/vehiculo_regular"/>
 
 </RelativeLayout>
