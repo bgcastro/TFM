@@ -28,10 +28,15 @@
                 android:value=".activitys.GestionVehiculosActivity"/>
         </activity>
         <activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity" >
-        <!--<activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity" android:launchMode="singleTop">-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MantenimientosActivity"/>
+        </activity>
+
+        <activity android:name=".activitys.ReparacionesActivity" android:parentActivityName=".activitys.GestionMantenimientosActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activitys.GestionMantenimientosActivity"/>
         </activity>
 
         <provider
@@ -41,6 +46,10 @@
         <provider
             android:authorities="es.uvigo.esei.bgcastro.tfm.mantenimientos"
             android:name=".content_provider.MantenimientosContentProvider"/>
+
+        <provider
+            android:authorities="es.uvigo.esei.bgcastro.tfm.reparaciones"
+            android:name=".content_provider.ReparacionesContentProvider"/>
         
     </application>
 

@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
+import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 /**
@@ -29,6 +31,7 @@ import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 public class MantenimientosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "MantenimientosActivity";
     private static final int URL_LOADER = 1;
+    private static final String MANTENIMIENTO = "mantenimiento";
 
     ListView listViewMantenimientos;
     //ArrayList<Mantenimiento> mantenimientos;
@@ -97,6 +100,27 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         });
 
         listViewMantenimientos.setAdapter(adapter);
+
+        listViewMantenimientos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intentReparar = new Intent(MantenimientosActivity.this,ReparacionesActivity.class);
+                Bundle bundle = new Bundle();
+
+                Cursor c = adapter.getCursor();
+                c.moveToPosition(position);
+
+                Mantenimiento mantenimiento = new Mantenimiento(c, getApplicationContext());
+
+                bundle.putParcelable(MANTENIMIENTO, mantenimiento);
+                intentReparar.putExtras(bundle);
+
+                Log.d(TAG, "onItemClick: position" + position);
+
+                startActivity(intentReparar);
+            }
+        });
     }
 
     @Override
@@ -159,8 +183,6 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                 String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?";
                 String[] whereArgs = {Integer.toString(idVehiculo)};
                 String sortOrder = null;
-
-
 
                 // Query URI
                 Uri queryUri = MantenimientosContentProvider.CONTENT_URI;
