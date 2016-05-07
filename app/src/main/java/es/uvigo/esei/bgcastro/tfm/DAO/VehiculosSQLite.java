@@ -20,6 +20,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     //Nombres de la tablas
     public static final String TABLA_VEHICULOS = "tabla_vehiculos";
     public static final String TABLA_MANTENIMIENTOS = "tabla_mantenimientos";
+    public static final String TABLA_REPARACIONES = "tabla_reparaciones";
 
     //Campos tabla vehiculos
     public static final String COL_ID = "_id";
@@ -44,6 +45,15 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_KILOMETRAJE_REPARACION = "kilometraje_reparacion";
     public static final String COL_FECHA = "reparacion";
     public static final String COL_ESTADO_SINCRONIZACION = "sincronizacion";
+
+    //Campos tabla reparaciones
+    public static final String COL_ID_REPARACION = "_id";
+    public static final String COL_NOMBRE_REPARACION = "nombre_reparacion";
+    public static final String COL_DESCRIPCION_REPARACION = "descripcion_reparacion";
+    public static final String COL_REFERENCIA = "referencia";
+    public static final String COL_PRECIO = "precio";
+    public static final String COL_ID_MANTENIMIENTO_REPARACION = "id_mantenimiento";
+
 
     //SQL de creacion tabla vehiculos
     private static final String CREATE_BDD = " CREATE TABLE " + TABLA_VEHICULOS + " (" +
@@ -74,6 +84,17 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             " FOREIGN KEY (" + COL_ID_VEHICULO + ") REFERENCES " +
             TABLA_VEHICULOS + "(" + COL_ID + ") " +")";
 
+    //SQL de creacion tabla reparaciones
+    private static final String CREATE_TABLE_REPARACIONES = " CREATE TABLE " + TABLA_REPARACIONES + " (" +
+            COL_ID_REPARACION + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            COL_NOMBRE_REPARACION + " TEXT, " +
+            COL_DESCRIPCION_REPARACION + " TEXT, " +
+            COL_REFERENCIA + " TEXT, " +
+            COL_PRECIO + " REAL, " +
+            COL_ID_MANTENIMIENTO_REPARACION + " INTEGER, " +
+            " FOREIGN KEY (" + COL_ID_MANTENIMIENTO_REPARACION + ") REFERENCES " +
+            TABLA_MANTENIMIENTOS + "(" + COL_ID_MANTENIMIENTO + ") " +")";
+
     public VehiculosSQLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -85,6 +106,9 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_TABLE_MANTENIMIENTOS);
         Log.d(TAG, "onCreate: CREATE_TABLE_MANTENIMIENTOS" + CREATE_TABLE_MANTENIMIENTOS);
+
+        db.execSQL(CREATE_TABLE_REPARACIONES);
+        Log.d(TAG, "onCreate: CREATE_TABLE_REPARACIONES" + CREATE_TABLE_REPARACIONES);
     }
 
     @Override
