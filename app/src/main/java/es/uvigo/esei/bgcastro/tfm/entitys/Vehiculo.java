@@ -122,7 +122,6 @@ public class Vehiculo implements Parcelable{
      * @param cursor
      */
     public Vehiculo(Cursor cursor){
-        cursor.moveToFirst();
         if (cursor.getCount() != 0)
         {
             id = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_ID));

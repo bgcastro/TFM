@@ -92,6 +92,8 @@ public class Mantenimiento implements Parcelable{
             queryUri = Uri.withAppendedPath(queryUri,Integer.toString(idVehiculo));
 
             Cursor c = context.getContentResolver().query( queryUri, projection, where, whereArgs, sortOrder);
+            c.moveToFirst();
+
             vehiculo = new Vehiculo(c);
 
             c.close();
