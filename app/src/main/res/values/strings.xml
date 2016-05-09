@@ -39,4 +39,10 @@
     <string name="error_descripcion_vacia">Por favor introduce una descripción del nuevo mantenimiento</string>
     <string name="error_nombre_mantenimiento_vacio">Por favor introduce un nombre para el mantenimiento</string>
     <string name="error_kilometraje_vacio_mantenimiento">Por favor introduce un kilometraje para programar el mantenimiento</string>
+    <string name="tituloReparacionItem">Pieza o reparación</string>
+    <string name="tituloDescripcionReparacionItem">Descripción</string>
+    <string name="tituloPrecioReparacionItem">Precio</string>
+    <string name="tituloReferenciaReparacionItem">Referencia de pieza</string>
+    <string name="coste_total">Coste de la reparación: </string>
+    <string name="divisa"> €</string>
 </resources>

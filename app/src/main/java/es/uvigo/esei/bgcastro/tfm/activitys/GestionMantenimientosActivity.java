@@ -193,6 +193,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
         }
 
         mantenimiento.setFecha(calendar.getTime());
+        mantenimiento.setVehiculo(vehiculo);
 
         return success;
     }

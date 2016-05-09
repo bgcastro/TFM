@@ -42,7 +42,7 @@ public class MantenimientoAdapter extends ArrayAdapter<Mantenimiento> {
             mantenimientoViewHolder = new MantenimientoViewHolder();
             mantenimientoViewHolder.setEstadoMantenimientoItem((TextView) view.findViewById(R.id.estadoMantenimientoItem));
             mantenimientoViewHolder.setNombreMantenimientoItem((TextView) view.findViewById(R.id.nombreMantenimientoItem));
-            mantenimientoViewHolder.setDescripcionMantenimientoItem((TextView) view.findViewById(R.id.descripcionMantenimientoItem));
+            mantenimientoViewHolder.setDescripcionMantenimientoItem((TextView) view.findViewById(R.id.descripcionReparacionItem));
             mantenimientoViewHolder.setKilometrajeMantenimientoItem((TextView) view.findViewById(R.id.kilometrajeMantenimientoItem));
             mantenimientoViewHolder.setEstadoSincronizacion((TextView) view.findViewById(R.id.estadoMantenimientoItem));
 

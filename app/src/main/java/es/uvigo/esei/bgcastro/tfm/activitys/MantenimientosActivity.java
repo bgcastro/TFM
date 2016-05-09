@@ -31,9 +31,9 @@ import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 public class MantenimientosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "MantenimientosActivity";
     private static final int URL_LOADER = 1;
-    private static final String MANTENIMIENTO = "mantenimiento";
+    public static final String MANTENIMIENTO = "mantenimiento";
 
-    ListView listViewMantenimientos;
+    private ListView listViewMantenimientos;
     //ArrayList<Mantenimiento> mantenimientos;
     //MantenimientoAdapter adapter;
     private SimpleCursorAdapter adapter;

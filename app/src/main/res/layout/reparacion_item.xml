@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/space_between_list_items"
+    android:paddingBottom="@dimen/space_between_list_items">
+
+    <!-- Nombre de la reparacion -->
+    <TextView
+        android:id="@+id/tituloReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tituloReparacionItem"
+        android:theme="@style/vehiculo_bold" />
+
+    <TextView
+        android:id="@+id/nombreRepacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloReparacionItem"
+        android:theme="@style/vehiculo_regular"
+        android:layout_marginBottom="@dimen/space_between_list_items"/>
+
+    <!-- Descripcion de la reparacion -->
+    <TextView
+        android:id="@+id/tituloDescripcionReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombreRepacionItem"
+        android:text="@string/tituloDescripcionReparacionItem"
+        android:theme="@style/vehiculo_bold"/>
+
+    <TextView
+        android:id="@+id/descripcionReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloDescripcionReparacionItem"
+        android:theme="@style/vehiculo_regular"
+        android:layout_marginBottom="@dimen/space_between_list_items"/>
+
+    <!-- Precio de la reparacion -->
+    <TextView
+        android:id="@+id/tituloPrecioReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descripcionReparacionItem"
+        android:text="@string/tituloPrecioReparacionItem"
+        android:theme="@style/vehiculo_bold"/>
+
+    <TextView
+        android:id="@+id/precioReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloPrecioReparacionItem"
+        android:theme="@style/vehiculo_regular"
+        android:layout_marginBottom="@dimen/space_between_list_items"/>
+
+    <!-- Refencia reparacion -->
+    <TextView
+        android:id="@+id/tituloReferenciaReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/precioReparacionItem"
+        android:text="@string/tituloReferenciaReparacionItem"
+        android:theme="@style/vehiculo_bold"/>
+
+    <TextView
+        android:id="@+id/referenciaReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloReferenciaReparacionItem"
+        android:theme="@style/vehiculo_regular"
+        android:layout_marginBottom="@dimen/space_between_list_items"/>
+
+</RelativeLayout>
