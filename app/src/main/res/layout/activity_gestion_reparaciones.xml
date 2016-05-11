@@ -1,41 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewReparacion"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarGestionReparaciones"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/editTextReparacion"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewReparacion"/>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/toolbarGestionReparaciones">
 
-    <TextView
-        android:id="@+id/textVievDescripcionReparacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextReparacion"/>
+        <!-- Nombre reparacion -->
+        <TextView
+            android:id="@+id/textViewReparacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewReparacion"
+            android:theme="@style/vehiculo_bold" />
 
-    <EditText
-        android:id="@+id/editTextDescripcionReparacion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textVievDescripcionReparacion"/>
+        <EditText
+            android:id="@+id/editTextReparacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewReparacion"
+            android:theme="@style/vehiculo_regular"
+            android:layout_marginBottom="@dimen/space_between_input_items" />
 
-    <TextView
-        android:id="@+id/textViewReferencia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextDescripcionReparacion"/>
+        <!-- Descripcion reparacion -->
+        <TextView
+            android:id="@+id/textViewDescripcionReparacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextReparacion"
+            android:text="@string/textVievDescripcionReparacion"
+            android:theme="@style/vehiculo_bold" />
 
-    <EditText
-        android:id="@+id/editTextReferencia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewReferencia"/>
+        <EditText
+            android:id="@+id/editTextDescripcionReparacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewDescripcionReparacion"
+            android:theme="@style/vehiculo_regular"
+            android:layout_marginBottom="@dimen/space_between_input_items" />
+
+        <!-- Referencia reparacion -->
+        <TextView
+            android:id="@+id/textViewReferencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextDescripcionReparacion"
+            android:text="@string/textViewReferencia"
+            android:theme="@style/vehiculo_bold" />
+
+        <EditText
+            android:id="@+id/editTextReferencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewReferencia"
+            android:theme="@style/vehiculo_regular"
+            android:layout_marginBottom="@dimen/space_between_input_items" />
+
+        <!-- Precio reparacion -->
+        <TextView
+            android:id="@+id/textViewPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewPrecio"
+            android:theme="@style/vehiculo_bold"
+            android:layout_below="@+id/editTextReferencia"/>
+
+        <EditText
+            android:id="@+id/editTextPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/vehiculo_regular"
+            android:layout_below="@+id/textViewPrecio"
+            android:inputType="number" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

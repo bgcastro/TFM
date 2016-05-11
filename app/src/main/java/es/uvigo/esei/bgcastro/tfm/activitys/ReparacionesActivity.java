@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -58,8 +60,8 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         //simple cursor adapter que rellena la IU
         String[] fromColumns = new String[]{ VehiculosSQLite.COL_NOMBRE_REPARACION,
                 VehiculosSQLite.COL_DESCRIPCION_REPARACION,
-                VehiculosSQLite.COL_REFERENCIA,
-                VehiculosSQLite.COL_PRECIO };
+                VehiculosSQLite.COL_PRECIO,
+                VehiculosSQLite.COL_REFERENCIA };
 
         int[] into = new int[]{R.id.nombreRepacionItem,
                 R.id.descripcionReparacionItem,
@@ -69,6 +71,38 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         adapter = new SimpleCursorAdapter(this,R.layout.reparacion_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
         listViewReparaciones.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_reparaciones, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_reparacion:{
+                nuevaReparacion();
+                return true;
+            }
+
+            case android.R.id.home: {
+                this.onBackPressed();
+                return true;
+            }
+
+            default: {
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 
     @Override
@@ -124,5 +158,16 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         adapter.swapCursor(null);
         // This handler is not synchronized with the UI thread, so you
         // will need to synchronize it before modifying any UI elements directly.
+    }
+
+    private void nuevaReparacion() {
+        Log.d(TAG, "nuevaReparacion: nuevaReparacion");
+        Intent intentNuevaReparacion = new Intent(ReparacionesActivity.this,GestionReparacionesActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putParcelable(MantenimientosActivity.MANTENIMIENTO, mantenimiento);
+        intentNuevaReparacion.putExtras(bundle);
+
+        startActivity(intentNuevaReparacion);
     }
 }

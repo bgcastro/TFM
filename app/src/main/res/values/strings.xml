@@ -45,4 +45,11 @@
     <string name="tituloReferenciaReparacionItem">Referencia de pieza</string>
     <string name="coste_total">Coste de la reparación: </string>
     <string name="divisa"> €</string>
+    <string name="textViewReparacion">Pieza o reparación</string>
+    <string name="textVievDescripcionReparacion">Descripción</string>
+    <string name="textViewReferencia">Referencia de pieza</string>
+    <string name="textViewPrecio">Precio</string>
+    <string name="error_nombre_reparacion_vacio">Por favor introduce un nombre en la reparación</string>
+    <string name="error_descripcion_reparacion_vacia">Por favor introduce una breve descripcion de la reparación</string>
+    <string name="error_precio_vacio">Por favor introduce un precio para la reparación</string>
 </resources>

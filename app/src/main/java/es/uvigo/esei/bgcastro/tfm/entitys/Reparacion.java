@@ -13,6 +13,12 @@ public class Reparacion {
     private Mantenimiento mantenimiento;
 
     public Reparacion() {
+        this.id = -1;
+        this.nombreReparacion = "";
+        this.descripcion = "";
+        this.referencia = "";
+        this.precio = 0;
+        this.mantenimiento = null;
     }
 
     public Reparacion(String nombreReparacion, String descripcion, String referencia, float precio, Mantenimiento mantenimiento) {
