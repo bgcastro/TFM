@@ -82,7 +82,8 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             COL_FECHA + " DATE, " +
             COL_ESTADO_SINCRONIZACION + " TEXT, " +
             " FOREIGN KEY (" + COL_ID_VEHICULO + ") REFERENCES " +
-            TABLA_VEHICULOS + "(" + COL_ID + ") " +")";
+            TABLA_VEHICULOS + "(" + COL_ID + ") " +
+            "ON DELETE CASCADE" + ")";
 
     //SQL de creacion tabla reparaciones
     private static final String CREATE_TABLE_REPARACIONES = " CREATE TABLE " + TABLA_REPARACIONES + " (" +
@@ -93,7 +94,8 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             COL_PRECIO + " REAL, " +
             COL_ID_MANTENIMIENTO_REPARACION + " INTEGER, " +
             " FOREIGN KEY (" + COL_ID_MANTENIMIENTO_REPARACION + ") REFERENCES " +
-            TABLA_MANTENIMIENTOS + "(" + COL_ID_MANTENIMIENTO + ") " +")";
+            TABLA_MANTENIMIENTOS + "(" + COL_ID_MANTENIMIENTO + ") " +
+            "ON DELETE CASCADE" + ")";
 
     public VehiculosSQLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -112,12 +114,9 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-        if (!db.isReadOnly()){
-            // Enable foreign key constraints
-            db.execSQL("PRAGMA foreign_keys=ON;");
-        }
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,9 +18,10 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.alarm.AlarmReceiverService;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
@@ -27,7 +30,6 @@ import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
  * Created by braisgallegocastro on 20/2/16.
  */
 public class GestionMantenimientosActivity extends BaseActivity{
-
     private static final String DATEPICKER_TAG = "datepicker";
     private static final String TAG = "GMantenimientosActivity";
     private EditText editTextNombreMantenimiento;
@@ -36,9 +38,12 @@ public class GestionMantenimientosActivity extends BaseActivity{
     private TextView textViewFechaMantenimiento;
 
     private final Calendar calendar = Calendar.getInstance();
+    private PendingIntent pendingIntent;
 
     private Vehiculo vehiculo;
     private Mantenimiento mantenimiento;
+
+    public static String MANTENIMIENTO = "mantenimiento";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         if (intent != null) {
             vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
+            mantenimiento = intent.getParcelableExtra(MANTENIMIENTO);
         }
 
         if (mantenimiento == null) {
@@ -158,6 +164,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
             Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
 
+            if (calendar.get(Calendar.DAY_OF_MONTH) > GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+                setNotification(calendar, mantenimiento);
+            }
         }
     }
 
@@ -165,7 +174,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
         boolean success = true;
 
         float kilometrajeReparacion;
-        Date fecha = new Date();
         String nombre = editTextNombreMantenimiento.getText().toString();
         String descripcion = editTextDescripcionMantenimiento.getText().toString();
         String kilometraje = editTextKilometrajeMantenimiento.getText().toString();
@@ -197,4 +205,35 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         return success;
     }
+
+    private void setNotification(Calendar fechaNotificacion, Mantenimiento mantenimiento) {
+        AlarmManager alarmManager ;
+        Intent intent;
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+/*
+        Toast.makeText(getApplicationContext(),
+                "Notificación para:" +
+                fechaNotificacion.get(Calendar.HOUR_OF_DAY) +
+                ":" + fechaNotificacion.get(Calendar.MINUTE) + " "
+                + fechaNotificacion.get(Calendar.DATE),
+                Toast.LENGTH_LONG).show();
+*/
+
+        intent = new Intent(getApplicationContext(),AlarmReceiverService.class);
+        intent.putExtra(AlarmReceiverService.TITULO, mantenimiento.getNombre());
+        intent.putExtra(AlarmReceiverService.CONTENIDO, mantenimiento.getDescripcion());
+        intent.putExtra(AlarmReceiverService.MANTENIMIENTO,mantenimiento);
+
+        pendingIntent = PendingIntent.getService(getApplicationContext(),AlarmReceiverService.requestCode,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+
+/*        //TODO trampa para pruebas
+        fechaNotificacion = GregorianCalendar.getInstance();
+        fechaNotificacion.add(Calendar.MINUTE,15);
+*/
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, fechaNotificacion.getTimeInMillis(), pendingIntent);
+    }
+
 }

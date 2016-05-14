@@ -52,4 +52,6 @@
     <string name="error_nombre_reparacion_vacio">Por favor introduce un nombre en la reparación</string>
     <string name="error_descripcion_reparacion_vacia">Por favor introduce una breve descripcion de la reparación</string>
     <string name="error_precio_vacio">Por favor introduce un precio para la reparación</string>
+    <string name="dialog_message">¿Deseas actualizar el kilometraje ahora?</string>
+    <string name="ok">Actualizar</string>
 </resources>

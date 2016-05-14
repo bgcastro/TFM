@@ -56,7 +56,9 @@
         <provider
             android:authorities="es.uvigo.esei.bgcastro.tfm.reparaciones"
             android:name=".content_provider.ReparacionesContentProvider"/>
-        
+
+        <service android:name=".alarm.AlarmReceiverService"/>
+
     </application>
 
 </manifest>

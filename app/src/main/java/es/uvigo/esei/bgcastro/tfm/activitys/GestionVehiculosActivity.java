@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
@@ -37,8 +38,11 @@ import static android.view.View.OnFocusChangeListener;
 public class GestionVehiculosActivity extends BaseActivity implements ColorPickerDialog.NoticeDialogListener{
     private static final String TAG = "GesVehiculosActivity";
     private static final int TOMAR_FOTO_REQUEST = 1;
+    private static final String UPDATE_DATE = "update_date";
     private byte[] foto = new byte[0];
     private Vehiculo vehiculo;
+
+    private Date updateDate;
 
     private ImageView imagenVehiculo;
     private EditText editTextMarca;
@@ -52,6 +56,8 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private EditText editTextAnho;
 
     private int color;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,17 +162,37 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             });
         }
 
+      /*  if (savedInstanceState != null) {
+            updateDate = (Date) savedInstanceState.getSerializable(UPDATE_DATE);
+        }
+
+        if (updateDate == null || updateDate.getDay() != GregorianCalendar.getInstance().get(GregorianCalendar.DAY_OF_MONTH)){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.dialog_message);
+
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Log.d(TAG, "onClick: updateDate");
+                    updateKilometraje(10);
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }*/
+
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_gestion_reparaciones, menu);
+        getMenuInflater().inflate(R.menu.menu_gestion_vehiculos, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -206,6 +232,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         Log.d(TAG, "onSaveInstanceState: " + vehiculo);
         
         outState.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
+        outState.putSerializable(UPDATE_DATE,updateDate);
     }
 
     @Override
@@ -214,6 +241,8 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
         Log.d(TAG, "onRestoreInstanceState: " + vehiculo);
+
+        updateDate = (Date) savedInstanceState.getSerializable(UPDATE_DATE);
     }
 
     private boolean nuevoVehiculo(){
@@ -394,13 +423,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         Log.d(TAG, "modificarVehiculo: " + vehiculo.toString());
 
-        /*//// TODO: 4/1/16 otro hilo
-        //guardamos en la BBDD
-        VehiculoDAO bdd = new VehiculoDAO(this);
-        bdd .openForWriting();
-        int bdOutput = bdd.updateVehiculo(vehiculo.getId(),vehiculo);
-        bdd.close();*/
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(VehiculoContentProvider.IMAGEN_VEHICULO, vehiculo.getImagenVehiculo());
         contentValues.put(VehiculoContentProvider.MARCA, vehiculo.getMarca());
@@ -459,6 +481,18 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         startActivity(intentMantenimientos);
     }
 
+    private void updateKilometraje(float nuevoKilometraje){
+        String updateID = Integer.toString(vehiculo.getId());
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(VehiculoContentProvider.KILOMETRAJE, nuevoKilometraje);
+
+        int resultado = getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,updateID),contentValues,null,null);
+
+        if (resultado > 0){
+            updateDate = new Date(System.currentTimeMillis());
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
