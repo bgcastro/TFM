@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
@@ -23,6 +24,7 @@ import java.util.GregorianCalendar;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.alarm.AlarmReceiverService;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
+import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
@@ -147,6 +149,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         mantenimiento.setEstado(getString(R.string.fa_square_o));
 
+        //Si los datos introducidos por el usuario son correctos procedemos a guardar
         if (uiToMantenimiento()) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -160,10 +163,19 @@ public class GestionMantenimientosActivity extends BaseActivity{
             contentValues.put(MantenimientosContentProvider.ESTADO_SINCRONIZACION, mantenimiento.getEstadoSincronizacion());
 
             Uri uri = getContentResolver().insert(MantenimientosContentProvider.CONTENT_URI, contentValues);
+
+            //completamos el mantenimiento con el nuevo id asignado por la bd
             mantenimiento.setId(Integer.parseInt(uri.getLastPathSegment()));
+
+            //Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
+            ContentValues contentValuesVehiculo = new ContentValues();
+            contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,getString(R.string.fa_wrench));
+
+            getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI, Integer.toString(mantenimiento.getVehiculo().getId())),contentValuesVehiculo,null,null);
 
             Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
 
+            //Preparamos una nueva notificacion
             if (calendar.get(Calendar.DAY_OF_MONTH) > GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)){
                 setNotification(calendar, mantenimiento);
             }
@@ -212,26 +224,25 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-/*
+
         Toast.makeText(getApplicationContext(),
-                "Notificación para:" +
+                getString(R.string.notificacion) + " " +
+                fechaNotificacion.get(Calendar.DATE) + " " +
                 fechaNotificacion.get(Calendar.HOUR_OF_DAY) +
-                ":" + fechaNotificacion.get(Calendar.MINUTE) + " "
-                + fechaNotificacion.get(Calendar.DATE),
+                ":" + fechaNotificacion.get(Calendar.MINUTE),
                 Toast.LENGTH_LONG).show();
-*/
+
 
         intent = new Intent(getApplicationContext(),AlarmReceiverService.class);
         intent.putExtra(AlarmReceiverService.TITULO, mantenimiento.getNombre());
         intent.putExtra(AlarmReceiverService.CONTENIDO, mantenimiento.getDescripcion());
         intent.putExtra(AlarmReceiverService.MANTENIMIENTO,mantenimiento);
 
-        pendingIntent = PendingIntent.getService(getApplicationContext(),AlarmReceiverService.requestCode,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent = PendingIntent.getService(getApplicationContext(), mantenimiento.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
 
-/*        //TODO trampa para pruebas
+        //TODO trampa para pruebas
         fechaNotificacion = GregorianCalendar.getInstance();
-        fechaNotificacion.add(Calendar.MINUTE,15);
-*/
+        fechaNotificacion.add(Calendar.SECOND, 40);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, fechaNotificacion.getTimeInMillis(), pendingIntent);
     }

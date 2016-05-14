@@ -124,6 +124,12 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
     }
 
     @Override
+    public void onResume() {
+        super.onRestart();
+        getLoaderManager().getLoader(URL_LOADER).forceLoad();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 

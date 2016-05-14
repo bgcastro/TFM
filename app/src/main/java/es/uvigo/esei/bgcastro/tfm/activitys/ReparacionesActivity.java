@@ -100,8 +100,8 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
     }
 
     @Override
-    public void onRestart() {
-        super.onRestart();
+    public void onResume() {
+        super.onResume();
         getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 

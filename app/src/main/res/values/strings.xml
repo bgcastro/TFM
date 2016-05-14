@@ -54,4 +54,5 @@
     <string name="error_precio_vacio">Por favor introduce un precio para la reparación</string>
     <string name="dialog_message">¿Deseas actualizar el kilometraje ahora?</string>
     <string name="ok">Actualizar</string>
+    <string name="notificacion">Se te notificará  el</string>
 </resources>

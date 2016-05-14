@@ -308,7 +308,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                     potencia,
                     color,
                     anho,
-                    getString(R.string.fa_wrench));
+                    getString(R.string.fa_check));
 
             ContentValues contentValues = new ContentValues();
             contentValues.put(VehiculoContentProvider.IMAGEN_VEHICULO, vehiculo.getImagenVehiculo());

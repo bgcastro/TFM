@@ -113,7 +113,7 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(0, null, this);
+        getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 
     @Override

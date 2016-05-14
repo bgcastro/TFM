@@ -2,6 +2,7 @@ package es.uvigo.esei.bgcastro.tfm.activitys;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.ReparacionesContentProvider;
+import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Reparacion;
 
@@ -127,6 +130,7 @@ public class GestionReparacionesActivity extends BaseActivity {
     }
 
     private void nuevaReparacion(){
+        //si los datos introducidos son validos podemos guardar la reparacion
         if (uiToReparacion() && reparacion.getId() == -1){
             ContentValues contentValues = new ContentValues();
             contentValues.put(ReparacionesContentProvider.NOMBRE_REPARACION, reparacion.getNombreReparacion());
@@ -135,9 +139,54 @@ public class GestionReparacionesActivity extends BaseActivity {
             contentValues.put(ReparacionesContentProvider.PRECIO, reparacion.getPrecio());
             contentValues.put(ReparacionesContentProvider.ID_MANTENIMIENTO_REPARACION, reparacion.getMantenimiento().getId());
 
+            //guardamos la reparacion
             Uri uri = getContentResolver().insert(ReparacionesContentProvider.CONTENT_URI,contentValues);
 
             reparacion.setId(Integer.parseInt(uri.getLastPathSegment()));
+
+            //actualizamos el estado del mantenimiento y del vehiculo
+            actualizarEstado();
+        }
+    }
+
+    private void actualizarEstado(){
+        ContentValues contentValuesMantenimientos = new ContentValues();
+        contentValuesMantenimientos.put(MantenimientosContentProvider.ESTADO_REPARACION,getString(R.string.fa_check));
+
+        Uri uriMantenimiento = Uri.withAppendedPath(MantenimientosContentProvider.CONTENT_URI,Integer.toString(mantenimiento.getId()));
+        getContentResolver().update(uriMantenimiento,contentValuesMantenimientos,null,null);
+
+        int idVehiculo = mantenimiento.getVehiculo().getId();
+        String[] projection = {MantenimientosContentProvider.ID_MANTENIMIENTO,MantenimientosContentProvider.ESTADO_REPARACION};
+        String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?";
+        String[] whereArgs = {Integer.toString(idVehiculo)};
+        String sortOrder = null;
+
+        // Query URI
+        Uri queryUri = MantenimientosContentProvider.CONTENT_URI;
+
+        // Create the new Cursor loader.
+        Cursor cursor = getContentResolver().query(queryUri, projection, where, whereArgs, sortOrder);
+
+        boolean mantenimientoResueltos = true;
+        while (cursor.moveToNext()){
+            String estado = cursor.getString(cursor.getColumnIndex(MantenimientosContentProvider.ESTADO_REPARACION));
+            String fa_square = getString(R.string.fa_square_o);
+            String fa_triangle = getString(R.string.fa_exclamation_triangle);
+            if (estado.hashCode() == fa_square.hashCode() || estado.hashCode() == fa_triangle.hashCode()){
+                mantenimientoResueltos = false;
+                break;
+            }
+        }
+
+        //Cambiamos el estado a chequeado porque ya no existen mas mantenimientos que realizar
+        if (mantenimientoResueltos){
+            Uri uriVehiculos = Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,Integer.toString(mantenimiento.getVehiculo().getId()));
+
+            ContentValues contentValuesVehiculo = new ContentValues();
+            contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,getString(R.string.fa_check));
+
+            getContentResolver().update(uriVehiculos,contentValuesVehiculo,null,null);
         }
     }
 }
