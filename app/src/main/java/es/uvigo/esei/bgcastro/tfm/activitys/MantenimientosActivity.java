@@ -53,7 +53,12 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //asociamos elementos de la vista
         listViewMantenimientos = (ListView) findViewById(R.id.listViewMantenimientos);
+
+        //Vista para cuando no hay mantenimientos
+        TextView textViewEmptyMantenimientos = (TextView) findViewById(R.id.emptyMantenimientos);
+        listViewMantenimientos.setEmptyView(textViewEmptyMantenimientos);
 
         Intent intent = getIntent();
 

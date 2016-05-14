@@ -43,9 +43,14 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //asociamos elementos de la vista
         textViewPrecioTotal = (TextView) findViewById(R.id.totalReparacion);
 
         listViewReparaciones = (ListView) findViewById(R.id.listViewReparaciones);
+
+        //Vista para cuando no hay reparaciones
+        TextView textViewEmptyReparaciones = (TextView) findViewById(R.id.emptyReparaciones);
+        listViewReparaciones.setEmptyView(textViewEmptyReparaciones);
 
         Intent intent = getIntent();
 

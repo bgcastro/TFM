@@ -240,9 +240,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         pendingIntent = PendingIntent.getService(getApplicationContext(), mantenimiento.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
 
-        //TODO trampa para pruebas
+        /*//TODO trampa para pruebas
         fechaNotificacion = GregorianCalendar.getInstance();
-        fechaNotificacion.add(Calendar.SECOND, 40);
+        fechaNotificacion.add(Calendar.SECOND, 40);*/
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, fechaNotificacion.getTimeInMillis(), pendingIntent);
     }

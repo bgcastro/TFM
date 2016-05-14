@@ -55,4 +55,7 @@
     <string name="dialog_message">¿Deseas actualizar el kilometraje ahora?</string>
     <string name="ok">Actualizar</string>
     <string name="notificacion">Se te notificará  el</string>
+    <string name="empty_vehiculos">Vaya! Tu garaje está vacio. \n Pulsa el botón de añadir para comenzar a usarlo.</string>
+    <string name="empty_mantenimientos">Aún no has creado ningún mantenimiento para este vehículo. \n Pulsa el botón de añadir para planificar uno nuevo</string>
+    <string name="empty_reparaciones">Aún no has realizado este mantenimiento. \n Pulsa el botón de añadir para agregar una nueva reparacion.</string>
 </resources>

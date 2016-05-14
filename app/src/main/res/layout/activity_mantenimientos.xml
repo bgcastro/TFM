@@ -15,12 +15,23 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/emptyMantenimientos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_below="@+id/toolbarMantenimientos"
+        android:text="@string/empty_mantenimientos"
+        android:theme="@style/vehiculo_bold"
+        android:gravity="center" />
+
     <ListView
         android:id="@+id/listViewMantenimientos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbarMantenimientos"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"></ListView>
+        android:layout_marginRight="@dimen/activity_vertical_margin"/>
 
 </RelativeLayout>

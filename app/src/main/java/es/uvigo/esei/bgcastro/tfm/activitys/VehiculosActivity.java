@@ -52,6 +52,10 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
         //asociamos elementos de la vista
         ListView listViewVehiculos = (ListView) findViewById(R.id.listViewVehiculos);
 
+        //Vista para cuando no hay vehiculos
+        TextView textViewEmptyVehiculos = (TextView) findViewById(R.id.emptyVehiculos);
+        listViewVehiculos.setEmptyView(textViewEmptyVehiculos);
+
         //simple cursor adapter que rellena la IU
         String[] fromColumns = new String[]{VehiculosSQLite.COL_IMAGEN_VEHICULO,VehiculosSQLite.COL_MODELO,VehiculosSQLite.COL_MATRICULA,
                 VehiculosSQLite.COL_KILOMETRAJE,VehiculosSQLite.COL_ESTADO};
