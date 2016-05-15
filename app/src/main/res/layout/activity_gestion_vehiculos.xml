@@ -11,7 +11,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarGestionVehiculos"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="@dimen/actionBarSize"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
@@ -29,8 +29,8 @@
 
         <ImageView
             android:id="@+id/imagenGestionVehiculos"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_margin="0dp"
             android:src="@drawable/ic_directions_car_black_48dp" />
 
@@ -47,7 +47,7 @@
                 android:text="@string/marca"
                 android:id="@+id/nombreMarca"
                 android:theme="@style/vehiculo_bold"
-                android:layout_marginBottom="10dp"/>
+                android:paddingLeft="@dimen/text_view_paddig_left"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -56,8 +56,8 @@
                 android:hint="@string/hintMarca"
                 android:inputType="textCapWords"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"
-                android:layout_marginBottom="10dp"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
             <TextView
                 android:id="@+id/modelo"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/modeloHint"
                 android:theme="@style/vehiculo_bold"
-                android:layout_marginBottom="10dp"/>
+                android:paddingLeft="@dimen/text_view_paddig_left"/>
 
             <EditText
                 android:id="@+id/editTextModelo"
@@ -75,8 +75,8 @@
                 android:hint="@string/hintModelo"
                 android:inputType="textCapWords"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"
-                android:layout_marginBottom="10dp"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
             <TextView
                 android:id="@+id/Matricula"
@@ -85,7 +85,7 @@
                 android:text="@string/matricula"
                 android:hint="@string/modeloHint"
                 android:theme="@style/vehiculo_bold"
-                android:layout_marginBottom="10dp"/>
+                android:paddingLeft="@dimen/text_view_paddig_left"/>
 
             <EditText
                 android:id="@+id/editTextMatricula"
@@ -94,7 +94,8 @@
                 android:hint="@string/hintMatricula"
                 android:inputType="textCapCharacters|text"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom" />
 
         </LinearLayout>
 
@@ -127,7 +128,8 @@
                 android:inputType="numberDecimal"
                 android:layout_toRightOf="@id/kilometraje"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom" />
 
         </RelativeLayout>
 
@@ -136,7 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/primeraFila"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/space_between_edittext">
 
             <TextView
                 android:id="@+id/combustible"
@@ -160,7 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/segundaFila"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/space_between_edittext">
             <TextView
                 android:id="@+id/cilindrada"
                 android:layout_width="110dp"
@@ -176,7 +178,8 @@
                 android:inputType="number"
                 android:layout_toRightOf="@id/cilindrada"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom" />
 
         </RelativeLayout>
 
@@ -185,7 +188,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/terceraFila"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/space_between_edittext">
             <TextView
                 android:id="@+id/color"
                 android:layout_width="110dp"
@@ -197,8 +200,9 @@
                 android:id="@+id/selectorDeColor"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
+                android:paddingLeft="@dimen/text_view_paddig_left"
                 android:background="@android:color/background_dark"
-                android:layout_toRightOf="@id/color"/>
+                android:layout_toRightOf="@id/color" />
 
         </RelativeLayout>
 
@@ -207,7 +211,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cuartaFila"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/space_between_edittext">
             <TextView
                 android:id="@+id/potencia"
                 android:layout_width="110dp"
@@ -223,7 +227,8 @@
                 android:inputType="numberDecimal"
                 android:layout_toRightOf="@id/potencia"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom" />
 
         </RelativeLayout>
 
@@ -232,7 +237,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/quintaFila"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/space_between_edittext">
             <TextView
                 android:id="@+id/anho"
                 android:layout_width="110dp"
@@ -248,14 +253,15 @@
                 android:inputType="number"
                 android:layout_toRightOf="@id/anho"
                 android:theme="@style/vehiculo_regular"
-                android:background="@android:color/transparent"/>
+                android:paddingTop="@dimen/edit_text_padding_top"
+                android:paddingBottom="@dimen/edit_text_padding_bottom" />
         </RelativeLayout>
 
     </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:background="@color/grisClaro"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"

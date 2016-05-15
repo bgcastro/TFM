@@ -7,4 +7,11 @@
     <dimen name="space_between_list_items">8dp</dimen>
     <dimen name="botton_bar">50dp</dimen>
     <dimen name="space_between_input_items">10dp</dimen>
+    <dimen name="edit_text_padding_top">0dp</dimen>
+    <dimen name="edit_text_padding_bottom">7dp</dimen>
+    <dimen name="text_view_paddig_left">3dp</dimen>
+    <dimen name="space_between_edittext">3dp</dimen>
+    <dimen name="actionBarSize">50dp</dimen>
+    <dimen name="mantenimiento_item_padding_top">10dp</dimen>
+    <dimen name="mantenimiento_item_padding_bottom">10dp</dimen>
 </resources>

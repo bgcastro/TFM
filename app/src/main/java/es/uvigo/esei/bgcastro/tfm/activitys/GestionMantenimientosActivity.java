@@ -74,7 +74,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
         StringBuilder diaSiguiente = new StringBuilder();
         diaSiguiente.append(calendar.get(Calendar.DAY_OF_MONTH)).append(" ").append(calendar.get(Calendar.MONTH)).append(" ").append(calendar.get(Calendar.YEAR));
 
-
+        //
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionMantenimientos);
         setSupportActionBar(actionBar);
 

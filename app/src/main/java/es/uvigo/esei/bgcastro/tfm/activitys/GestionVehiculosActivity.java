@@ -57,8 +57,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
     private int color;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +69,12 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
         }
 
+        //Inflamos el layout
         setContentView(R.layout.activity_gestion_vehiculos);
 
+        //Asociamos la toolbar
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionVehiculos);
+        actionBar.setTitle(getString(R.string.titulo_toolbar_gestion_vehiculos_activity));
         setSupportActionBar(actionBar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

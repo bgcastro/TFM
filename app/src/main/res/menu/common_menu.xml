@@ -5,6 +5,7 @@
     <!-- opcion de settings -->
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
+        android:icon="@drawable/ic_tune_black_24dp"
         app:showAsAction="never"/>
 
 </menu>

@@ -4,13 +4,15 @@
     <!-- opcion de anhadir -->
     <item
         android:id="@+id/action_add_vehiculo"
-        android:icon="@drawable/ic_save_black_24dp"
+        android:icon="@drawable/ic_check_black_24dp"
         android:title="@string/action_add_vehiculo"
         app:showAsAction="always"/>
 
+    <!-- opcion de eliminar -->
     <item
         android:id="@+id/action_remove_vehiculo"
         android:title="@string/action_remove_vehicle"
+        android:icon="@drawable/ic_delete_black_24dp"
         app:showAsAction="always"/>
 
 </menu>

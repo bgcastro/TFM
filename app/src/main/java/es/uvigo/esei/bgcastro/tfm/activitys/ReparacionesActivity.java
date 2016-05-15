@@ -38,7 +38,9 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
 
         setContentView(R.layout.activity_reparaciones);
 
+        //Asociamos la toolbar
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarReparaciones);
+        actionBar.setTitle(getString(R.string.titulo_toolbar_reparaciones_activity));
         setSupportActionBar(actionBar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

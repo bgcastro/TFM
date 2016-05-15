@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -24,6 +25,9 @@ import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
+
+import static java.lang.Math.abs;
 
 /**
  * Created by braisgallegocastro on 20/2/16.
@@ -48,7 +52,9 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
         setContentView(R.layout.activity_mantenimientos);
 
+        //asociamos la toolbar
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarMantenimientos);
+        actionBar.setTitle(getString(R.string.titulo_toolbar_mantenimientos_activity));
         setSupportActionBar(actionBar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -98,7 +104,32 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                         ((TextView)view).setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
 
                         return true;
-                    
+
+                    case R.id.kilometrajeMantenimientoItem:
+                        SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
+                        StringBuilder kilometraje = new StringBuilder();
+                        float valorKilometrajeMantenimiento = cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_KILOMETRAJE_REPARACION));
+                        float diferencia = valorKilometrajeMantenimiento - vehiculo.getKilometraje();
+
+                        kilometraje.append(Float.toString(valorKilometrajeMantenimiento));
+                        kilometraje.append(preferences.getString(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT));
+                        kilometraje.append(" ");
+
+                        if ( diferencia >= 0){
+                            kilometraje.append(getString(R.string.faltan)).append(" ");
+                            kilometraje.append(diferencia);
+                        }else {
+                            kilometraje.append(getString(R.string.pasado)).append(" ");
+                            kilometraje.append(Float.toString(abs(diferencia)));
+                        }
+
+                        kilometraje.append(preferences.getString(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT));
+                        kilometraje.append(")");
+
+                        ((TextView)view).setText(kilometraje.toString());
+
+                        return  true;
+
                     default: return false;
                 }
             }
@@ -130,7 +161,7 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
     @Override
     public void onResume() {
-        super.onRestart();
+        super.onResume();
         getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 

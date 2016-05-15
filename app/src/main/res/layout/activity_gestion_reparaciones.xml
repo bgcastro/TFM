@@ -8,7 +8,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarGestionReparaciones"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="@dimen/actionBarSize"
         android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
@@ -28,6 +28,7 @@
             android:id="@+id/textViewReparacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_view_paddig_left"
             android:text="@string/textViewReparacion"
             android:theme="@style/vehiculo_bold" />
 
@@ -37,13 +38,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewReparacion"
             android:theme="@style/vehiculo_regular"
-            android:layout_marginBottom="@dimen/space_between_input_items" />
+            android:layout_marginBottom="@dimen/space_between_input_items"
+            android:paddingTop="@dimen/edit_text_padding_top"
+            android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
         <!-- Descripcion reparacion -->
         <TextView
             android:id="@+id/textViewDescripcionReparacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_view_paddig_left"
             android:layout_below="@+id/editTextReparacion"
             android:text="@string/textVievDescripcionReparacion"
             android:theme="@style/vehiculo_bold" />
@@ -54,13 +58,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewDescripcionReparacion"
             android:theme="@style/vehiculo_regular"
-            android:layout_marginBottom="@dimen/space_between_input_items" />
+            android:layout_marginBottom="@dimen/space_between_input_items"
+            android:paddingTop="@dimen/edit_text_padding_top"
+            android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
         <!-- Referencia reparacion -->
         <TextView
             android:id="@+id/textViewReferencia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_view_paddig_left"
             android:layout_below="@+id/editTextDescripcionReparacion"
             android:text="@string/textViewReferencia"
             android:theme="@style/vehiculo_bold" />
@@ -71,13 +78,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewReferencia"
             android:theme="@style/vehiculo_regular"
-            android:layout_marginBottom="@dimen/space_between_input_items" />
+            android:layout_marginBottom="@dimen/space_between_input_items"
+            android:paddingTop="@dimen/edit_text_padding_top"
+            android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
         <!-- Precio reparacion -->
         <TextView
             android:id="@+id/textViewPrecio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_view_paddig_left"
             android:text="@string/textViewPrecio"
             android:theme="@style/vehiculo_bold"
             android:layout_below="@+id/editTextReferencia"/>
@@ -88,7 +98,9 @@
             android:layout_height="wrap_content"
             android:theme="@style/vehiculo_regular"
             android:layout_below="@+id/textViewPrecio"
-            android:inputType="number" />
+            android:inputType="number"
+            android:paddingTop="@dimen/edit_text_padding_top"
+            android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
     </RelativeLayout>
 

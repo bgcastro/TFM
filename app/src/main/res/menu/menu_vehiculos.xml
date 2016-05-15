@@ -5,7 +5,7 @@
     <!-- opcion de anhadir -->
     <item
         android:id="@+id/action_new_vehiculo"
-        android:icon="@drawable/ic_save_black_24dp"
+        android:icon="@drawable/ic_add_black_24dp"
         android:title="@string/action_add_mantenimiento"
         app:showAsAction="always"/>
 

@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -25,6 +26,7 @@ import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
 
 public class VehiculosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static String TAG = "VehiculosActivity";
@@ -35,14 +37,17 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
 
     private SimpleCursorAdapter adapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
+        //Inflamos el layout
         setContentView(R.layout.activity_vehiculos);
 
+        //Asociamos la toolbar
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarVehiculos);
+        actionBar.setTitle(getString(R.string.titulo_toolbar_vehiculos_activity));
+
         setSupportActionBar(actionBar);
 
         //load manager que se encarga de recoger los datos en background
@@ -57,9 +62,12 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
         listViewVehiculos.setEmptyView(textViewEmptyVehiculos);
 
         //simple cursor adapter que rellena la IU
-        String[] fromColumns = new String[]{VehiculosSQLite.COL_IMAGEN_VEHICULO,VehiculosSQLite.COL_MODELO,VehiculosSQLite.COL_MATRICULA,
-                VehiculosSQLite.COL_KILOMETRAJE,VehiculosSQLite.COL_ESTADO};
-        int[] into = new int[]{R.id.imagenVehiculo,R.id.nombreMarca,R.id.matricula,R.id.kilometraje,R.id.estadoVehiculo};
+        String[] fromColumns = new String[]{VehiculosSQLite.COL_IMAGEN_VEHICULO,
+                VehiculosSQLite.COL_MODELO, VehiculosSQLite.COL_MATRICULA,
+                VehiculosSQLite.COL_KILOMETRAJE, VehiculosSQLite.COL_ESTADO};
+
+        int[] into = new int[]{R.id.imagenVehiculo, R.id.nombreMarca,
+                R.id.matricula, R.id.kilometraje, R.id.estadoVehiculo};
 
         adapter = new SimpleCursorAdapter(this,R.layout.vehiculo_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
@@ -80,6 +88,17 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
                         ((TextView)view).setTypeface(font);
                         ((TextView)view).setTextColor(view.getResources().getColor(R.color.grisClaro));
                         ((TextView)view).setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+
+                        return true;
+
+                    case R.id.kilometraje:
+                        SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
+                        StringBuilder kilometraje = new StringBuilder();
+
+                        kilometraje.append(" ").append(cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_KILOMETRAJE)));
+                        kilometraje.append(preferences.getString(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT));
+
+                        ((TextView)view).setText(kilometraje);
 
                         return true;
                 }
@@ -117,7 +136,8 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
-        getLoaderManager().getLoader(URL_LOADER).forceLoad();
+        getLoaderManager().restartLoader(URL_LOADER, null, this);
+        //getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 
     @Override
@@ -153,7 +173,6 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
         // will need to synchronize it before modifying any UI elements directly.
 
     }
-
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

@@ -3,11 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <TextView
-        android:id="@+id/estadoSincronizacion"
-        android:layout_width="40dp"
-        android:layout_height="match_parent" />-->
-
     <TextView
         android:id="@+id/estadoMantenimientoItem"
         android:layout_width="wrap_content"
@@ -22,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/estadoMantenimientoItem"
         android:theme="@style/vehiculo_bold"
-        android:paddingTop="10dp"/>
+        android:textSize="13dp"
+        android:paddingTop="@dimen/mantenimiento_item_padding_top" />
 
     <TextView
         android:id="@+id/tituloDescripcionMantenimientosItem"
@@ -31,8 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nombreMantenimientoItem"
         android:layout_toRightOf="@id/estadoMantenimientoItem"
-        android:theme="@style/vehiculo_bold"
-        android:layout_marginBottom="10dp"/>
+        android:theme="@style/vehiculo_bold" />
 
     <TextView
         android:id="@+id/descripcionMantenimientoItem"
@@ -41,7 +36,7 @@
         android:layout_below="@+id/tituloDescripcionMantenimientosItem"
         android:layout_toRightOf="@id/estadoMantenimientoItem"
         android:theme="@style/vehiculo_regular"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="@dimen/mantenimiento_item_padding_bottom"/>
 
     <TextView
         android:id="@+id/tituloKilometrajeMantenimientoItem"
@@ -50,8 +45,7 @@
         android:text="@string/kilometraje"
         android:layout_below="@+id/descripcionMantenimientoItem"
         android:layout_toRightOf="@id/estadoMantenimientoItem"
-        android:theme="@style/vehiculo_bold"
-        android:layout_marginBottom="10dp"/>
+        android:theme="@style/vehiculo_bold" />
 
     <TextView
         android:id="@+id/kilometrajeMantenimientoItem"
@@ -60,6 +54,6 @@
         android:layout_below="@+id/tituloKilometrajeMantenimientoItem"
         android:layout_toRightOf="@id/estadoMantenimientoItem"
         android:theme="@style/vehiculo_regular"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="@dimen/mantenimiento_item_padding_bottom"/>
 
 </RelativeLayout>

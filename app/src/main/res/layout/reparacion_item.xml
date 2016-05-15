@@ -38,29 +38,12 @@
         android:theme="@style/vehiculo_regular"
         android:layout_marginBottom="@dimen/space_between_list_items"/>
 
-    <!-- Precio de la reparacion -->
-    <TextView
-        android:id="@+id/tituloPrecioReparacionItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/descripcionReparacionItem"
-        android:text="@string/tituloPrecioReparacionItem"
-        android:theme="@style/vehiculo_bold"/>
-
-    <TextView
-        android:id="@+id/precioReparacionItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tituloPrecioReparacionItem"
-        android:theme="@style/vehiculo_regular"
-        android:layout_marginBottom="@dimen/space_between_list_items"/>
-
     <!-- Refencia reparacion -->
     <TextView
         android:id="@+id/tituloReferenciaReparacionItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/precioReparacionItem"
+        android:layout_below="@+id/descripcionReparacionItem"
         android:text="@string/tituloReferenciaReparacionItem"
         android:theme="@style/vehiculo_bold"/>
 
@@ -69,6 +52,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tituloReferenciaReparacionItem"
+        android:theme="@style/vehiculo_regular"
+        android:layout_marginBottom="@dimen/space_between_list_items"/>
+
+    <!-- Precio de la reparacion -->
+    <TextView
+        android:id="@+id/tituloPrecioReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/referenciaReparacionItem"
+        android:text="@string/tituloPrecioReparacionItem"
+        android:theme="@style/vehiculo_bold"/>
+
+    <TextView
+        android:id="@+id/precioReparacionItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloPrecioReparacionItem"
         android:theme="@style/vehiculo_regular"
         android:layout_marginBottom="@dimen/space_between_list_items"/>
 
