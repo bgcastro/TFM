@@ -140,16 +140,16 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         listViewMantenimientos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intentReparar = new Intent(MantenimientosActivity.this,ReparacionesActivity.class);
+                Intent intentReparar = new Intent(MantenimientosActivity.this, GestionMantenimientosActivity.class);
                 Bundle bundle = new Bundle();
 
                 Cursor c = adapter.getCursor();
                 c.moveToPosition(position);
-
                 Mantenimiento mantenimiento = new Mantenimiento(c, getApplicationContext());
 
+                bundle.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
                 bundle.putParcelable(MANTENIMIENTO, mantenimiento);
+
                 intentReparar.putExtras(bundle);
 
                 Log.d(TAG, "onItemClick: position" + position);

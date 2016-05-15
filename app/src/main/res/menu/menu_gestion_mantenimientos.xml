@@ -9,6 +9,14 @@
         android:title="@string/action_add_mantenimiento"
         app:showAsAction="always"/>
 
+    <!-- opcion de modificar -->
+    <item
+        android:id="@+id/action_modify_mantenimiento"
+        android:title="@string/action_modify_mantenimiento"
+        android:icon="@drawable/ic_mode_edit_black_24dp"
+        app:showAsAction="always"/>
+
+    <!-- opcion de eliminar -->
     <item
         android:id="@+id/action_remove_mantenimiento"
         android:title="@string/action_remove_mantenimiento"

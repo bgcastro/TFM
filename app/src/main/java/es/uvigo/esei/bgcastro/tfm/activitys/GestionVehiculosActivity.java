@@ -136,7 +136,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         });
 
         if (intent.hasExtra(VehiculosActivity.VEHICULO)){
-            vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
+            //Rellenamos con los valores que tiene el vehiculo existente
             rellenarUI(vehiculo);
 
             //desactivamos la edicion

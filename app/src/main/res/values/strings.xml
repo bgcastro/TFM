@@ -66,4 +66,6 @@
     <string name="action_reparar">Reparar</string>
     <string name="titulo_toolbar_reparaciones_activity">Reparaciones</string>
     <string name="titulo_toolbar_gestion_reparaciones_activity">Reparación</string>
+    <string name="titulo_toolbar_gestion_mantenimientos_activity">Mantenimiento</string>
+    <string name="action_modify_mantenimiento">Modificar</string>
 </resources>
