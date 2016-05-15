@@ -15,4 +15,11 @@
         android:icon="@drawable/ic_delete_black_24dp"
         app:showAsAction="always"/>
 
+    <!-- opcion de modificar -->
+    <item
+        android:id="@+id/action_modify_vehiculo"
+        android:title="@string/action_remove_vehicle"
+        android:icon="@drawable/ic_mode_edit_black_24dp"
+        app:showAsAction="always"/>
+
 </menu>

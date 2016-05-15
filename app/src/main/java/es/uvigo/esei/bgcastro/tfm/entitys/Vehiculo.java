@@ -29,6 +29,7 @@ public class Vehiculo implements Parcelable{
      * constructor por defecto
      */
     public Vehiculo() {
+        this.id = -1;
         this.imagenVehiculo = new byte[0];
         this.marca = "";
         this.modelo = "";

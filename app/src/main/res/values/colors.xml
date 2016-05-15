@@ -6,4 +6,5 @@
 
     <color name="grisClaro">#747474</color>
     <color name="grisOscuro">#434343</color>
+    <color name="grisToolbar">#F3F3F3</color>
 </resources>
