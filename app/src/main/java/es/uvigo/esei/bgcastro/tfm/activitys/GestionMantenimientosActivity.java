@@ -5,10 +5,12 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +41,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
     private EditText editTextDescripcionMantenimiento;
     private EditText editTextKilometrajeMantenimiento;
     private TextView textViewFechaMantenimiento;
+    private TextView textViewRepar;
 
     private final Calendar calendar = Calendar.getInstance();
     private PendingIntent pendingIntent;
@@ -56,17 +59,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         setContentView(R.layout.activity_gestion_mantenimientos);
 
-        //Ligamos la toolbar
-        Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionMantenimientos);
-        actionBar.setTitle(getString(R.string.titulo_toolbar_gestion_mantenimientos_activity));
-        setSupportActionBar(actionBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        editTextNombreMantenimiento = (EditText) findViewById(R.id.editTextNombreMantenimiento);
-        editTextDescripcionMantenimiento = (EditText) findViewById(R.id.editTextDescripcionMantenimiento);
-        editTextKilometrajeMantenimiento = (EditText) findViewById(R.id.editTextKilometrajeMantenimiento);
-        textViewFechaMantenimiento = (TextView) findViewById(R.id.fechaMantenimiento);
-
         Intent intent = getIntent();
 
         if (intent != null) {
@@ -77,6 +69,29 @@ public class GestionMantenimientosActivity extends BaseActivity{
         if (mantenimiento == null) {
             mantenimiento = new Mantenimiento();
         }
+
+        //Ligamos la toolbar
+        Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionMantenimientos);
+        actionBar.setTitle(getString(R.string.titulo_toolbar_gestion_mantenimientos_activity));
+        setSupportActionBar(actionBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        editTextNombreMantenimiento = (EditText) findViewById(R.id.editTextNombreMantenimiento);
+        editTextDescripcionMantenimiento = (EditText) findViewById(R.id.editTextDescripcionMantenimiento);
+        editTextKilometrajeMantenimiento = (EditText) findViewById(R.id.editTextKilometrajeMantenimiento);
+        textViewFechaMantenimiento = (TextView) findViewById(R.id.fechaMantenimiento);
+        textViewRepar = (TextView) findViewById(R.id.reparar);
+
+        final Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
+        textViewRepar.setTypeface(font);
+        textViewRepar.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+
+        textViewRepar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: reparar");
+            }
+        });
 
         calendar.add(Calendar.DATE, 1);
 

@@ -16,6 +16,16 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
+        android:id="@+id/reparar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/botton_bar"
+        android:theme="@style/vehiculo_bold"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:text="@string/fa_cogs"
+        android:background="@color/grisToolbar"/>
+
+    <TextView
         android:id="@+id/nombreMantenimiento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,6 +109,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextFechaMantenimiento"
+        android:layout_above="@+id/reparar"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/text_view_paddig_left"
