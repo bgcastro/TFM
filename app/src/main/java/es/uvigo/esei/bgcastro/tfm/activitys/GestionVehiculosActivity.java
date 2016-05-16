@@ -149,18 +149,14 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             desactivarEdicion();
         }
 
-      /*  if (savedInstanceState != null) {
-            updateDate = (Date) savedInstanceState.getSerializable(UPDATE_DATE);
-        }
-
-        if (updateDate == null || updateDate.getDay() != GregorianCalendar.getInstance().get(GregorianCalendar.DAY_OF_MONTH)){
+        if (vehiculo != null && savedInstanceState == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(R.string.dialog_message);
+            builder.setMessage(R.string.actualizar_KM);
 
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Log.d(TAG, "onClick: updateDate");
-                    updateKilometraje(10);
+                    activarEdicionKilometraje();
+                    invalidateOptionsMenu();
                 }
             });
 
@@ -170,8 +166,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
             AlertDialog dialog = builder.create();
             dialog.show();
-        }*/
-
+        }
     }
 
     @Override
@@ -344,6 +339,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             //desabilitamos la edicion
             desactivarEdicion();
 
+            //Cambiamos el menu
+            invalidateOptionsMenu();
+
             Log.d(TAG, "modificarVehiculo: bd output " + resultado);
         }
     }
@@ -458,6 +456,11 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         selectorDeColor.setEnabled(true);
         editTextPotencia.setEnabled(true);
         editTextAnho.setEnabled(true);
+    }
+
+    private void activarEdicionKilometraje(){
+        edicionActivada = true;
+        editTextKilometraje.setEnabled(true);
     }
 
     private void showMantenimientos() {

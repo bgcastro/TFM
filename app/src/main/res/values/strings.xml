@@ -82,4 +82,5 @@
     <string name="vehiculo_no_creado">Por favor guarde el vehículo primero</string>
     <string name="titulo_dialog">Mantenimientos pendientes</string>
     <string name="dialog_message_parte2">pendientes de actualizar.</string>
+    <string name="actualizar_KM">¿Deseas actualizar el kilometraje ahora?</string>
 </resources>
