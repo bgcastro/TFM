@@ -34,6 +34,7 @@
 
         <EditText
             android:id="@+id/editTextReparacion"
+            android:hint="@string/nombre_reparacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewReparacion"
@@ -54,13 +55,17 @@
 
         <EditText
             android:id="@+id/editTextDescripcionReparacion"
+            android:hint="@string/hintDescripcionReparacion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edit_text_height"
+            android:ems="10"
             android:layout_below="@+id/textViewDescripcionReparacion"
-            android:theme="@style/vehiculo_regular"
             android:layout_marginBottom="@dimen/space_between_input_items"
             android:paddingTop="@dimen/edit_text_padding_top"
-            android:paddingBottom="@dimen/edit_text_padding_bottom"/>
+            android:paddingBottom="@dimen/edit_text_padding_bottom"
+            android:gravity="left"
+            android:inputType="textMultiLine"
+            android:theme="@style/vehiculo_regular"/>
 
         <!-- Referencia reparacion -->
         <TextView
@@ -74,6 +79,7 @@
 
         <EditText
             android:id="@+id/editTextReferencia"
+            android:hint="@string/referencia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewReferencia"
@@ -94,6 +100,7 @@
 
         <EditText
             android:id="@+id/editTextPrecio"
+            android:hint="@string/precioReparacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/vehiculo_regular"

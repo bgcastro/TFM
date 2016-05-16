@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import org.joda.time.DateTime;
+
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.ReparacionesContentProvider;
@@ -32,6 +34,10 @@ public class GestionReparacionesActivity extends BaseActivity {
     private EditText editTextReferencia;
     private EditText editTextPrecio;
 
+    private boolean edicionActivada = true;
+
+    public static final String REPARACION = "reparacion";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +54,7 @@ public class GestionReparacionesActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent != null) {
             mantenimiento = intent.getParcelableExtra(MantenimientosActivity.MANTENIMIENTO);
+            reparacion = intent.getParcelableExtra(REPARACION);
             Log.d(TAG, "onCreate: mantenimiento");
         }
         if (reparacion == null) {
@@ -58,6 +65,14 @@ public class GestionReparacionesActivity extends BaseActivity {
         editTextDescripcionReparacion = (EditText) findViewById(R.id.editTextDescripcionReparacion);
         editTextReferencia = (EditText) findViewById(R.id.editTextReferencia);
         editTextPrecio = (EditText) findViewById(R.id.editTextPrecio);
+
+        if (intent.hasExtra(REPARACION)){
+            //Rellenar UI
+            rellenarUI();
+
+            //desactivamos la edicion
+            desactivarEdicion();
+        }
 
     }
 
@@ -72,12 +87,22 @@ public class GestionReparacionesActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_nueva_reparacion:{
-                nuevaReparacion();
+                if (reparacion != null && reparacion.getId() != -1) {
+                    modificarReparacion();
+                }else {
+                    nuevaReparacion();
+                }
+                return true;
+            }
+
+            case R.id.action_modify_reparacion: {
+                activarEdicion();
+                invalidateOptionsMenu();
                 return true;
             }
 
             case R.id.action_remove_reparacion: {
-                //TODO añadir eliminar
+                eliminarReparacion();
                 return true;
             }
 
@@ -91,6 +116,20 @@ public class GestionReparacionesActivity extends BaseActivity {
             }
         }
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!edicionActivada){
+            //si la reparacion se modifica
+            menu.removeItem(R.id.action_nueva_reparacion);
+        }else {
+            //si la reparacion se añade
+            menu.removeItem(R.id.action_remove_reparacion);
+            menu.removeItem(R.id.action_modify_reparacion);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     private boolean uiToReparacion(){
@@ -148,7 +187,51 @@ public class GestionReparacionesActivity extends BaseActivity {
 
             //actualizamos el estado del mantenimiento y del vehiculo
             actualizarEstado();
+
+            //Cambiamos el menu
+            invalidateOptionsMenu();
+
+            //desactivamos la edicion
+            desactivarEdicion();
         }
+    }
+
+    private void modificarReparacion(){
+        //si los datos introducidos son validos podemos guardar la reparacion
+        if (uiToReparacion() && reparacion.getId() == -1){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ReparacionesContentProvider.NOMBRE_REPARACION, reparacion.getNombreReparacion());
+            contentValues.put(ReparacionesContentProvider.DESCRIPCION_REPARACION, reparacion.getDescripcion());
+            contentValues.put(ReparacionesContentProvider.REFERENCIA, reparacion.getReferencia());
+            contentValues.put(ReparacionesContentProvider.PRECIO, reparacion.getPrecio());
+            contentValues.put(ReparacionesContentProvider.ID_MANTENIMIENTO_REPARACION, reparacion.getMantenimiento().getId());
+
+            //guardamos la reparacion
+
+            String updateID = Integer.toString(reparacion.getId());
+
+            getContentResolver().update(Uri.withAppendedPath(ReparacionesContentProvider.CONTENT_URI,updateID),contentValues,null,null);
+
+            //actualizamos el estado del mantenimiento y del vehiculo
+            actualizarEstado();
+
+            //Cambiamos el menu
+            invalidateOptionsMenu();
+
+            //desactivamos la edicion
+            desactivarEdicion();
+        }
+    }
+
+    private void eliminarReparacion(){
+        String deleteID = Integer.toString(reparacion.getId());
+        getContentResolver().delete( Uri.withAppendedPath(ReparacionesContentProvider.CONTENT_URI,deleteID), null, null);
+
+        Log.d(TAG, "eliminarReparacion: " + deleteID);
+
+        actualizarEstadoBorrado();
+
+        finish();
     }
 
     private void actualizarEstado(){
@@ -167,7 +250,7 @@ public class GestionReparacionesActivity extends BaseActivity {
         // Query URI
         Uri queryUri = MantenimientosContentProvider.CONTENT_URI;
 
-        // Create the new Cursor loader.
+        //Buscamos todos los mantenimientos del vehiculo para ver si se puede cambiar el estado
         Cursor cursor = getContentResolver().query(queryUri, projection, where, whereArgs, sortOrder);
 
         boolean mantenimientoResueltos = true;
@@ -191,4 +274,70 @@ public class GestionReparacionesActivity extends BaseActivity {
             getContentResolver().update(uriVehiculos,contentValuesVehiculo,null,null);
         }
     }
+
+    private void actualizarEstadoBorrado(){
+        ContentValues contentValuesMantenimientos = new ContentValues();
+        ContentValues contentValuesVehiculo = new ContentValues();
+        //Si el estado es que necesita reparacion lo dejamos tal y como está y sino revisamos el nuevo estado
+        if (mantenimiento.getEstado().hashCode() != getString(R.string.fa_exclamation_triangle).hashCode() ) {
+            int idMantenimiento = mantenimiento.getId();
+            String[] projection = {ReparacionesContentProvider.ID_MANTENIMIENTO_REPARACION,ReparacionesContentProvider.ID_REPARACION};
+            String where = ReparacionesContentProvider.ID_MANTENIMIENTO_REPARACION + "=" + "?";
+            String[] whereArgs = {Integer.toString(idMantenimiento)};
+            String sortOrder = null;
+
+            // Query URI
+            Uri queryUri = ReparacionesContentProvider.CONTENT_URI;
+
+            //Buscamos todos las reparaciones del vehiculo para ver si se puede cambiar el estado
+            Cursor cursor = getContentResolver().query(queryUri, projection, where, whereArgs, sortOrder);
+
+            //Si era la último reparacion
+            if (cursor.getCount() == 0){
+                //Si la reparacion ya se deberia haber hecho le cambiamos al estado "necesario reparar" sino cambiamos a "programado"
+                if (new DateTime(mantenimiento.getFecha()).isBeforeNow() ||
+                        (mantenimiento.getVehiculo().getKilometraje() - mantenimiento.getKilometrajeReparacion() > 0)) {
+                    contentValuesMantenimientos.put(MantenimientosContentProvider.ESTADO_REPARACION, getString(R.string.fa_exclamation_triangle));
+                    contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_exclamation_triangle));
+
+                } else {
+                    contentValuesMantenimientos.put(MantenimientosContentProvider.ESTADO_REPARACION, getString(R.string.fa_square_o));
+                    contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_wrench));
+                }
+
+                String updateID = Integer.toString(mantenimiento.getId());
+                getContentResolver().update(Uri.withAppendedPath(MantenimientosContentProvider.CONTENT_URI, updateID), contentValuesMantenimientos, null, null);
+
+                String updateIDvehiculo = Integer.toString(mantenimiento.getVehiculo().getId());
+                getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI, updateIDvehiculo), contentValuesVehiculo, null, null);
+
+            }
+        }
+    }
+
+    private void desactivarEdicion() {
+        edicionActivada = false;
+
+        editTextReparacion.setEnabled(false);
+        editTextDescripcionReparacion.setEnabled(false);
+        editTextReferencia.setEnabled(false);
+        editTextPrecio.setEnabled(false);
+    }
+
+    private void activarEdicion() {
+        edicionActivada = true;
+
+        editTextReparacion.setEnabled(true);
+        editTextDescripcionReparacion.setEnabled(true);
+        editTextReferencia.setEnabled(true);
+        editTextPrecio.setEnabled(true);
+    }
+
+    private void rellenarUI() {
+        editTextReparacion.setText(reparacion.getNombreReparacion());
+        editTextDescripcionReparacion.setText(reparacion.getDescripcion());
+        editTextReferencia.setText(reparacion.getReferencia());
+        editTextPrecio.setText(Float.toString(reparacion.getPrecio()));
+    }
+
 }

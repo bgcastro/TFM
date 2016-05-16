@@ -65,7 +65,7 @@ public class Mantenimiento implements Parcelable{
     public Mantenimiento(Cursor cursor, Context context) {
         if (cursor.getCount() != 0)
         {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
 
             id = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_ID_MANTENIMIENTO));
             estado = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO_REPARACION));

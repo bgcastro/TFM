@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.ReparacionesContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entitys.Reparacion;
 
 /**
  * Created by braisgallegocastro on 7/5/16.
@@ -57,7 +60,7 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         Intent intent = getIntent();
 
         if (intent != null) {
-            mantenimiento = intent.getParcelableExtra(MantenimientosActivity.MANTENIMIENTO);
+            mantenimiento = intent.getParcelableExtra(GestionMantenimientosActivity.MANTENIMIENTO);
         }
 
         //load manager que se encarga de recoger los datos en background
@@ -78,6 +81,28 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         adapter = new SimpleCursorAdapter(this,R.layout.reparacion_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
         listViewReparaciones.setAdapter(adapter);
+
+        listViewReparaciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intentModificarMantenimiento = new Intent(ReparacionesActivity.this, GestionReparacionesActivity.class);
+                Bundle bundle = new Bundle();
+
+                Cursor c = adapter.getCursor();
+                c.moveToPosition(position);
+                Reparacion reparacion = new Reparacion(c, getApplicationContext());
+
+                bundle.putParcelable(GestionReparacionesActivity.REPARACION,reparacion);
+                bundle.putParcelable(GestionMantenimientosActivity.MANTENIMIENTO, mantenimiento);
+
+                intentModificarMantenimiento.putExtras(bundle);
+
+                Log.d(TAG, "onItemClick: position" + position);
+
+                startActivity(intentModificarMantenimiento);
+            }
+        });
+
     }
 
     @Override

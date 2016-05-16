@@ -68,4 +68,11 @@
     <string name="titulo_toolbar_gestion_reparaciones_activity">Reparación</string>
     <string name="titulo_toolbar_gestion_mantenimientos_activity">Mantenimiento</string>
     <string name="action_modify_mantenimiento">Modificar</string>
+    <string name="error_descripcion_mantenimiento_vacio">Por favor introduce una descripción para el mantenimiento</string>
+    <string name="mantenimiento_no_creado">Por favor guarda primero el mantenimiento</string>
+    <string name="action_modify_reparacion">Modificar</string>
+    <string name="hintDescripcionReparacion">Descripción de la reparación</string>
+    <string name="nombre_reparacion">Nombre de la reparación</string>
+    <string name="referencia">REF1234</string>
+    <string name="precioReparacion">Precio de la reparación</string>
 </resources>

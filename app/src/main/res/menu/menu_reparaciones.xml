@@ -2,13 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- opcion de reparar -->
-    <item
-        android:id="@+id/action_reparar"
-        android:icon="@drawable/ic_build_black_24dp"
-        android:title="@string/action_reparar"
-        app:showAsAction="always"/>
-
     <!-- opcion de anhadir -->
     <item
         android:id="@+id/action_add_reparacion"

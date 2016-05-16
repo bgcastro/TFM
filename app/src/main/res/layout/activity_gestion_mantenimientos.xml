@@ -66,6 +66,7 @@
         android:layout_below="@+id/descripcionMantenimiento"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:gravity="left"
         android:paddingTop="@dimen/edit_text_padding_top"
         android:paddingBottom="@dimen/edit_text_padding_bottom"
         android:inputType="textMultiLine"

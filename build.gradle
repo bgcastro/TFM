@@ -18,6 +18,8 @@ allprojects {
         //repositorio para colorPicker
         maven {
             url "https://jitpack.io"
+
+            mavenCentral()
         }
     }
 }

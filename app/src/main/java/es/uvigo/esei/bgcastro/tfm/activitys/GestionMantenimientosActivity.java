@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -20,9 +21,10 @@ import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.alarm.AlarmReceiverService;
@@ -30,6 +32,7 @@ import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
 
 /**
  * Created by braisgallegocastro on 20/2/16.
@@ -43,7 +46,8 @@ public class GestionMantenimientosActivity extends BaseActivity{
     private TextView textViewFechaMantenimiento;
     private TextView textViewRepar;
 
-    private final Calendar calendar = Calendar.getInstance();
+    private Calendar calendar = Calendar.getInstance();
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
     private PendingIntent pendingIntent;
 
     private Vehiculo vehiculo;
@@ -59,7 +63,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         setContentView(R.layout.activity_gestion_mantenimientos);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
 
         if (intent != null) {
             vehiculo = intent.getParcelableExtra(VehiculosActivity.VEHICULO);
@@ -90,17 +94,35 @@ public class GestionMantenimientosActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: reparar");
+
+                if (mantenimiento.getId() < 0){
+                    Toast.makeText(getApplicationContext(),R.string.mantenimiento_no_creado,Toast.LENGTH_LONG).show();
+                }else {
+                    Intent intentReparar = new Intent(GestionMantenimientosActivity.this, ReparacionesActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(GestionMantenimientosActivity.MANTENIMIENTO, mantenimiento);
+
+                    intentReparar.putExtras(bundle);
+
+                    startActivity(intentReparar);
+                }
             }
         });
 
-        calendar.add(Calendar.DATE, 1);
+        //Ponemos la hora y el minuto que ul usuario tiene en sus preferencias
+        SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
+        int horaNotificacion = preferences.getInt(VehiculosPreferences.NOTIFICATION_HOUR, VehiculosPreferences.NOTIFICATION_HOUR_DEFAULT);
+        int minutoNotificacion = preferences.getInt(VehiculosPreferences.NOTIFICATION_MINUTE, VehiculosPreferences.NOTIFICATION_MINUTE_DEFAULT);
 
-        StringBuilder diaSiguiente = new StringBuilder();
-        diaSiguiente.append(calendar.get(Calendar.DAY_OF_MONTH)).append(" ")
+        calendar.set(Calendar.HOUR,horaNotificacion);
+        calendar.set(Calendar.MINUTE,minutoNotificacion);
+
+        StringBuilder diaActual = new StringBuilder();
+        diaActual.append(calendar.get(Calendar.DAY_OF_MONTH)).append(" ")
                 .append(calendar.get(Calendar.MONTH)).append(" ")
                 .append(calendar.get(Calendar.YEAR));
 
-        textViewFechaMantenimiento.setText(diaSiguiente.toString());
+        textViewFechaMantenimiento.setText(diaActual.toString());
 
         textViewFechaMantenimiento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,12 +159,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save_mantenimiento:{
-                if (mantenimiento != null && mantenimiento.getId() != -1) {
-                    modificarMantenimiento();
-                }else {
-                    nuevoMantenimiento();
-                }
-
+                guardarMantenimiento();
                 return true;
             }
 
@@ -195,11 +212,17 @@ public class GestionMantenimientosActivity extends BaseActivity{
         vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
     }
 
+    private void guardarMantenimiento(){
+        if (mantenimiento != null && mantenimiento.getId() != -1) {
+            modificarMantenimiento();
+        }else {
+            nuevoMantenimiento();
+        }
+    }
+
     private void nuevoMantenimiento() {
         //Si los datos introducidos por el usuario son correctos procedemos a guardar
         if (uiToMantenimiento()) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
             ContentValues contentValues = new ContentValues();
             contentValues.put(MantenimientosContentProvider.ID_VEHICULO, vehiculo.getId());
             contentValues.put(MantenimientosContentProvider.ESTADO_REPARACION, mantenimiento.getEstado());
@@ -223,7 +246,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
 
             //Preparamos una nueva notificacion
-            if (calendar.get(Calendar.DAY_OF_MONTH) > GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+            if (new DateTime(calendar).isAfterNow()){
                 setNotification(calendar, mantenimiento);
             }
 
@@ -238,8 +261,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
     private void modificarMantenimiento(){
         //Si los datos introducidos por el usuario son correctos procedemos a guardar
         if (uiToMantenimiento()) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
             ContentValues contentValues = new ContentValues();
             contentValues.put(MantenimientosContentProvider.ID_VEHICULO, vehiculo.getId());
             contentValues.put(MantenimientosContentProvider.ESTADO_REPARACION, mantenimiento.getEstado());
@@ -257,7 +278,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             Log.d(TAG, "modificarMantenimiento: " + mantenimiento.toString());
 
             //modificamos la notificacion
-            if (calendar.get(Calendar.DAY_OF_MONTH) > GregorianCalendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+            if (new DateTime(calendar).isAfterNow()){
                 setNotification(calendar, mantenimiento);
             }
 
@@ -281,7 +302,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
     }
 
     private void rellenarUI() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         editTextNombreMantenimiento.setText(mantenimiento.getNombre());
         editTextDescripcionMantenimiento.setText(mantenimiento.getDescripcion());
@@ -317,7 +337,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
         }
 
         if (descripcion.isEmpty()) {
-            editTextDescripcionMantenimiento.setError(getString(R.string.error_nombre_mantenimiento_vacio));
+            editTextDescripcionMantenimiento.setError(getString(R.string.error_descripcion_mantenimiento_vacio));
             success = false;
         }else {
             mantenimiento.setDescripcion(descripcion);
@@ -354,6 +374,8 @@ public class GestionMantenimientosActivity extends BaseActivity{
         Toast.makeText(getApplicationContext(),
                 getString(R.string.notificacion) + " " +
                 fechaNotificacion.get(Calendar.DATE) + " " +
+                fechaNotificacion.get(Calendar.MONTH) + " " +
+                fechaNotificacion.get(Calendar.YEAR) + " a las " +
                 fechaNotificacion.get(Calendar.HOUR_OF_DAY) +
                 ":" + fechaNotificacion.get(Calendar.MINUTE),
                 Toast.LENGTH_LONG).show();

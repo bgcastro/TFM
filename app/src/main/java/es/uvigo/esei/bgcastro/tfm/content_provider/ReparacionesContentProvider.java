@@ -33,8 +33,8 @@ public class ReparacionesContentProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.mantenimientos","matenimientos", ALLROWS);
-        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.mantenimientos", "matenimientos/#", SINGLE_ROW);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.reparaciones","reparaciones", ALLROWS);
+        uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.reparaciones", "reparaciones/#", SINGLE_ROW);
     }
 
     public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm.reparaciones/reparaciones");

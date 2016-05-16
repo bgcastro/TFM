@@ -10,5 +10,5 @@ public class VehiculosPreferences {
     public static String NOTIFICATION_HOUR = "notification_hour";
     public static int NOTIFICATION_HOUR_DEFAULT = 16;
     public static String NOTIFICATION_MINUTE = "notification_minute";
-    public static int NOTIFICATION_minute_DEFAULT = 00;
+    public static int NOTIFICATION_MINUTE_DEFAULT = 00;
 }
