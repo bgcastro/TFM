@@ -236,7 +236,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             //completamos el mantenimiento con el nuevo id asignado por la bd
             mantenimiento.setId(Integer.parseInt(uri.getLastPathSegment()));
 
-            //Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
+            /*//Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
             ContentValues contentValuesVehiculo = new ContentValues();
             if (mantenimiento.getEstado().hashCode() == getString(R.string.fa_exclamation_triangle).hashCode()){
                 contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_exclamation_triangle));
@@ -244,6 +244,8 @@ public class GestionMantenimientosActivity extends BaseActivity{
                 contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_wrench));
             }
             getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI, Integer.toString(mantenimiento.getVehiculo().getId())),contentValuesVehiculo,null,null);
+*/
+            actualizarEstado(mantenimiento.getVehiculo().getId());
 
             Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
 
@@ -304,7 +306,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         Log.d(TAG, "eliminarMantenimiento: " + deleteID);
 
-        actualizarEstado();
+        actualizarEstado(mantenimiento.getVehiculo().getId());
 
         finish();
     }
@@ -342,7 +344,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
                 mantenimiento.setEstado(getString(R.string.fa_square_o));
             }
         }
-
 
         if (nombre.isEmpty()) {
             editTextNombreMantenimiento.setError(getString(R.string.error_descripcion_vacia));
@@ -410,9 +411,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
         alarmManager.set(AlarmManager.RTC_WAKEUP, fechaNotificacion.getTimeInMillis(), pendingIntent);
     }
 
-    private void actualizarEstado(){
-
-        int idVehiculo = mantenimiento.getVehiculo().getId();
+    private void actualizarEstado(int idVehiculo){
         String[] projection = {MantenimientosContentProvider.ID_MANTENIMIENTO,MantenimientosContentProvider.ESTADO_REPARACION};
         String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?";
         String[] whereArgs = {Integer.toString(idVehiculo)};

@@ -52,7 +52,7 @@
     <string name="error_nombre_reparacion_vacio">Por favor introduce un nombre en la reparación</string>
     <string name="error_descripcion_reparacion_vacia">Por favor introduce una breve descripcion de la reparación</string>
     <string name="error_precio_vacio">Por favor introduce un precio para la reparación</string>
-    <string name="dialog_message">¿Deseas actualizar el kilometraje ahora?</string>
+    <string name="dialog_message">Mantenimientos pendientes para reparar</string>
     <string name="ok">Actualizar</string>
     <string name="notificacion">Se te notificará  el</string>
     <string name="empty_vehiculos">Vaya! Tu garaje está vacio. \n Pulsa el botón de añadir para comenzar a usarlo.</string>
@@ -80,4 +80,6 @@
     <string name="han_pasado">(Han pasado</string>
     <string name="restrasado">(El mantenimiento se ha retrasado</string>
     <string name="vehiculo_no_creado">Por favor guarde el vehículo primero</string>
+    <string name="titulo_dialog">Mantenimientos pendientes</string>
+    <string name="dialog_message_parte2">pendientes de actualizar.</string>
 </resources>

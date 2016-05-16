@@ -1,6 +1,7 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -26,9 +28,9 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
@@ -43,8 +45,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private static final String UPDATE_DATE = "update_date";
     private byte[] foto = new byte[0];
     private Vehiculo vehiculo;
-
-    private Date updateDate;
 
     private ImageView imagenVehiculo;
     private EditText editTextMarca;
@@ -229,7 +229,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         Log.d(TAG, "onSaveInstanceState: " + vehiculo);
         
         outState.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
-        outState.putSerializable(UPDATE_DATE,updateDate);
     }
 
     @Override
@@ -238,8 +237,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
         Log.d(TAG, "onRestoreInstanceState: " + vehiculo);
-
-        updateDate = (Date) savedInstanceState.getSerializable(UPDATE_DATE);
     }
 
     @Override
@@ -331,6 +328,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             contentValues.put(VehiculoContentProvider.MODELO, vehiculo.getModelo());
             contentValues.put(VehiculoContentProvider.MATRICULA, vehiculo.getMatricula());
             contentValues.put(VehiculoContentProvider.KILOMETRAJE, vehiculo.getKilometraje());
+            updateKilometraje(vehiculo.getKilometraje());
             contentValues.put(VehiculoContentProvider.COMBUSTIBLE, vehiculo.getCombustible());
             contentValues.put(VehiculoContentProvider.CILINDRADA, vehiculo.getCilindrada());
             contentValues.put(VehiculoContentProvider.POTENCIA, vehiculo.getPotencia());
@@ -472,15 +470,45 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     }
 
     private void updateKilometraje(float nuevoKilometraje){
-        String updateID = Integer.toString(vehiculo.getId());
+        int idVehiculo = vehiculo.getId();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(VehiculoContentProvider.KILOMETRAJE, nuevoKilometraje);
+        String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?"
+                + " AND " + MantenimientosContentProvider.ESTADO_REPARACION + " = " + "?"
+                + " AND " + MantenimientosContentProvider.KILOMETRAJE_REPARACION + " <= " + "?";
+        String[] whereArgs = {Integer.toString(idVehiculo),getString(R.string.fa_square_o),Float.toString(nuevoKilometraje)};
+        String sortOrder = null;
 
-        int resultado = getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,updateID),contentValues,null,null);
+        // Query URI
+        Uri queryUri = MantenimientosContentProvider.CONTENT_URI;
 
-        if (resultado > 0){
-            updateDate = new Date(System.currentTimeMillis());
+        ContentValues contentValuesVehiculo = new ContentValues();
+        contentValuesVehiculo.put(MantenimientosContentProvider.ESTADO_REPARACION,getString(R.string.fa_exclamation_triangle));
+        int pendientesDeReparar = getContentResolver().update(queryUri,contentValuesVehiculo,where,whereArgs);
+
+        if (pendientesDeReparar > 0){
+            vehiculo.setEstado(getString(R.string.fa_exclamation_triangle));
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.titulo_dialog);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(pendientesDeReparar).append(" ").append(getString(R.string.dialog_message));
+
+            builder.setMessage(sb.toString());
+
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {}});
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
+
+        Log.d(TAG, "updateKilometraje: " + Integer.toString(pendientesDeReparar));
     }
 }

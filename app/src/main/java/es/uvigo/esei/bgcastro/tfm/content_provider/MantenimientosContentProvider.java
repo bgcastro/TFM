@@ -49,7 +49,6 @@ public class MantenimientosContentProvider extends ContentProvider {
     public static final String DESCRIPCION = "descripcion";
     public static final String KILOMETRAJE_REPARACION = "kilometraje_reparacion";
     public static final String FECHA = "reparacion";
-    public static final String ESTADO_SINCRONIZACION = "sincronizacion";
 
     @Override
     public boolean onCreate() {
