@@ -11,36 +11,37 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activitys.VehiculosActivity">
+
+        <activity android:name=".activitys.VehiculosActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.GestionVehiculosActivity" android:parentActivityName=".activitys.VehiculosActivity" android:launchMode="singleTop">
+        <activity android:name=".activitys.GestionVehiculosActivity" android:parentActivityName=".activitys.VehiculosActivity" android:launchMode="singleTop" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.VehiculosActivity"/>
         </activity>
-        <activity android:name=".activitys.MantenimientosActivity" android:parentActivityName=".activitys.GestionVehiculosActivity" >
+        <activity android:name=".activitys.MantenimientosActivity" android:parentActivityName=".activitys.GestionVehiculosActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.GestionVehiculosActivity"/>
         </activity>
-        <activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity" >
+        <activity android:name=".activitys.GestionMantenimientosActivity" android:parentActivityName=".activitys.MantenimientosActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MantenimientosActivity"/>
         </activity>
 
-        <activity android:name=".activitys.ReparacionesActivity" android:parentActivityName=".activitys.MantenimientosActivity" >
+        <activity android:name=".activitys.ReparacionesActivity" android:parentActivityName=".activitys.MantenimientosActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.MantenimientosActivity"/>
         </activity>
 
-        <activity android:name=".activitys.GestionReparacionesActivity" android:parentActivityName=".activitys.ReparacionesActivity" >
+        <activity android:name=".activitys.GestionReparacionesActivity" android:parentActivityName=".activitys.ReparacionesActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activitys.ReparacionesActivity"/>
