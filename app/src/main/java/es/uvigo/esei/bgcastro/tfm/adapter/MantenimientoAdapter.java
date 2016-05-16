@@ -58,7 +58,6 @@ public class MantenimientoAdapter extends ArrayAdapter<Mantenimiento> {
             mantenimientoViewHolder.getNombreMantenimientoItem().setText(mantenimiento.getNombre());
             mantenimientoViewHolder.getDescripcionMantenimientoItem().setText(mantenimiento.getDescripcion());
             mantenimientoViewHolder.getKilometrajeMantenimientoItem().setText(Float.toString(mantenimiento.getKilometrajeReparacion()));
-            mantenimientoViewHolder.getEstadoSincronizacion().setText(mantenimiento.getEstadoSincronizacion());
         }
 
         Typeface font = Typeface.createFromAsset(view.getContext().getAssets(), "fontawesome-webfont.ttf");

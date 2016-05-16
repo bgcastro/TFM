@@ -56,4 +56,22 @@
         android:theme="@style/vehiculo_regular"
         android:paddingBottom="@dimen/mantenimiento_item_padding_bottom"/>
 
+    <TextView
+        android:id="@+id/tituloFechaMantenimientoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fecha"
+        android:layout_below="@+id/kilometrajeMantenimientoItem"
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_bold" />
+
+    <TextView
+        android:id="@+id/fechaMantenimientoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloFechaMantenimientoItem"
+        android:layout_toRightOf="@id/estadoMantenimientoItem"
+        android:theme="@style/vehiculo_regular"
+        android:paddingBottom="@dimen/mantenimiento_item_padding_bottom"/>
+
 </RelativeLayout>

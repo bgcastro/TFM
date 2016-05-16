@@ -44,7 +44,6 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_DESCRIPCION = "descripcion";
     public static final String COL_KILOMETRAJE_REPARACION = "kilometraje_reparacion";
     public static final String COL_FECHA = "reparacion";
-    public static final String COL_ESTADO_SINCRONIZACION = "sincronizacion";
 
     //Campos tabla reparaciones
     public static final String COL_ID_REPARACION = "_id";
@@ -80,7 +79,6 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             COL_DESCRIPCION + " TEXT, " +
             COL_KILOMETRAJE_REPARACION + " REAL, " +
             COL_FECHA + " DATE, " +
-            COL_ESTADO_SINCRONIZACION + " TEXT, " +
             " FOREIGN KEY (" + COL_ID_VEHICULO + ") REFERENCES " +
             TABLA_VEHICULOS + "(" + COL_ID + ") " +
             "ON DELETE CASCADE" + ")";

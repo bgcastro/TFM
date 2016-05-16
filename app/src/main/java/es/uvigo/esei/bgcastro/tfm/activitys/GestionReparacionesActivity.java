@@ -13,6 +13,9 @@ import android.widget.EditText;
 
 import org.joda.time.DateTime;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.ReparacionesContentProvider;
@@ -28,6 +31,7 @@ public class GestionReparacionesActivity extends BaseActivity {
     private Mantenimiento mantenimiento;
 
     private Reparacion reparacion;
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
 
     private EditText editTextReparacion;
     private EditText editTextDescripcionReparacion;
@@ -237,6 +241,7 @@ public class GestionReparacionesActivity extends BaseActivity {
     private void actualizarEstado(){
         ContentValues contentValuesMantenimientos = new ContentValues();
         contentValuesMantenimientos.put(MantenimientosContentProvider.ESTADO_REPARACION,getString(R.string.fa_check));
+        contentValuesMantenimientos.put(MantenimientosContentProvider.FECHA, simpleDateFormat.format(new Date()));
 
         Uri uriMantenimiento = Uri.withAppendedPath(MantenimientosContentProvider.CONTENT_URI,Integer.toString(mantenimiento.getId()));
         getContentResolver().update(uriMantenimiento,contentValuesMantenimientos,null,null);

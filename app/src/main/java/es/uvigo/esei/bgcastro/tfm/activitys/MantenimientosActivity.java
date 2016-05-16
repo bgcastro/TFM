@@ -20,6 +20,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
@@ -35,14 +41,16 @@ import static java.lang.Math.abs;
 public class MantenimientosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "MantenimientosActivity";
     private static final int URL_LOADER = 1;
-    public static final String MANTENIMIENTO = "mantenimiento";
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
 
     private ListView listViewMantenimientos;
     //ArrayList<Mantenimiento> mantenimientos;
     //MantenimientoAdapter adapter;
     private SimpleCursorAdapter adapter;
 
-    Vehiculo vehiculo;
+    private Vehiculo vehiculo;
+
+    public static final String MANTENIMIENTO = "mantenimiento";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,17 +85,20 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         loaderManager.initLoader(URL_LOADER, null, this);
 
         //simple cursor adapter que rellena la IU
-        String[] fromColumns = new String[]{VehiculosSQLite.COL_ID_MANTENIMIENTO,
+        String[] fromColumns = new String[]{
                 VehiculosSQLite.COL_NOMBRE,
                 VehiculosSQLite.COL_DESCRIPCION,
                 VehiculosSQLite.COL_KILOMETRAJE_REPARACION,
                 VehiculosSQLite.COL_FECHA,
-                VehiculosSQLite.COL_ESTADO_SINCRONIZACION };
+                VehiculosSQLite.COL_ESTADO_REPARACION};
 
-        int[] into = new int[]{R.id.estadoMantenimientoItem,
+        int[] into = new int[]{
                 R.id.nombreMantenimientoItem,
                 R.id.descripcionMantenimientoItem,
-                R.id.kilometrajeMantenimientoItem};
+                R.id.kilometrajeMantenimientoItem,
+                R.id.fechaMantenimientoItem,
+                R.id.estadoMantenimientoItem
+                };
 
         adapter = new SimpleCursorAdapter(this,R.layout.mantenimiento_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
@@ -95,17 +106,18 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 switch (view.getId()) {
-                    case R.id.estadoMantenimientoItem:
-                        ((TextView)view).setText(cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO)));
+                    case R.id.estadoMantenimientoItem: {
+                        ((TextView) view).setText(cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO)));
 
                         final Typeface font = Typeface.createFromAsset(view.getContext().getAssets(), "fontawesome-webfont.ttf");
-                        ((TextView)view).setTypeface(font);
-                        ((TextView)view).setTextColor(view.getResources().getColor(R.color.grisClaro));
-                        ((TextView)view).setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+                        ((TextView) view).setTypeface(font);
+                        ((TextView) view).setTextColor(view.getResources().getColor(R.color.grisClaro));
+                        ((TextView) view).setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 
                         return true;
+                    }
 
-                    case R.id.kilometrajeMantenimientoItem:
+                    case R.id.kilometrajeMantenimientoItem:{
                         SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
                         StringBuilder kilometraje = new StringBuilder();
                         float valorKilometrajeMantenimiento = cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_KILOMETRAJE_REPARACION));
@@ -129,6 +141,41 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                         ((TextView)view).setText(kilometraje.toString());
 
                         return  true;
+                    }
+
+                    case R.id.fechaMantenimientoItem: {
+                        DateTime fechaReparacion = new DateTime();
+                        String fecha = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_FECHA));
+                        String estado = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO_REPARACION));
+                        StringBuilder stringBuilder = new StringBuilder();
+
+                        try {
+                            fechaReparacion = new DateTime(simpleDateFormat.parse(fecha));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        int diferenciaDias = Days.daysBetween(new DateTime(), fechaReparacion).getDays();
+
+                        if (estado.hashCode() == getString(R.string.fa_square_o).hashCode()){
+                            stringBuilder.append(fecha).append(" ")
+                                    .append(getString(R.string.faltan)).append(" ").append(diferenciaDias)
+                                    .append(" ").append(getString(R.string.dias));
+                        }else if (estado.hashCode() == getString(R.string.fa_check).hashCode() ) {
+                                stringBuilder.append(fecha).append(" ")
+                                        .append(getString(R.string.han_pasado)).append(" ")
+                                        .append(abs(diferenciaDias)).append(" ").append(getString(R.string.dias));
+                            }else {
+                                stringBuilder.append(fecha).append(" ")
+                                        .append(getString(R.string.restrasado)).append(" ")
+                                        .append(abs(diferenciaDias)).append(" ").append(getString(R.string.dias));
+                            }
+
+
+                        ((TextView) view).setText(stringBuilder.toString());
+
+                        return true;
+                    }
 
                     default: return false;
                 }

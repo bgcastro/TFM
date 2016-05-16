@@ -23,20 +23,18 @@ public class Mantenimiento implements Parcelable{
     private String descripcion;
     private float kilometrajeReparacion;
     private Date fecha;
-    private String estadoSincronizacion;
 
     private Vehiculo vehiculo;
 
     public Mantenimiento() {
     }
 
-    public Mantenimiento(String estado, String nombre, String descripcion, float kilometrajeReparacion, Date fecha, String estadoSincronizacion, Vehiculo vehiculo) {
+    public Mantenimiento(String estado, String nombre, String descripcion, float kilometrajeReparacion, Date fecha, Vehiculo vehiculo) {
         this.estado = estado;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.kilometrajeReparacion = kilometrajeReparacion;
         this.fecha = fecha;
-        this.estadoSincronizacion = estadoSincronizacion;
         this.vehiculo = vehiculo;
     }
 
@@ -47,7 +45,6 @@ public class Mantenimiento implements Parcelable{
         this.descripcion = descripcion;
         this.kilometrajeReparacion = kilometrajeReparacion;
         this.fecha = fecha;
-        this.estadoSincronizacion = estadoSincronizacion;
         this.vehiculo = vehiculo;
     }
 
@@ -57,7 +54,6 @@ public class Mantenimiento implements Parcelable{
         this.nombre = source.readString();
         this.descripcion = source.readString();
         this.kilometrajeReparacion = source.readFloat();
-        this.estadoSincronizacion = source.readString();
         this.fecha = (Date) source.readSerializable();
         this.vehiculo = source.readParcelable(Vehiculo.class.getClassLoader());
     }
@@ -77,7 +73,6 @@ public class Mantenimiento implements Parcelable{
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            estadoSincronizacion = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO_SINCRONIZACION));
 
             int idVehiculo = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_ID_VEHICULO));
             String[] projection = null;
@@ -141,14 +136,6 @@ public class Mantenimiento implements Parcelable{
         this.estado = estado;
     }
 
-    public String getEstadoSincronizacion() {
-        return estadoSincronizacion;
-    }
-
-    public void setEstadoSincronizacion(String estadoSincronizacion) {
-        this.estadoSincronizacion = estadoSincronizacion;
-    }
-
     public Date getFecha() {
         return fecha;
     }
@@ -174,7 +161,6 @@ public class Mantenimiento implements Parcelable{
                 ", descripcion='" + descripcion + '\'' +
                 ", kilometrajeReparacion=" + kilometrajeReparacion +
                 ", fecha=" + fecha +
-                ", estadoSincronizacion='" + estadoSincronizacion + '\'' +
                 ", vehiculo=" + vehiculo +
                 '}';
     }
@@ -191,7 +177,6 @@ public class Mantenimiento implements Parcelable{
         dest.writeString(nombre);
         dest.writeString(descripcion);
         dest.writeFloat(kilometrajeReparacion);
-        dest.writeString(estadoSincronizacion);
         dest.writeSerializable(fecha);
         dest.writeParcelable(vehiculo,flags);
     }

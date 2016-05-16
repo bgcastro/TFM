@@ -63,7 +63,6 @@ public class MantenimientoDAO extends VehiculoBD {
         contentValues.put(VehiculosSQLite.COL_DESCRIPCION, mantenimiento.getDescripcion());
         contentValues.put(VehiculosSQLite.COL_KILOMETRAJE_REPARACION, mantenimiento.getKilometrajeReparacion());
         contentValues.put(VehiculosSQLite.COL_FECHA, simpleDateFormat.format(mantenimiento.getFecha()));
-        contentValues.put(VehiculosSQLite.COL_ESTADO_SINCRONIZACION, mantenimiento.getEstadoSincronizacion());
 
         return bbdd.insert(VehiculosSQLite.TABLA_MANTENIMIENTOS,null,contentValues);
     }

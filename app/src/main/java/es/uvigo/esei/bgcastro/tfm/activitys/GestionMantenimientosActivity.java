@@ -230,7 +230,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
             contentValues.put(MantenimientosContentProvider.DESCRIPCION, mantenimiento.getDescripcion());
             contentValues.put(MantenimientosContentProvider.KILOMETRAJE_REPARACION, mantenimiento.getKilometrajeReparacion());
             contentValues.put(MantenimientosContentProvider.FECHA, simpleDateFormat.format(mantenimiento.getFecha()));
-            contentValues.put(MantenimientosContentProvider.ESTADO_SINCRONIZACION, mantenimiento.getEstadoSincronizacion());
 
             Uri uri = getContentResolver().insert(MantenimientosContentProvider.CONTENT_URI, contentValues);
 
@@ -239,8 +238,11 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
             //Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
             ContentValues contentValuesVehiculo = new ContentValues();
-            contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,getString(R.string.fa_wrench));
-
+            if (mantenimiento.getEstado().hashCode() == getString(R.string.fa_exclamation_triangle).hashCode()){
+                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_exclamation_triangle));
+            }else {
+                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_wrench));
+            }
             getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI, Integer.toString(mantenimiento.getVehiculo().getId())),contentValuesVehiculo,null,null);
 
             Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
@@ -249,6 +251,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             if (new DateTime(calendar).isAfterNow()){
                 setNotification(calendar, mantenimiento);
             }
+
 
             //Cambiamos el menu
             invalidateOptionsMenu();
@@ -268,12 +271,17 @@ public class GestionMantenimientosActivity extends BaseActivity{
             contentValues.put(MantenimientosContentProvider.DESCRIPCION, mantenimiento.getDescripcion());
             contentValues.put(MantenimientosContentProvider.KILOMETRAJE_REPARACION, mantenimiento.getKilometrajeReparacion());
             contentValues.put(MantenimientosContentProvider.FECHA, simpleDateFormat.format(mantenimiento.getFecha()));
-            contentValues.put(MantenimientosContentProvider.ESTADO_SINCRONIZACION, mantenimiento.getEstadoSincronizacion());
 
             String updateID = Integer.toString(mantenimiento.getId());
 
-            //actualizamos el vehiculo en la BD
-            int resultado = getContentResolver().update(Uri.withAppendedPath(MantenimientosContentProvider.CONTENT_URI, updateID), contentValues, null, null);
+            //Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
+            ContentValues contentValuesVehiculo = new ContentValues();
+            if (mantenimiento.getEstado().hashCode() == getString(R.string.fa_exclamation_triangle).hashCode()){
+                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_exclamation_triangle));
+            }else {
+                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_wrench));
+            }
+            getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI, Integer.toString(mantenimiento.getVehiculo().getId())),contentValuesVehiculo,null,null);
 
             Log.d(TAG, "modificarMantenimiento: " + mantenimiento.toString());
 
@@ -316,8 +324,8 @@ public class GestionMantenimientosActivity extends BaseActivity{
         String nombre = editTextNombreMantenimiento.getText().toString();
         String descripcion = editTextDescripcionMantenimiento.getText().toString();
         String kilometraje = editTextKilometrajeMantenimiento.getText().toString();
+        DateTime fechaReparacion = new DateTime(calendar.getTime());
 
-        mantenimiento.setEstado(getString(R.string.fa_square_o));
         mantenimiento.setFecha(calendar.getTime());
         mantenimiento.setVehiculo(vehiculo);
 
@@ -327,7 +335,14 @@ public class GestionMantenimientosActivity extends BaseActivity{
         } else {
             kilometrajeReparacion = Float.parseFloat(kilometraje);
             mantenimiento.setKilometrajeReparacion(kilometrajeReparacion);
+
+            if (fechaReparacion.isBeforeNow() || vehiculo.getKilometraje() - kilometrajeReparacion > 0 ){
+                mantenimiento.setEstado(getString(R.string.fa_exclamation_triangle));
+            }else {
+                mantenimiento.setEstado(getString(R.string.fa_square_o));
+            }
         }
+
 
         if (nombre.isEmpty()) {
             editTextNombreMantenimiento.setError(getString(R.string.error_descripcion_vacia));
@@ -409,25 +424,28 @@ public class GestionMantenimientosActivity extends BaseActivity{
         // Create the new Cursor loader.
         Cursor cursor = getContentResolver().query(queryUri, projection, where, whereArgs, sortOrder);
 
-        boolean mantenimientoResueltos = true;
-        while (cursor.moveToNext()){
-            String estado = cursor.getString(cursor.getColumnIndex(MantenimientosContentProvider.ESTADO_REPARACION));
-            String fa_square = getString(R.string.fa_square_o);
-            String fa_triangle = getString(R.string.fa_exclamation_triangle);
-            if (estado.hashCode() == fa_square.hashCode() || estado.hashCode() == fa_triangle.hashCode()){
-                mantenimientoResueltos = false;
-                break;
+        ContentValues contentValuesVehiculo = new ContentValues();
+
+        if (cursor.getCount() == 0){
+            //ya no hay mas mantenimientos
+            contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,getString(R.string.fa_check));
+        }else {
+            while (cursor.moveToNext()){
+                //Si hay mantenimientos programados
+                String estado = cursor.getString(cursor.getColumnIndex(MantenimientosContentProvider.ESTADO_REPARACION));
+                String fa_square = getString(R.string.fa_wrench);
+                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,fa_square);
+
+                String fa_triangle = getString(R.string.fa_exclamation_triangle);
+                if (estado.hashCode() == fa_triangle.hashCode()){
+                    //si hay mantenimiento pendientes
+                    contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,fa_triangle);
+                    break;
+                }
             }
         }
 
-        //Cambiamos el estado a chequeado porque ya no existen mas mantenimientos que realizar
-        if (mantenimientoResueltos){
-            Uri uriVehiculos = Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,Integer.toString(mantenimiento.getVehiculo().getId()));
-
-            ContentValues contentValuesVehiculo = new ContentValues();
-            contentValuesVehiculo.put(VehiculoContentProvider.ESTADO,getString(R.string.fa_check));
-
-            getContentResolver().update(uriVehiculos,contentValuesVehiculo,null,null);
-        }
+        Uri uriVehiculos = Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI,Integer.toString(mantenimiento.getVehiculo().getId()));
+        getContentResolver().update(uriVehiculos,contentValuesVehiculo,null,null);
     }
 }
