@@ -79,4 +79,5 @@
     <string name="dias">días)</string>
     <string name="han_pasado">(Han pasado</string>
     <string name="restrasado">(El mantenimiento se ha retrasado</string>
+    <string name="vehiculo_no_creado">Por favor guarde el vehículo primero</string>
 </resources>

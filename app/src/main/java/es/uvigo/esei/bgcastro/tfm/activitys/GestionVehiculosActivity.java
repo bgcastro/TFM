@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -131,7 +132,12 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: todos los mantenimientos");
-                showMantenimientos();
+
+                if (vehiculo.getId() < 0){
+                    Toast.makeText(getApplicationContext(),R.string.vehiculo_no_creado,Toast.LENGTH_LONG).show();
+                }else {
+                    showMantenimientos();
+                }
             }
         });
 
