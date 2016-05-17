@@ -47,6 +47,12 @@
                 android:value=".activitys.ReparacionesActivity"/>
         </activity>
 
+        <activity android:name=".activitys.InformeActvity" android:parentActivityName=".activitys.GestionVehiculosActivity" android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activitys.GestionVehiculosActivity"/>
+        </activity>
+
         <provider
             android:authorities="es.uvigo.esei.bgcastro.tfm.vehiculos"
             android:name=".content_provider.VehiculoContentProvider"/>

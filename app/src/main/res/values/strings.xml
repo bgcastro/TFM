@@ -85,4 +85,11 @@
     <string name="actualizar_KM">¿Deseas actualizar el kilometraje ahora?</string>
     <string name="ultimosMantenimientos">Últimos mantenimientos</string>
     <string name="empty_mantenimientos_fragment">No hay ningún mantenimiento pendiente</string>
+    <string name="action_informe_gastos_vehicle">Ver informe de gastos</string>
+    <string name="empty_informes">No se han encontrado gastos para este vehiculo</string>
+    <string name="fechaInicio">Fecha de inicio</string>
+    <string name="titulo_toolbar_informes_activity">Informe de gastos</string>
+    <string name="tituloFechaFin">Fecha fin</string>
+    <string name="costeMantenimiento">Coste del mantenimiento</string>
+    <string name="coste_total_informe">Gastado en mantenimientos</string>
 </resources>

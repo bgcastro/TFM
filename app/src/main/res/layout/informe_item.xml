@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/space_between_list_items"
+    android:paddingBottom="@dimen/space_between_list_items">
+
+    <TextView
+        android:id="@+id/nombreMantenimientoInformeItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/space_between_list_items"
+        android:theme="@style/vehiculo_bold" />
+
+    <TextView
+        android:id="@+id/tituloTotalMantenimientoInformeItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nombreMantenimientoInformeItem"
+        android:text="@string/costeMantenimiento"
+        android:theme="@style/vehiculo_bold" />
+
+    <TextView
+        android:id="@+id/totalMantenimientoInformeItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tituloTotalMantenimientoInformeItem"
+        android:layout_below="@+id/nombreMantenimientoInformeItem"
+        android:theme="@style/vehiculo_regular"
+        android:textSize="12sp"/>
+
+</RelativeLayout>

@@ -276,6 +276,8 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
             String updateID = Integer.toString(mantenimiento.getId());
 
+            getContentResolver().update(Uri.withAppendedPath(MantenimientosContentProvider.CONTENT_URI, updateID),contentValues,null,null);
+
             //Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
             ContentValues contentValuesVehiculo = new ContentValues();
             if (mantenimiento.getEstado().hashCode() == getString(R.string.fa_exclamation_triangle).hashCode()){

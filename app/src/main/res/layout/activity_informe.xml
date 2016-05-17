@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarInformes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tituloFechaInicio"
+        android:layout_width="@dimen/titulo_informe"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_between_input_items"
+        android:layout_marginBottom="@dimen/space_between_input_items"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/toolbarInformes"
+        android:theme="@style/vehiculo_bold"
+        android:text="@string/fechaInicio"/>
+
+    <TextView
+        android:id="@+id/fechaInicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_between_input_items"
+        android:layout_marginBottom="@dimen/space_between_input_items"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/toolbarInformes"
+        android:layout_toRightOf="@+id/tituloFechaInicio"
+        android:theme="@style/vehiculo_regular"/>
+
+    <TextView
+        android:id="@+id/tituloFechaFin"
+        android:layout_width="@dimen/titulo_informe"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/space_between_input_items"
+        android:layout_below="@+id/tituloFechaInicio"
+        android:theme="@style/vehiculo_bold"
+        android:text="@string/tituloFechaFin"/>
+
+    <TextView
+        android:id="@+id/fechaFin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_between_input_items"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@+id/tituloFechaFin"
+        android:layout_below="@+id/fechaInicio"
+        android:theme="@style/vehiculo_regular"/>
+
+    <ImageView
+        android:id="@+id/lineaSeparacionInformes"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grisClaro"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/fechaFin" />
+
+    <TextView
+        android:id="@+id/emptyInformes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/fechaFin"
+        android:text="@string/empty_informes"
+        android:theme="@style/vehiculo_bold"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/totalInformes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/botton_bar"
+        android:theme="@style/vehiculo_bold"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grisToolbar" />
+
+    <ListView
+        android:id="@+id/listViewInformes"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/fechaFin"
+        android:layout_above="@+id/totalInformes"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" />
+
+</RelativeLayout>

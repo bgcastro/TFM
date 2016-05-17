@@ -14,4 +14,5 @@
     <dimen name="actionBarSize">50dp</dimen>
     <dimen name="mantenimiento_item_padding_top">10dp</dimen>
     <dimen name="mantenimiento_item_padding_bottom">10dp</dimen>
+    <dimen name="titulo_informe">150dp</dimen>
 </resources>

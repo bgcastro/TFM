@@ -8,6 +8,13 @@
         android:title="@string/action_add_vehiculo"
         app:showAsAction="always"/>
 
+    <!-- opcion de modificar -->
+    <item
+        android:id="@+id/action_modify_vehiculo"
+        android:title="@string/action_remove_vehicle"
+        android:icon="@drawable/ic_mode_edit_black_24dp"
+        app:showAsAction="always"/>
+
     <!-- opcion de eliminar -->
     <item
         android:id="@+id/action_remove_vehiculo"
@@ -15,11 +22,11 @@
         android:icon="@drawable/ic_delete_black_24dp"
         app:showAsAction="always"/>
 
-    <!-- opcion de modificar -->
+    <!-- opcion de eliminar -->
     <item
-        android:id="@+id/action_modify_vehiculo"
-        android:title="@string/action_remove_vehicle"
-        android:icon="@drawable/ic_mode_edit_black_24dp"
-        app:showAsAction="always"/>
+        android:id="@+id/action_informe_gastos_vehiculo"
+        android:title="@string/action_informe_gastos_vehicle"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        app:showAsAction="never"/>
 
 </menu>

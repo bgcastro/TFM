@@ -37,7 +37,6 @@ import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
 import static android.view.View.OnClickListener;
-import static android.view.View.OnFocusChangeListener;
 
 public class GestionVehiculosActivity extends BaseActivity implements ColorPickerDialog.NoticeDialogListener{
     private static final String TAG = "GesVehiculosActivity";
@@ -65,8 +64,6 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        OnFocusChangeListener focusChangeListenerCambios;
 
         Intent intent = getIntent();
 
@@ -194,10 +191,20 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                 return true;
             }
 
-            case R.id.action_modify_vehiculo:
+            case R.id.action_modify_vehiculo:{
                 activarEdicion();
                 invalidateOptionsMenu();
                 return true;
+            }
+
+            case R.id.action_informe_gastos_vehiculo: {
+                if (vehiculo.getId() < 0) {
+                    Toast.makeText(getApplicationContext(), R.string.vehiculo_no_creado, Toast.LENGTH_LONG).show();
+                } else {
+                    showInforme();
+                }
+                return true;
+            }
 
             default: {
                 return false;
@@ -515,6 +522,15 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         }
 
         Log.d(TAG, "updateKilometraje: " + Integer.toString(pendientesDeReparar));
+    }
+
+    private void showInforme(){
+        Log.d(TAG, "showInforme: ");
+        Intent intentMantenimientos = new Intent(GestionVehiculosActivity.this,InformeActvity.class);
+
+        intentMantenimientos.putExtra(VehiculosActivity.VEHICULO,vehiculo);
+
+        startActivity(intentMantenimientos);
     }
 
     public Vehiculo getVehiculo() {
