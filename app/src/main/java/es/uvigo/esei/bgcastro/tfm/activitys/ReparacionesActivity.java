@@ -126,7 +126,7 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
             }
 
             default: {
-                return false;
+                return super.onOptionsItemSelected(item);
             }
         }
     }

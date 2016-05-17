@@ -53,6 +53,9 @@
                 android:value=".activitys.GestionVehiculosActivity"/>
         </activity>
 
+        <activity android:name=".activitys.PreferencesActivity" android:screenOrientation="portrait">
+        </activity>
+
         <provider
             android:authorities="es.uvigo.esei.bgcastro.tfm.vehiculos"
             android:name=".content_provider.VehiculoContentProvider"/>

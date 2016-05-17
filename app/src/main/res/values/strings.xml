@@ -92,4 +92,9 @@
     <string name="tituloFechaFin">Fecha fin</string>
     <string name="costeMantenimiento">Coste del mantenimiento</string>
     <string name="coste_total_informe">Gastado en mantenimientos</string>
+    <string name="alertSI">¿Actualizar el kilometraje al acceder a la información de un vehículo?</string>
+    <string name="alertSISummary">Si activa esta opción se le pedirá que actualize la información del kilometraje</string>
+    <string name="toolbarPreferences">Preferencias</string>
+    <string name="measure_unit">Unidad de medida</string>
+    <string name="measure_unit_summary">Estable la unidad de medida</string>
 </resources>

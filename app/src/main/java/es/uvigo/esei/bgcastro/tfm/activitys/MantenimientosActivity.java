@@ -44,8 +44,6 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
 
     private ListView listViewMantenimientos;
-    //ArrayList<Mantenimiento> mantenimientos;
-    //MantenimientoAdapter adapter;
     private SimpleCursorAdapter adapter;
 
     private Vehiculo vehiculo;
@@ -124,7 +122,11 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                         float diferencia = valorKilometrajeMantenimiento - vehiculo.getKilometraje();
 
                         kilometraje.append(Float.toString(valorKilometrajeMantenimiento));
-                        kilometraje.append(preferences.getString(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT));
+                        if (preferences.getBoolean(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT)) {
+                            kilometraje.append("Km");
+                        }else {
+                            kilometraje.append("Millas");
+                        }
                         kilometraje.append(" ");
 
                         if ( diferencia >= 0){
@@ -134,8 +136,11 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                             kilometraje.append(getString(R.string.pasado)).append(" ");
                             kilometraje.append(Float.toString(abs(diferencia)));
                         }
-
-                        kilometraje.append(preferences.getString(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT));
+                        if (preferences.getBoolean(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT)) {
+                            kilometraje.append("Km");
+                        }else {
+                            kilometraje.append("Millas");
+                        }
                         kilometraje.append(")");
 
                         ((TextView)view).setText(kilometraje.toString());
@@ -241,13 +246,8 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                 return true;
             }
 
-            case R.id.action_remove_mantenimiento: {
-                //TODO añadir eliminar
-                return true;
-            }
-
             default: {
-                return false;
+                return super.onOptionsItemSelected(item);
             }
         }
     }

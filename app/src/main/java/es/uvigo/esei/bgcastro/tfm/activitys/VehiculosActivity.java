@@ -96,8 +96,11 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
                         StringBuilder kilometraje = new StringBuilder();
 
                         kilometraje.append(" ").append(cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_KILOMETRAJE)));
-                        kilometraje.append(preferences.getString(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT));
-
+                        if (preferences.getBoolean(VehiculosPreferences.MEASURE_UNIT, VehiculosPreferences.MEASURE_UNIT_DEFAULT)) {
+                            kilometraje.append("Km");
+                        }else {
+                            kilometraje.append("Millas");
+                        }
                         ((TextView)view).setText(kilometraje);
 
                         return true;
@@ -198,7 +201,7 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
             }
 
             default: {
-                return false;
+                return super.onOptionsItemSelected(item);
             }
         }
     }

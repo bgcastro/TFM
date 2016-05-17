@@ -179,7 +179,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             }
 
             default: {
-                return false;
+                return super.onOptionsItemSelected(item);
             }
         }
     }

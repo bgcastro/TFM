@@ -1,5 +1,6 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,5 +51,8 @@ public class BaseActivity extends AppCompatActivity {
 
     private void abrirOpciones() {
         Log.d(TAG, "abrirOpciones: ");
+
+        Intent intentPreferencias = new Intent(BaseActivity.this, PreferencesActivity.class);
+        startActivity(intentPreferencias);
     }
 }

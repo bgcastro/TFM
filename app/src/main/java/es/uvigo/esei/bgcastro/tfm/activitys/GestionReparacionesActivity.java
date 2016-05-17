@@ -116,7 +116,7 @@ public class GestionReparacionesActivity extends BaseActivity {
             }
 
             default: {
-                return false;
+                return super.onOptionsItemSelected(item);
             }
         }
 

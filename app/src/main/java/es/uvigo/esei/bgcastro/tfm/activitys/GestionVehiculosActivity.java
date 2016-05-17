@@ -3,6 +3,7 @@ package es.uvigo.esei.bgcastro.tfm.activitys;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -34,6 +35,7 @@ import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
 import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
 import static android.view.View.OnClickListener;
@@ -41,8 +43,8 @@ import static android.view.View.OnClickListener;
 public class GestionVehiculosActivity extends BaseActivity implements ColorPickerDialog.NoticeDialogListener{
     private static final String TAG = "GesVehiculosActivity";
     private static final int TOMAR_FOTO_REQUEST = 1;
-    private static final String UPDATE_DATE = "update_date";
     private byte[] foto = new byte[0];
+    private int color;
 
     private Vehiculo vehiculo;
 
@@ -59,7 +61,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
     private boolean edicionActivada = true;
 
-    private int color;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +149,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             desactivarEdicion();
         }
 
-        if (vehiculo != null && savedInstanceState == null){
+        preferences  = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
+
+        if (preferences.getBoolean(VehiculosPreferences.ALERT_ACTUALIZAR, VehiculosPreferences.ALERT_ACTUALIZAR_DEFAULT)
+                && vehiculo != null && savedInstanceState == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.actualizar_KM);
 
@@ -207,7 +212,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             }
 
             default: {
-                return false;
+                return super.onOptionsItemSelected(item);
             }
         }
     }

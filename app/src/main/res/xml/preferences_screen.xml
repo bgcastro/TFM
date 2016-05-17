@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBoxPreference
+        android:key="alert_actualizar"
+        android:title="@string/alertSI"
+        android:summary="@string/alertSISummary"
+        android:defaultValue="true" />
+
+    <SwitchPreference
+        android:key="measure_unit"
+        android:title="@string/measure_unit"
+        android:textOn="Km"
+        android:textOff="Millas sfadasd"
+        android:defaultValue="Km"
+        android:summaryOn="Km"
+        android:summaryOff="Millas"/>
+
+</PreferenceScreen>
