@@ -83,4 +83,6 @@
     <string name="titulo_dialog">Mantenimientos pendientes</string>
     <string name="dialog_message_parte2">pendientes de actualizar.</string>
     <string name="actualizar_KM">¿Deseas actualizar el kilometraje ahora?</string>
+    <string name="ultimosMantenimientos">Últimos mantenimientos</string>
+    <string name="empty_mantenimientos_fragment">No hay ningún mantenimiento pendiente</string>
 </resources>

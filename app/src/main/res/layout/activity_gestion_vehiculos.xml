@@ -270,14 +270,37 @@
         android:background="@color/grisToolbar"/>
 
     <ImageView
+        android:id="@+id/lineaSeparacion"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grisClaro"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/mitad"
-        android:layout_above="@+id/totalReparacion"/>
+        android:layout_below="@+id/mitad" />
 
-    <!-- incluir fragment o algo asi -->
+    <TextView
+        android:id="@+id/ultimosMantenimientos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/space_between_edittext"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/lineaSeparacion"
+        android:theme="@style/vehiculo_bold"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:text="@string/ultimosMantenimientos"/>
+
+    <!-- incluir fragment -->
+    <fragment
+        android:id="@+id/listFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/ultimosMantenimientos"
+        android:layout_above="@+id/todosMantenimientos"
+        class="es.uvigo.esei.bgcastro.tfm.fragment.MantenimientosFragment">
+    </fragment>
 
 </RelativeLayout>

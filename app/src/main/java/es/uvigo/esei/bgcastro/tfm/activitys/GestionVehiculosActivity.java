@@ -44,6 +44,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private static final int TOMAR_FOTO_REQUEST = 1;
     private static final String UPDATE_DATE = "update_date";
     private byte[] foto = new byte[0];
+
     private Vehiculo vehiculo;
 
     private ImageView imagenVehiculo;
@@ -514,5 +515,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         }
 
         Log.d(TAG, "updateKilometraje: " + Integer.toString(pendientesDeReparar));
+    }
+
+    public Vehiculo getVehiculo() {
+        return vehiculo;
     }
 }
