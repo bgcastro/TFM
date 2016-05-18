@@ -111,8 +111,10 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         //Ponemos la hora y el minuto que ul usuario tiene en sus preferencias
         SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
-        int horaNotificacion = preferences.getInt(VehiculosPreferences.NOTIFICATION_HOUR, VehiculosPreferences.NOTIFICATION_HOUR_DEFAULT);
-        int minutoNotificacion = preferences.getInt(VehiculosPreferences.NOTIFICATION_MINUTE, VehiculosPreferences.NOTIFICATION_MINUTE_DEFAULT);
+        String[] pieces = preferences.getString(VehiculosPreferences.NOTIFICATION_HOUR,VehiculosPreferences.NOTIFICATION_HOUR_DEFAULT).split(":");
+
+        int horaNotificacion = Integer.parseInt(pieces[0]);
+        int minutoNotificacion = Integer.parseInt(pieces[1]);
 
         calendar.set(Calendar.HOUR,horaNotificacion);
         calendar.set(Calendar.MINUTE,minutoNotificacion);

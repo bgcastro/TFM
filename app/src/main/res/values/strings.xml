@@ -97,4 +97,7 @@
     <string name="toolbarPreferences">Preferencias</string>
     <string name="measure_unit">Unidad de medida</string>
     <string name="measure_unit_summary">Estable la unidad de medida</string>
+    <string name="horaNotificacion">Hora de las notificaciones</string>
+    <string name="hora">Hora</string>
+    <string name="minuto">Minuto</string>
 </resources>

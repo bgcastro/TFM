@@ -152,7 +152,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         preferences  = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
 
         if (preferences.getBoolean(VehiculosPreferences.ALERT_ACTUALIZAR, VehiculosPreferences.ALERT_ACTUALIZAR_DEFAULT)
-                && vehiculo != null && savedInstanceState == null){
+                && vehiculo.getId() > 0 && savedInstanceState == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.actualizar_KM);
 
