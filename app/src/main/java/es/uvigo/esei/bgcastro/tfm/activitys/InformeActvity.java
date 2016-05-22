@@ -20,7 +20,7 @@ import java.util.Calendar;
 
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 17/5/16.

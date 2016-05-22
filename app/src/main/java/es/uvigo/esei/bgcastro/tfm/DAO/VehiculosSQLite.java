@@ -50,6 +50,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_NOMBRE_REPARACION = "nombre_reparacion";
     public static final String COL_DESCRIPCION_REPARACION = "descripcion_reparacion";
     public static final String COL_REFERENCIA = "referencia";
+    public static final String COL_TALLER = "taller";
     public static final String COL_PRECIO = "precio";
     public static final String COL_ID_MANTENIMIENTO_REPARACION = "id_mantenimiento";
 
@@ -89,6 +90,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             COL_NOMBRE_REPARACION + " TEXT, " +
             COL_DESCRIPCION_REPARACION + " TEXT, " +
             COL_REFERENCIA + " TEXT, " +
+            COL_TALLER + " TEXT, " +
             COL_PRECIO + " REAL, " +
             COL_ID_MANTENIMIENTO_REPARACION + " INTEGER, " +
             " FOREIGN KEY (" + COL_ID_MANTENIMIENTO_REPARACION + ") REFERENCES " +

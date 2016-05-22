@@ -13,8 +13,8 @@ import java.util.Date;
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculoDAO;
 import es.uvigo.esei.bgcastro.tfm.activitys.VehiculosActivity;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
-import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;
 
@@ -55,7 +55,7 @@ public class vehiculoActivityTest extends ActivityInstrumentationTestCase2<Vehic
         }
 
         for (int i = 0; i < 3; i++) {
-            Mantenimiento mantenimiento = new Mantenimiento("estado"+i,"nombre"+i,"descripcion"+i,i,new Date(),"sincronizacion"+i, listaDeVehiculos.get(0));
+            Mantenimiento mantenimiento = new Mantenimiento("estado"+i,"nombre"+i,"descripcion"+i,i,new Date(), listaDeVehiculos.get(0));
             listaDeMantenimientos.add(mantenimiento);
         }
 

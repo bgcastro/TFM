@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import es.uvigo.esei.bgcastro.tfm.R;
-import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.viewholder.MantenimientoViewHolder;
 
 /**

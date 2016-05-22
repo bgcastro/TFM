@@ -100,4 +100,14 @@
     <string name="horaNotificacion">Hora de las notificaciones</string>
     <string name="hora">Hora</string>
     <string name="minuto">Minuto</string>
+    <string name="textViewTaller">Taller</string>
+    <string name="taller">Taller</string>
+    <string name="titulo_dialog_opinion">¿Compartir tu experiencia con otros usuarios?</string>
+    <string name="tituloOpinion">Comentario</string>
+    <string name="titulo_valoracion">Valoración</string>
+    <string name="valorar">Valorar</string>
+    <string name="comentarion_hint">Comentario</string>
+    <string name="upload_succes">¡Gracias por su opinión!</string>
+    <string name="upload_fail">Se ha producido un error</string>
+    <string name="no_network">No tienes conexión a internet</string>
 </resources>

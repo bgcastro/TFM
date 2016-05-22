@@ -17,9 +17,9 @@ import es.uvigo.esei.bgcastro.tfm.activitys.ReparacionesActivity;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.ReparacionesContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
-import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
-import es.uvigo.esei.bgcastro.tfm.entitys.Reparacion;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entities.Reparacion;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 7/5/16.

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Valoracion de la reparacion -->
+    <TextView
+        android:id="@+id/tituloValoracion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dialog_margin"
+        android:paddingRight="@dimen/dialog_margin"
+        android:theme="@style/vehiculo_bold"
+        android:text="@string/titulo_valoracion"/>
+
+    <RatingBar
+        android:id="@+id/puntuacionReparacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Opinion de la reparacion -->
+    <TextView
+        android:id="@+id/tituloComentario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dialog_margin"
+        android:paddingRight="@dimen/dialog_margin"
+        android:text="@string/tituloOpinion"
+        android:theme="@style/vehiculo_bold" />
+
+    <EditText
+        android:id="@+id/comentario"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/opinionHeight"
+        android:paddingLeft="@dimen/dialog_margin"
+        android:paddingRight="@dimen/dialog_margin"
+        android:theme="@style/vehiculo_regular"
+        android:hint="@string/comentarion_hint"
+        android:gravity="left"
+        android:inputType="textMultiLine"/>
+
+</LinearLayout>

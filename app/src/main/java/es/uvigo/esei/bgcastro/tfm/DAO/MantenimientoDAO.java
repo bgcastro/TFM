@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 22/2/16.

@@ -1,8 +1,11 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
@@ -17,16 +21,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import es.uvigo.esei.bgcastro.tfm.R;
+import es.uvigo.esei.bgcastro.tfm.background_tasks.UploadOpinionTask;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.ReparacionesContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
-import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
-import es.uvigo.esei.bgcastro.tfm.entitys.Reparacion;
+import es.uvigo.esei.bgcastro.tfm.dialog.OpinionDialog;
+import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entities.Opinion;
+import es.uvigo.esei.bgcastro.tfm.entities.Reparacion;
 
 /**
  * Created by braisgallegocastro on 9/5/16.
  */
-public class GestionReparacionesActivity extends BaseActivity {
+public class GestionReparacionesActivity extends BaseActivity implements OpinionDialog.NoticeDialogListener{
     private static final String TAG = "GestionReparActivity";
     private Mantenimiento mantenimiento;
 
@@ -36,6 +43,7 @@ public class GestionReparacionesActivity extends BaseActivity {
     private EditText editTextReparacion;
     private EditText editTextDescripcionReparacion;
     private EditText editTextReferencia;
+    private EditText editTextTaller;
     private EditText editTextPrecio;
 
     private boolean edicionActivada = true;
@@ -68,6 +76,7 @@ public class GestionReparacionesActivity extends BaseActivity {
         editTextReparacion = (EditText) findViewById(R.id.editTextReparacion);
         editTextDescripcionReparacion = (EditText) findViewById(R.id.editTextDescripcionReparacion);
         editTextReferencia = (EditText) findViewById(R.id.editTextReferencia);
+        editTextTaller = (EditText) findViewById(R.id.editTextTaller);
         editTextPrecio = (EditText) findViewById(R.id.editTextPrecio);
 
         if (intent.hasExtra(REPARACION)){
@@ -136,11 +145,35 @@ public class GestionReparacionesActivity extends BaseActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    @Override
+    public void setPositiveButton(OpinionDialog dialog) {
+        Opinion opinion = new Opinion(dialog.getPuntuacion(), reparacion.getPrecio(), reparacion.getTaller(), dialog.getComentario());
+
+        Log.d(TAG, "setPositiveButton: opinion" + opinion);
+
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            UploadOpinionTask uploadOpinion = new UploadOpinionTask(getApplicationContext());
+            uploadOpinion.execute(opinion);
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void setNegativeButton(OpinionDialog dialog) {
+
+    }
+
     private boolean uiToReparacion(){
         boolean success = true;
         String nombreReparacion = editTextReparacion.getText().toString();
         String descripcionReparacion = editTextDescripcionReparacion.getText().toString();
         String referencia = editTextReferencia.getText().toString();
+        String taller = editTextTaller.getText().toString();
         String precio = editTextPrecio.getText().toString();
 
         if (mantenimiento != null) {
@@ -171,6 +204,10 @@ public class GestionReparacionesActivity extends BaseActivity {
             reparacion.setReferencia(referencia);
         }
 
+        if (!taller.isEmpty()){
+            reparacion.setTaller(taller);
+        }
+
         return success;
     }
 
@@ -181,6 +218,7 @@ public class GestionReparacionesActivity extends BaseActivity {
             contentValues.put(ReparacionesContentProvider.NOMBRE_REPARACION, reparacion.getNombreReparacion());
             contentValues.put(ReparacionesContentProvider.DESCRIPCION_REPARACION, reparacion.getDescripcion());
             contentValues.put(ReparacionesContentProvider.REFERENCIA, reparacion.getReferencia());
+            contentValues.put(ReparacionesContentProvider.TALLER, reparacion.getTaller());
             contentValues.put(ReparacionesContentProvider.PRECIO, reparacion.getPrecio());
             contentValues.put(ReparacionesContentProvider.ID_MANTENIMIENTO_REPARACION, reparacion.getMantenimiento().getId());
 
@@ -197,6 +235,11 @@ public class GestionReparacionesActivity extends BaseActivity {
 
             //desactivamos la edicion
             desactivarEdicion();
+
+            if (!reparacion.getTaller().isEmpty()){
+                OpinionDialog dialog = OpinionDialog.newInstace();
+                dialog.show(getFragmentManager(), OpinionDialog.fragmentTag );
+            }
         }
     }
 
@@ -207,11 +250,11 @@ public class GestionReparacionesActivity extends BaseActivity {
             contentValues.put(ReparacionesContentProvider.NOMBRE_REPARACION, reparacion.getNombreReparacion());
             contentValues.put(ReparacionesContentProvider.DESCRIPCION_REPARACION, reparacion.getDescripcion());
             contentValues.put(ReparacionesContentProvider.REFERENCIA, reparacion.getReferencia());
+            contentValues.put(ReparacionesContentProvider.TALLER, reparacion.getTaller());
             contentValues.put(ReparacionesContentProvider.PRECIO, reparacion.getPrecio());
             contentValues.put(ReparacionesContentProvider.ID_MANTENIMIENTO_REPARACION, reparacion.getMantenimiento().getId());
 
             //guardamos la reparacion
-
             String updateID = Integer.toString(reparacion.getId());
 
             getContentResolver().update(Uri.withAppendedPath(ReparacionesContentProvider.CONTENT_URI,updateID),contentValues,null,null);
@@ -326,6 +369,7 @@ public class GestionReparacionesActivity extends BaseActivity {
         editTextReparacion.setEnabled(false);
         editTextDescripcionReparacion.setEnabled(false);
         editTextReferencia.setEnabled(false);
+        editTextTaller.setEnabled(false);
         editTextPrecio.setEnabled(false);
     }
 
@@ -335,6 +379,7 @@ public class GestionReparacionesActivity extends BaseActivity {
         editTextReparacion.setEnabled(true);
         editTextDescripcionReparacion.setEnabled(true);
         editTextReferencia.setEnabled(true);
+        editTextTaller.setEnabled(true);
         editTextPrecio.setEnabled(true);
     }
 
@@ -342,6 +387,7 @@ public class GestionReparacionesActivity extends BaseActivity {
         editTextReparacion.setText(reparacion.getNombreReparacion());
         editTextDescripcionReparacion.setText(reparacion.getDescripcion());
         editTextReferencia.setText(reparacion.getReferencia());
+        editTextTaller.setText(reparacion.getTaller());
         editTextPrecio.setText(Float.toString(reparacion.getPrecio()));
     }
 

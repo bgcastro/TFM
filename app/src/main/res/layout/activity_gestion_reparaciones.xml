@@ -88,6 +88,27 @@
             android:paddingTop="@dimen/edit_text_padding_top"
             android:paddingBottom="@dimen/edit_text_padding_bottom"/>
 
+        <!-- Taller reparacion -->
+        <TextView
+            android:id="@+id/textViewTaller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_view_paddig_left"
+            android:layout_below="@+id/editTextReferencia"
+            android:text="@string/textViewTaller"
+            android:theme="@style/vehiculo_bold" />
+
+        <EditText
+            android:id="@+id/editTextTaller"
+            android:hint="@string/taller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewTaller"
+            android:theme="@style/vehiculo_regular"
+            android:layout_marginBottom="@dimen/space_between_input_items"
+            android:paddingTop="@dimen/edit_text_padding_top"
+            android:paddingBottom="@dimen/edit_text_padding_bottom"/>
+
         <!-- Precio reparacion -->
         <TextView
             android:id="@+id/textViewPrecio"
@@ -96,7 +117,7 @@
             android:paddingLeft="@dimen/text_view_paddig_left"
             android:text="@string/textViewPrecio"
             android:theme="@style/vehiculo_bold"
-            android:layout_below="@+id/editTextReferencia"/>
+            android:layout_below="@+id/editTextTaller"/>
 
         <EditText
             android:id="@+id/editTextPrecio"

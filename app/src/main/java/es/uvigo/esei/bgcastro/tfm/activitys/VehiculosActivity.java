@@ -25,7 +25,7 @@ import android.widget.TextView;
 import es.uvigo.esei.bgcastro.tfm.DAO.VehiculosSQLite;
 import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
 
 public class VehiculosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {

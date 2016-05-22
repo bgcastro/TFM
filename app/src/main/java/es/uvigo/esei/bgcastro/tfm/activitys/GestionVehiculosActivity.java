@@ -34,7 +34,7 @@ import es.uvigo.esei.bgcastro.tfm.R;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
 import es.uvigo.esei.bgcastro.tfm.content_provider.VehiculoContentProvider;
 import es.uvigo.esei.bgcastro.tfm.dialog.ColorPickerDialog;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
 
 import static android.view.View.DRAWING_CACHE_QUALITY_AUTO;

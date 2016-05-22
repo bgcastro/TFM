@@ -1,4 +1,4 @@
-package es.uvigo.esei.bgcastro.tfm.entitys;
+package es.uvigo.esei.bgcastro.tfm.entities;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +19,7 @@ public class Reparacion implements Parcelable {
     private String nombreReparacion;
     private String descripcion;
     private String referencia;
+    private String taller;
     private float precio;
 
     private Mantenimiento mantenimiento;
@@ -28,15 +29,17 @@ public class Reparacion implements Parcelable {
         this.nombreReparacion = "";
         this.descripcion = "";
         this.referencia = "";
+        this.taller = "";
         this.precio = 0;
         this.mantenimiento = null;
     }
 
-    public Reparacion(String nombreReparacion, String descripcion, String referencia, float precio, Mantenimiento mantenimiento) {
+    public Reparacion(String nombreReparacion, String descripcion, String referencia, String taller, float precio, Mantenimiento mantenimiento) {
         this.nombreReparacion = nombreReparacion;
         this.descripcion = descripcion;
         this.referencia = referencia;
         this.precio = precio;
+        this.taller = taller;
         this.mantenimiento = mantenimiento;
     }
 
@@ -45,6 +48,7 @@ public class Reparacion implements Parcelable {
         this.nombreReparacion = source.readString();
         this.descripcion = source.readString();
         this.referencia = source.readString();
+        this.taller = source.readString();
         this.precio = source.readFloat();
         this.mantenimiento = source.readParcelable(Mantenimiento.class.getClassLoader());
     }
@@ -58,6 +62,7 @@ public class Reparacion implements Parcelable {
             nombreReparacion = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_NOMBRE_REPARACION));
             descripcion = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_DESCRIPCION_REPARACION));
             referencia = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_REFERENCIA));
+            taller = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_TALLER));
             precio = cursor.getFloat(cursor.getColumnIndex(VehiculosSQLite.COL_PRECIO));
 
             int idMantenimiento = cursor.getInt(cursor.getColumnIndex(VehiculosSQLite.COL_ID_MANTENIMIENTO_REPARACION));
@@ -111,6 +116,14 @@ public class Reparacion implements Parcelable {
         this.referencia = referencia;
     }
 
+    public String getTaller() {
+        return taller;
+    }
+
+    public void setTaller(String taller) {
+        this.taller = taller;
+    }
+
     public float getPrecio() {
         return precio;
     }
@@ -138,6 +151,7 @@ public class Reparacion implements Parcelable {
         dest.writeString(nombreReparacion);
         dest.writeString(descripcion);
         dest.writeString(referencia);
+        dest.writeString(taller);
         dest.writeFloat(precio);
         dest.writeParcelable(mantenimiento,flags);
     }

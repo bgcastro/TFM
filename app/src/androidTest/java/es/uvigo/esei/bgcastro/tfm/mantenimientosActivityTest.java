@@ -13,8 +13,8 @@ import java.util.Date;
 import es.uvigo.esei.bgcastro.tfm.activitys.MantenimientosActivity;
 import es.uvigo.esei.bgcastro.tfm.activitys.VehiculosActivity;
 import es.uvigo.esei.bgcastro.tfm.content_provider.MantenimientosContentProvider;
-import es.uvigo.esei.bgcastro.tfm.entitys.Mantenimiento;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 26/4/16.
@@ -51,7 +51,6 @@ public class mantenimientosActivityTest extends ActivityInstrumentationTestCase2
                                 "urna praesent at id quisque ac.",
                         (float) (80000.0 + j),
                         new Date(),
-                        "estado sincronizacion" + j,
                         vehiculo);
                 listaDeMantenimientos.add(mantenimiento);
             }
@@ -89,7 +88,6 @@ public class mantenimientosActivityTest extends ActivityInstrumentationTestCase2
             contentValues.put(MantenimientosContentProvider.DESCRIPCION, m.getDescripcion());
             contentValues.put(MantenimientosContentProvider.KILOMETRAJE_REPARACION, m.getKilometrajeReparacion());
             contentValues.put(MantenimientosContentProvider.FECHA, simpleDateFormat.format(m.getFecha()));
-            contentValues.put(MantenimientosContentProvider.ESTADO_SINCRONIZACION, m.getEstadoSincronizacion());
 
             Uri uri = activity.getContentResolver().insert(MantenimientosContentProvider.CONTENT_URI,contentValues);
 

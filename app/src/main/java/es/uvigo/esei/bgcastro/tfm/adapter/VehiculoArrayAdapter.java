@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import es.uvigo.esei.bgcastro.tfm.R;
-import es.uvigo.esei.bgcastro.tfm.entitys.Vehiculo;
+import es.uvigo.esei.bgcastro.tfm.entities.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.viewholder.VehiculoViewHolder;
 
 /**

@@ -43,6 +43,7 @@ public class ReparacionesContentProvider extends ContentProvider {
     public static final String NOMBRE_REPARACION = "nombre_reparacion";
     public static final String DESCRIPCION_REPARACION = "descripcion_reparacion";
     public static final String REFERENCIA = "referencia";
+    public static final String TALLER = "taller";
     public static final String PRECIO = "precio";
     public static final String ID_MANTENIMIENTO_REPARACION = "id_mantenimiento";
 

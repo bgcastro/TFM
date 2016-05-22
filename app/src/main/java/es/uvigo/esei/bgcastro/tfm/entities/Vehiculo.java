@@ -1,4 +1,4 @@
-package es.uvigo.esei.bgcastro.tfm.entitys;
+package es.uvigo.esei.bgcastro.tfm.entities;
 
 import android.database.Cursor;
 import android.os.Parcel;

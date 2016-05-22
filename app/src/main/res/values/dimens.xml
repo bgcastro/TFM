@@ -15,4 +15,6 @@
     <dimen name="mantenimiento_item_padding_top">10dp</dimen>
     <dimen name="mantenimiento_item_padding_bottom">10dp</dimen>
     <dimen name="titulo_informe">150dp</dimen>
+    <dimen name="opinionHeight">150dp</dimen>
+    <dimen name="dialog_margin">15dp</dimen>
 </resources>
