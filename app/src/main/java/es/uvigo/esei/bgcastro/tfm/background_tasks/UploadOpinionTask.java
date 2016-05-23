@@ -27,9 +27,10 @@ public class UploadOpinionTask extends AsyncTask<Opinion,Void,Boolean> {
 
     @Override
     protected Boolean doInBackground(Opinion... params) {
+        Socket socket = null;
 
         try {
-            Socket socket = new Socket(InetAddress.getByName("ec2-52-39-253-121.us-west-2.compute.amazonaws.com"), 22291);
+            socket = new Socket(InetAddress.getByName("ec2-52-39-253-121.us-west-2.compute.amazonaws.com"), 22291);
 
             SocketIOManager socketIOManager = new SocketIOManager(socket);
 
@@ -48,6 +49,14 @@ public class UploadOpinionTask extends AsyncTask<Opinion,Void,Boolean> {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            if (socket!=null && !socket.isClosed()){
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return true;
