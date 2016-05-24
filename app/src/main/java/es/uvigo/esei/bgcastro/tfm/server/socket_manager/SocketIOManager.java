@@ -19,6 +19,7 @@ public class SocketIOManager implements IOManager {
     private final DataOutputStream outputStream;
 
     public static final String SEND_OPINION = "send_opinion";
+    public static final String FIND_OPINIONES_TALLER = "find_opiones_taller";
     public static final String ACK = "ACK";
     public static final String NACK = "NACK";
 
@@ -55,7 +56,7 @@ public class SocketIOManager implements IOManager {
 
     @Override
     public void sendCommand(String command) throws IOException {
-        this.outputStream.writeUTF(SEND_OPINION);
+        this.outputStream.writeUTF(command);
         this.outputStream.flush();
     }
 
@@ -84,6 +85,19 @@ public class SocketIOManager implements IOManager {
     @Override
     public String readNACK() throws IOException {
         return this.inputStream.readUTF();
+    }
+
+    @Override
+    public void sendTaller(String taller) throws IOException {
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(taller);
+    }
+
+    @Override
+    public String readTaller() throws IOException, ClassNotFoundException {
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+        return (String) objectInputStream.readObject();
     }
 
     @Override

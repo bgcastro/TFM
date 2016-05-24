@@ -43,6 +43,11 @@ public class BaseActivity extends AppCompatActivity {
                 return true;
             }
 
+            case R.id.action_opiniones:{
+                buscarOpiniones();
+                return true;
+            }
+
             default: {
                 return super.onOptionsItemSelected(item);
             }
@@ -54,5 +59,12 @@ public class BaseActivity extends AppCompatActivity {
 
         Intent intentPreferencias = new Intent(BaseActivity.this, PreferencesActivity.class);
         startActivity(intentPreferencias);
+    }
+
+    private void buscarOpiniones(){
+        Log.d(TAG, "buscarOpiniones: ");
+
+        Intent intentBuscarOpiniones = new Intent(BaseActivity.this, BuscarOpinionActivity.class);
+        startActivity(intentBuscarOpiniones);
     }
 }

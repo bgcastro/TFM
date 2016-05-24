@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_tune_black_24dp"
         app:showAsAction="never"/>
 
+    <!-- buscar opiniones -->
+    <item android:id="@+id/action_opiniones"
+        android:title="@string/action_opiniones"
+        android:icon="@drawable/ic_share_black_24dp"
+        app:showAsAction="never"/>
+
 </menu>

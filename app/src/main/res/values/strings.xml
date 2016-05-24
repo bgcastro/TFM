@@ -110,4 +110,8 @@
     <string name="upload_succes">¡Gracias por su opinión!</string>
     <string name="upload_fail">Se ha producido un error</string>
     <string name="no_network">No tienes conexión a internet</string>
+    <string name="empty_Opiniones">No se han encontrado opiniones de otros usuarios que coincidan con su busqueda.</string>
+    <string name="titulo_toolbar_buscar_opiniones_activity">Buscar opiniones</string>
+    <string name="action_opiniones">Buscar opiniones de otros usuarios</string>
+    <string name="no_results">No se ha encontrado nada.</string>
 </resources>

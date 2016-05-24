@@ -3,6 +3,7 @@ package es.uvigo.esei.bgcastro.tfm.activitys;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,6 +30,7 @@ import es.uvigo.esei.bgcastro.tfm.dialog.OpinionDialog;
 import es.uvigo.esei.bgcastro.tfm.entities.Mantenimiento;
 import es.uvigo.esei.bgcastro.tfm.entities.Opinion;
 import es.uvigo.esei.bgcastro.tfm.entities.Reparacion;
+import es.uvigo.esei.bgcastro.tfm.preferences.VehiculosPreferences;
 
 /**
  * Created by braisgallegocastro on 9/5/16.
@@ -151,11 +153,14 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
 
         Log.d(TAG, "setPositiveButton: opinion" + opinion);
 
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            UploadOpinionTask uploadOpinion = new UploadOpinionTask(getApplicationContext());
+            SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
+            String address = preferences.getString(VehiculosPreferences.SERVER_ADDRESS, VehiculosPreferences.SERVER_ADDRESS_DEFAULT);
+            int port = preferences.getInt(VehiculosPreferences.SERVER_PORT, VehiculosPreferences.SERVER_PORT_DEFAULT);
+
+            UploadOpinionTask uploadOpinion = new UploadOpinionTask(getApplicationContext(), address, port);
             uploadOpinion.execute(opinion);
         } else {
             Toast.makeText(getApplicationContext(), R.string.no_network, Toast.LENGTH_SHORT).show();

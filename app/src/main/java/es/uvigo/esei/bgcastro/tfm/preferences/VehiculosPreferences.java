@@ -14,4 +14,10 @@ public class VehiculosPreferences {
 
     public static final String ALERT_ACTUALIZAR = "alert_actualizar";
     public static final boolean ALERT_ACTUALIZAR_DEFAULT = true;
+
+    public static final String SERVER_ADDRESS = "server_address";
+    public static final String SERVER_ADDRESS_DEFAULT = "ec2-52-39-253-121.us-west-2.compute.amazonaws.com";
+
+    public static final String SERVER_PORT = "server_port";
+    public static final int SERVER_PORT_DEFAULT = 22291;
 }

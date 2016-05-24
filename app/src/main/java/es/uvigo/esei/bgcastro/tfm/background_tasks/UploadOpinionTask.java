@@ -17,12 +17,16 @@ import es.uvigo.esei.bgcastro.tfm.server.socket_manager.SocketIOManager;
  */
 public class UploadOpinionTask extends AsyncTask<Opinion,Void,Boolean> {
     Context context;
+    String serverAddres;
+    int puerto;
 
     public UploadOpinionTask() {
     }
 
-    public UploadOpinionTask(Context context) {
+    public UploadOpinionTask(Context context, String serverAddres, int puerto) {
         this.context = context;
+        this.serverAddres = serverAddres;
+        this.puerto = puerto;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class UploadOpinionTask extends AsyncTask<Opinion,Void,Boolean> {
         Socket socket = null;
 
         try {
-            socket = new Socket(InetAddress.getByName("ec2-52-39-253-121.us-west-2.compute.amazonaws.com"), 22291);
+            socket = new Socket(InetAddress.getByName(serverAddres), puerto);
 
             SocketIOManager socketIOManager = new SocketIOManager(socket);
 

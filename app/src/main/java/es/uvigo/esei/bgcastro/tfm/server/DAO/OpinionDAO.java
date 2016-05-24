@@ -55,15 +55,15 @@ public class OpinionDAO {
 			queryCreateOpinion.setString(4, opinion.getNombreTaller());
 			queryCreateOpinion.setString(5, opinion.getOpinion());
 
-			return queryCreateOpinion.executeUpdate() == 1;
+			return queryCreateOpinion.executeUpdate() > 0;
 		}
 	}
 
 	public List<Opinion> listOpinionesFromTaller(String nombreTallerSearch) throws SQLException {
         final PreparedStatement queryOpinion = this.connection.prepareStatement("SELECT * FROM " + NOMBRE_TABLA +
-                " WHERE " + NOMBRE_TALLER + " = ?");
+                " WHERE " + NOMBRE_TALLER + " LIKE ?");
 		
-		queryOpinion.setString(1, nombreTallerSearch);
+		queryOpinion.setString(1, "%" + nombreTallerSearch + "%");
 		
 		final ResultSet result = queryOpinion.executeQuery();
 

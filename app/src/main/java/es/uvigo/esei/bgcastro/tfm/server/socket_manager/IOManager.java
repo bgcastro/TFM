@@ -26,6 +26,9 @@ public interface IOManager {
     public void sendNACK() throws IOException;
     public String readNACK() throws IOException;
 
+    public void sendTaller(String taller) throws IOException;
+    public String readTaller() throws IOException, ClassNotFoundException;
+
     public void sendOpinionList(List<Opinion> opinionList) throws IOException;
     public List<Opinion> readOpinionList() throws IOException, ClassNotFoundException;
 }
