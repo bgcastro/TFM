@@ -8,7 +8,6 @@
     <string name="hintMatricula">Matricula</string>
     <string name="kilometraje">Kilometraje</string>
     <string name="kilometrajeHint">Kms</string>
-    <string name="combustibleHint">Tipo de combustible</string>
     <string name="combustible">Combustible</string>
     <string name="cilindrada">Cilindrada</string>
     <string name="hintCilindrada">Cilindrada</string>
@@ -19,7 +18,6 @@
     <string name="hintAnho">Año</string>
     <string name="action_add_vehiculo">Añadir vehículo</string>
     <string name="action_settings">Opciones</string>
-    <string name="action_modify_vehiculo">Modificar vehículo</string>
     <string name="titulo_color_picker">Selector de color</string>
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
@@ -37,7 +35,6 @@
     <string name="error_kilometraje_vacio">Por favor introduce el valor del kilometraje para tu nuevo vehiculo</string>
     <string name="tituloDescripcion">Descripcion</string>
     <string name="error_descripcion_vacia">Por favor introduce una descripción del nuevo mantenimiento</string>
-    <string name="error_nombre_mantenimiento_vacio">Por favor introduce un nombre para el mantenimiento</string>
     <string name="error_kilometraje_vacio_mantenimiento">Por favor introduce un kilometraje para programar el mantenimiento</string>
     <string name="tituloReparacionItem">Pieza o reparación</string>
     <string name="tituloDescripcionReparacionItem">Descripción</string>
@@ -63,7 +60,6 @@
     <string name="titulo_toolbar_gestion_vehiculos_activity">Vehículo</string>
     <string name="faltan">(Faltan</string>
     <string name="pasado">(La reparación se ha retrasado</string>
-    <string name="action_reparar">Reparar</string>
     <string name="titulo_toolbar_reparaciones_activity">Reparaciones</string>
     <string name="titulo_toolbar_gestion_reparaciones_activity">Reparación</string>
     <string name="titulo_toolbar_gestion_mantenimientos_activity">Mantenimiento</string>
@@ -81,7 +77,6 @@
     <string name="restrasado">(El mantenimiento se ha retrasado</string>
     <string name="vehiculo_no_creado">Por favor guarde el vehículo primero</string>
     <string name="titulo_dialog">Mantenimientos pendientes</string>
-    <string name="dialog_message_parte2">pendientes de actualizar.</string>
     <string name="actualizar_KM">¿Deseas actualizar el kilometraje ahora?</string>
     <string name="ultimosMantenimientos">Últimos mantenimientos</string>
     <string name="empty_mantenimientos_fragment">No hay ningún mantenimiento pendiente</string>
@@ -96,10 +91,7 @@
     <string name="alertSISummary">Si activa esta opción se le pedirá que actualize la información del kilometraje</string>
     <string name="toolbarPreferences">Preferencias</string>
     <string name="measure_unit">Unidad de medida</string>
-    <string name="measure_unit_summary">Estable la unidad de medida</string>
     <string name="horaNotificacion">Hora de las notificaciones</string>
-    <string name="hora">Hora</string>
-    <string name="minuto">Minuto</string>
     <string name="textViewTaller">Taller</string>
     <string name="taller">Taller</string>
     <string name="titulo_dialog_opinion">¿Compartir tu experiencia con otros usuarios?</string>
