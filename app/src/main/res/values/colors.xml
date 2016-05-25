@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">@color/grisToolbar</color>
+    <color name="colorPrimaryDark">@color/grisClaro</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="grisClaro">#747474</color>
     <color name="grisOscuro">#434343</color>
-    <color name="grisToolbar">#F3F3F3</color>
+    <color name="grisToolbar">#dadada</color>
 </resources>

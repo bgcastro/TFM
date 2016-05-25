@@ -1,7 +1,6 @@
 package es.uvigo.esei.bgcastro.tfm.activitys;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,14 +16,9 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
 
-    //carga de la fuente para iconos
-    private static Typeface font;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
     }
 
     @Override

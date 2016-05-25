@@ -9,6 +9,12 @@
         android:summary="@string/alertSISummary"
         android:defaultValue="true" />
 
+    <CheckBoxPreference
+        android:key="alert_comentar"
+        android:title="@string/alertComentar"
+        android:summary="@string/alertComentarSummary"
+        android:defaultValue="true" />
+
     <SwitchPreference
         android:key="measure_unit"
         android:title="@string/measure_unit"

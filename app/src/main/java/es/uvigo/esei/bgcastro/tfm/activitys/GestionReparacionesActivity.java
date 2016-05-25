@@ -241,7 +241,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
             //desactivamos la edicion
             desactivarEdicion();
 
-            if (!reparacion.getTaller().isEmpty()){
+            SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
+
+            if (preferences.getBoolean(VehiculosPreferences.ALERT_COMENTAR, VehiculosPreferences.ALERT_COMENTAR_DEFAULT) && !reparacion.getTaller().isEmpty()){
                 OpinionDialog dialog = OpinionDialog.newInstace();
                 dialog.show(getFragmentManager(), OpinionDialog.fragmentTag );
             }

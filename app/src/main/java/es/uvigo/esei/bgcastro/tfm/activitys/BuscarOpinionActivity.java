@@ -50,7 +50,7 @@ public class BuscarOpinionActivity extends BaseActivity implements LoaderManager
 
         listView.setEmptyView(textViewEmpty);
 
-        opinionArrayAdapter = new OpinionArrayAdapter(getApplicationContext(), R.layout.opinion_item);
+        opinionArrayAdapter = new OpinionArrayAdapter(this, R.layout.opinion_item);
 
         listView.setAdapter(opinionArrayAdapter);
 

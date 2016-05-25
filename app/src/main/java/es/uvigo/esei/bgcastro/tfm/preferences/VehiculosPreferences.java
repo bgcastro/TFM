@@ -15,6 +15,9 @@ public class VehiculosPreferences {
     public static final String ALERT_ACTUALIZAR = "alert_actualizar";
     public static final boolean ALERT_ACTUALIZAR_DEFAULT = true;
 
+    public static final String ALERT_COMENTAR = "alert_comentar";
+    public static final boolean ALERT_COMENTAR_DEFAULT = true;
+
     public static final String SERVER_ADDRESS = "server_address";
     public static final String SERVER_ADDRESS_DEFAULT = "ec2-52-39-253-121.us-west-2.compute.amazonaws.com";
 

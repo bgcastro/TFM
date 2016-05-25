@@ -114,4 +114,7 @@
     <string name="titulo_toolbar_buscar_opiniones_activity">Buscar opiniones</string>
     <string name="action_opiniones">Buscar opiniones de otros usuarios</string>
     <string name="no_results">No se ha encontrado nada.</string>
+    <string name="gastado">Gastado</string>
+    <string name="alertComentar">Comentarios</string>
+    <string name="alertComentarSummary">Si activa esta opción se le preguntará su opinión cuando se haga una reparación</string>
 </resources>
