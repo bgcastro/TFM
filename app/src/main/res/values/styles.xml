@@ -11,28 +11,28 @@
     </style>
 
     <style name="vehiculo_thin">
-        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:fontFamily">@string/sans_serif_thin</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/grisClaro</item>
     </style>
 
     <style name="vehiculo_bold">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@string/sans_serif</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/grisOscuro</item>
     </style>
 
     <style name="vehiculo_regular">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@string/sans_serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/grisClaro</item>
     </style>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@string/sans_serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/grisClaro</item>
@@ -41,7 +41,7 @@
     </style>
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">@string/sans_serif</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/grisClaro</item>
