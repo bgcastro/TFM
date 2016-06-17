@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.uvigo.esei.bgcastro.tfm.entities.Opinion;
+import es.uvigo.esei.bgcastro.tfm.app.entities.Opinion;
 
 public class OpinionDAO {
     private static final String NOMBRE_TABLA = "Opiniones";

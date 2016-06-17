@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="es.uvigo.esei.bgcastro.tfm.activitys.GestionVehiculosActivity"
+    tools:context=".app.activitys.GestionVehiculosActivity"
     android:orientation="vertical"
     android:id="@+id/layoutGestion">
 
@@ -300,7 +300,7 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/ultimosMantenimientos"
         android:layout_above="@+id/todosMantenimientos"
-        class="es.uvigo.esei.bgcastro.tfm.fragment.MantenimientosFragment">
+        class="es.uvigo.esei.bgcastro.tfm.app.fragment.MantenimientosFragment">
     </fragment>
 
 </RelativeLayout>

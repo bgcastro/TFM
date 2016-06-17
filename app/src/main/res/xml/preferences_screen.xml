@@ -24,7 +24,7 @@
         android:summaryOn="Km"
         android:summaryOff="Millas"/>
 
-    <es.uvigo.esei.bgcastro.tfm.dialog.TimePreference
+    <es.uvigo.esei.bgcastro.tfm.app.dialog.TimePreference
         android:key="hora_notificacion"
         android:title="@string/horaNotificacion"
         android:defaultValue="00:00"/>
