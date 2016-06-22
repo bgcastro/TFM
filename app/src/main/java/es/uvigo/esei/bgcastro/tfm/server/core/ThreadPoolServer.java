@@ -74,8 +74,6 @@ public class ThreadPoolServer {
 			try {
 				SocketIOManager ioManager = new SocketIOManager(this.socket);
 
-				System.out.println("Se ha conectado" + ioManager.getSocket().getRemoteSocketAddress());
-
 				String command = ioManager.receiveCommand();
 				//Se trata de una subida de datos
 				if(command.equals(SocketIOManager.SEND_OPINION)){
