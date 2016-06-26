@@ -46,8 +46,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private byte[] foto = new byte[0];
     private int color;
 
+    //Entities
     private Vehiculo vehiculo;
 
+    //Elementos UI
     private ImageView imagenVehiculo;
     private EditText editTextMarca;
     private EditText editTextModelo;
@@ -59,14 +61,22 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
     private EditText editTextPotencia;
     private EditText editTextAnho;
 
+    //Control de edicion
     private boolean edicionActivada = true;
 
+    //Preferencias
     private SharedPreferences preferences;
 
+    /**
+     * Implementacion principal de la funcionalidad
+     *
+     * @param savedInstanceState Estado anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Intent de arraque
         Intent intent = getIntent();
 
         if (intent != null) {
@@ -124,15 +134,18 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         TextView allMantenimientos = (TextView) findViewById(R.id.todosMantenimientos);
 
+        //Tipografia
         final Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
         allMantenimientos.setTypeface(font);
-        allMantenimientos.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+        allMantenimientos.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 
+        //onClik para mostrar todos los mantenimentos
         allMantenimientos.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: todos los mantenimientos");
 
+                //si no esta creado aun el vehiculo
                 if (vehiculo.getId() < 0){
                     Toast.makeText(getApplicationContext(),R.string.vehiculo_no_creado,Toast.LENGTH_LONG).show();
                 }else {
@@ -141,6 +154,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             }
         });
 
+        //si se selecciona uno ya creado
         if (intent.hasExtra(VehiculosActivity.VEHICULO)){
             //Rellenamos con los valores que tiene el vehiculo existente
             rellenarUI(vehiculo);
@@ -151,11 +165,13 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
 
         preferences  = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
 
+        //Si el usuario desea se muestra el dialog de actualizar KM
         if (preferences.getBoolean(VehiculosPreferences.ALERT_ACTUALIZAR, VehiculosPreferences.ALERT_ACTUALIZAR_DEFAULT)
                 && vehiculo.getId() > 0 && savedInstanceState == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.actualizar_KM);
 
+            //boton positivo
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     activarEdicionKilometraje();
@@ -163,6 +179,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                 }
             });
 
+            //boton negativo
             builder.setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {}});
@@ -172,6 +189,12 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         }
     }
 
+    /**
+     * Inicializa el menu
+     *
+     * @param menu Menu en el que colocar items.
+     * @return Boolean para mostrar el menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_gestion_vehiculos, menu);
@@ -179,9 +202,15 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //añadir
             case R.id.action_add_vehiculo:{
                 if (vehiculo != null && vehiculo.getId() != -1) {
                     modificarVehiculo();
@@ -191,17 +220,20 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                 return true;
             }
 
+            //borrar
             case R.id.action_remove_vehiculo: {
                 removeVehiculo(vehiculo.getId());
                 return true;
             }
 
+            //modificar
             case R.id.action_modify_vehiculo:{
                 activarEdicion();
                 invalidateOptionsMenu();
                 return true;
             }
 
+            //generar informe de gastos
             case R.id.action_informe_gastos_vehiculo: {
                 if (vehiculo.getId() < 0) {
                     Toast.makeText(getApplicationContext(), R.string.vehiculo_no_creado, Toast.LENGTH_LONG).show();
@@ -211,12 +243,18 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
                 return true;
             }
 
+            //otras opciones
             default: {
                 return super.onOptionsItemSelected(item);
             }
         }
     }
 
+    /**
+     * Metodo llamado antes de mostrar el menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (!edicionActivada){
@@ -230,6 +268,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Guardado del estado
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -239,6 +281,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         outState.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
     }
 
+    /**
+     * Recuperacion del estado
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -247,12 +293,14 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         Log.d(TAG, "onRestoreInstanceState: " + vehiculo);
     }
 
+    //Metodo llamado despues de tomar la foto
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Se ha tomado la foto correctamente
         if(requestCode == TOMAR_FOTO_REQUEST && resultCode == RESULT_OK){
             Log.d(TAG, "onActivityResult: se ha tomado la foto");
 
+            //convertimos la foto
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
@@ -260,6 +308,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.PNG, DRAWING_CACHE_QUALITY_AUTO, stream);
 
+            //asignamos la foto
             foto = stream.toByteArray();
             vehiculo.setImagenVehiculo(foto);
         }
@@ -267,6 +316,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Metodo llamado al aceptar el color
+     */
     @Override
     public void setPositiveButton(ColorPickerDialog dialog) {
         //Se ha seleccionado un nuevo color
@@ -277,9 +329,16 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         vehiculo.setColor(color);
     }
 
+    /**
+     * Metodo llamado al cancelar el color
+     */
     @Override
-    public void setNegativeButton(ColorPickerDialog dialog) {}
+    public void setNegativeButton(ColorPickerDialog dialog) {
+    }
 
+    /**
+     * Se rellena la UI con datos existentes
+     */
     private void rellenarUI(Vehiculo vehiculo) {
         foto = vehiculo.getImagenVehiculo();
         this.imagenVehiculo.setImageBitmap(BitmapFactory.decodeByteArray(foto, 0, foto.length));
@@ -295,6 +354,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         this.editTextAnho.setText(Integer.toString(vehiculo.getAño()));
     }
 
+    /**
+     * Crea un  nuevo vehiculo y lo guarda en BD
+     */
     private void nuevoVehiculo(){
         if (uiToVehiculo()) {
             ContentValues contentValues = new ContentValues();
@@ -327,6 +389,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         }
     }
 
+    /**
+     * Metodo que modifica y guarda un vehiculo en BD
+     */
     private void modificarVehiculo() {
 
         if (uiToVehiculo()) {
@@ -359,6 +424,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         }
     }
 
+    /**
+     * Metodo para eliminar un vehiculo
+     * @param id
+     */
     private void removeVehiculo(int id) {
         Log.d(TAG, "removeVehiculo: " + id);
 
@@ -368,11 +437,18 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         finish();
     }
 
+    /**
+     * Metodo que llama a la camara
+     */
     private void tomarFoto() {
         Intent intentFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intentFoto, TOMAR_FOTO_REQUEST);
     }
 
+    /**
+     * Metodo que crea un vehiculo a partir de la UI
+     * @return true si ha tenido exito
+     */
     private boolean uiToVehiculo(){
         String nombre = editTextModelo.getText().toString();
         String marca = editTextMarca.getText().toString();
@@ -441,6 +517,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         return success;
     }
 
+    /**
+     * Desactivacion de la edicion
+     */
     private void desactivarEdicion(){
         edicionActivada = false;
 
@@ -456,6 +535,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         editTextAnho.setEnabled(false);
     }
 
+    /**
+     * Activacion de la edicion
+     */
     private void activarEdicion(){
         edicionActivada = true;
 
@@ -471,11 +553,17 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         editTextAnho.setEnabled(true);
     }
 
+    /**
+     * Edicion de solo el kilometraje
+     */
     private void activarEdicionKilometraje(){
         edicionActivada = true;
         editTextKilometraje.setEnabled(true);
     }
 
+    /**
+     * Metodo que llama a la activity MantenimientosActivity
+     */
     private void showMantenimientos() {
         Log.d(TAG, "showMantenimientos: ");
         Intent intentMantenimientos = new Intent(GestionVehiculosActivity.this,MantenimientosActivity.class);
@@ -485,6 +573,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         startActivity(intentMantenimientos);
     }
 
+    /**
+     * Metodo llamado para hacer la actualizacion del kilometraje
+     * @param nuevoKilometraje
+     */
     private void updateKilometraje(float nuevoKilometraje){
         int idVehiculo = vehiculo.getId();
 
@@ -501,6 +593,7 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         contentValuesVehiculo.put(MantenimientosContentProvider.ESTADO_REPARACION,getString(R.string.fa_exclamation_triangle));
         int pendientesDeReparar = getContentResolver().update(queryUri,contentValuesVehiculo,where,whereArgs);
 
+        //actualizacion de estado
         if (pendientesDeReparar > 0){
             vehiculo.setEstado(getString(R.string.fa_exclamation_triangle));
 
@@ -529,6 +622,9 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         Log.d(TAG, "updateKilometraje: " + Integer.toString(pendientesDeReparar));
     }
 
+    /**
+     * Metodo que lanza la activity InformeActvity
+     */
     private void showInforme(){
         Log.d(TAG, "showInforme: ");
         Intent intentMantenimientos = new Intent(GestionVehiculosActivity.this,InformeActvity.class);
@@ -538,6 +634,10 @@ public class GestionVehiculosActivity extends BaseActivity implements ColorPicke
         startActivity(intentMantenimientos);
     }
 
+    /**
+     * Metodo para pasar info a un fragment
+     * @return
+     */
     public Vehiculo getVehiculo() {
         return vehiculo;
     }
