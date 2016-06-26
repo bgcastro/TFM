@@ -7,21 +7,15 @@ import android.util.Log;
 
 /**
  * Created by braisgallegocastro on 31/12/15.
+ * Clase para gestionar la BD
  */
 public class VehiculosSQLite extends SQLiteOpenHelper {
-    private static final String TAG = "VehiculosSQLite";
-
-    //version de la BD
-    public static int VERSION = 1;
-
     //Nombre BD
     public static final String NOMBRE_BBDD = "vehiculos.db";
-
     //Nombres de la tablas
     public static final String TABLA_VEHICULOS = "tabla_vehiculos";
     public static final String TABLA_MANTENIMIENTOS = "tabla_mantenimientos";
     public static final String TABLA_REPARACIONES = "tabla_reparaciones";
-
     //Campos tabla vehiculos
     public static final String COL_ID = "_id";
     public static final String COL_IMAGEN_VEHICULO = "imagen_vehiculo";
@@ -35,7 +29,6 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_COLOR = "color";
     public static final String COL_ANHO = "anho";
     public static final String COL_ESTADO = "estado";
-
     //Campos tabla mantenimientos
     public static final String COL_ID_MANTENIMIENTO = "_id";
     public static final String COL_ID_VEHICULO = "id_vehiculo";
@@ -44,7 +37,6 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_DESCRIPCION = "descripcion";
     public static final String COL_KILOMETRAJE_REPARACION = "kilometraje_reparacion";
     public static final String COL_FECHA = "reparacion";
-
     //Campos tabla reparaciones
     public static final String COL_ID_REPARACION = "_id";
     public static final String COL_NOMBRE_REPARACION = "nombre_reparacion";
@@ -53,8 +45,7 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
     public static final String COL_TALLER = "taller";
     public static final String COL_PRECIO = "precio";
     public static final String COL_ID_MANTENIMIENTO_REPARACION = "id_mantenimiento";
-
-
+    private static final String TAG = "VehiculosSQLite";
     //SQL de creacion tabla vehiculos
     private static final String CREATE_BDD = " CREATE TABLE " + TABLA_VEHICULOS + " (" +
             COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -70,7 +61,6 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             COL_ANHO + " INTEGER, " +
             COL_ESTADO + " TEXT" +
             ")";
-
     //SQL de creacion tabla mantenimientos
     private static final String CREATE_TABLE_MANTENIMIENTOS = " CREATE TABLE " + TABLA_MANTENIMIENTOS + " (" +
             COL_ID_MANTENIMIENTO + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -83,7 +73,6 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             " FOREIGN KEY (" + COL_ID_VEHICULO + ") REFERENCES " +
             TABLA_VEHICULOS + "(" + COL_ID + ") " +
             "ON DELETE CASCADE" + ")";
-
     //SQL de creacion tabla reparaciones
     private static final String CREATE_TABLE_REPARACIONES = " CREATE TABLE " + TABLA_REPARACIONES + " (" +
             COL_ID_REPARACION + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -96,11 +85,25 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
             " FOREIGN KEY (" + COL_ID_MANTENIMIENTO_REPARACION + ") REFERENCES " +
             TABLA_MANTENIMIENTOS + "(" + COL_ID_MANTENIMIENTO + ") " +
             "ON DELETE CASCADE" + ")";
+    //version de la BD
+    public static int VERSION = 1;
 
+    /**
+     * Constructor
+     *
+     * @param context Contexto
+     * @param name    Nombre BD
+     * @param factory Objeto factoria
+     * @param version Version BD
+     */
     public VehiculosSQLite(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
+    /**
+     * Inicializacion
+     * @param db Base de datos a inicializar
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_BDD);
@@ -113,12 +116,22 @@ public class VehiculosSQLite extends SQLiteOpenHelper {
         Log.d(TAG, "onCreate: CREATE_TABLE_REPARACIONES" + CREATE_TABLE_REPARACIONES);
     }
 
+    /**
+     * Metodo llamado cuando se configura la conexion de BD
+     * @param db
+     */
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
     }
 
+    /**
+     * Metodo llamado cuando se actualiza la BD
+     * @param db Base de datos
+     * @param oldVersion Version antigua
+     * @param newVersion Version nueva
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP" + TABLA_VEHICULOS);

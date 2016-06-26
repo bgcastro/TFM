@@ -7,6 +7,7 @@ import es.uvigo.esei.bgcastro.tfm.app.entities.Opinion;
 
 /**
  * Created by braisgallegocastro on 19/5/16.
+ * Interfaz para la gestion del envio de mensajes entre el servidor y la aplicacion
  */
 public interface IOManager {
     boolean canRead() throws IOException;

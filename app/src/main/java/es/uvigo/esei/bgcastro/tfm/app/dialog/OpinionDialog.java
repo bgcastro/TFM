@@ -16,39 +16,33 @@ import es.uvigo.esei.bgcastro.tfm.R;
 
 /**
  * Created by braisgallegocastro on 22/5/16.
+ * Dialogo mostrado para pedir informacion de un comentario
  */
 public class OpinionDialog extends DialogFragment {
     public static final String fragmentTag = "OpinionDialog";
     private static final String TAG = "OpinionDialog";
-
+    NoticeDialogListener noticeDialogListener;
     private EditText editTextComentario;
     private RatingBar ratingBarPuntuacion;
-
     private float puntuacion;
     private String comentario;
 
-    NoticeDialogListener noticeDialogListener;
-
-    public interface NoticeDialogListener{
-        /**
-         * Metodo para recibir los callbacks del boton postivo
-         * @param dialog
-         */
-        void setPositiveButton(OpinionDialog dialog);
-
-        /**
-         * Metodo para recibir los callbacks del boton negativo
-         * @param dialog
-         */
-        void setNegativeButton(OpinionDialog dialog);
-    }
-
+    /**
+     * Metodo que crea una nueva instancia del dialogo
+     *
+     * @return Dialogo
+     */
     public static OpinionDialog newInstace(){
         OpinionDialog dialog = new OpinionDialog();
 
         return dialog;
     }
 
+    /**
+     * Metodo llamado cuando se crea el dialogo
+     * @param savedInstanceState Estado anterior
+     * @return Dialogo
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -83,6 +77,10 @@ public class OpinionDialog extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Metodo llamado cuando se vincula el dialogo a la activity
+     * @param activity Activity a vincular
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -94,15 +92,39 @@ public class OpinionDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Metodo que retorna la puntuacion
+     * @return Puntuacion
+     */
     public float getPuntuacion() {
         puntuacion = ratingBarPuntuacion.getRating();
 
         return puntuacion;
     }
 
+    /**
+     * Metodo que retorna el comentario
+     * @return Comentario
+     */
     public String getComentario() {
         comentario = editTextComentario.getText().toString();
 
         return comentario;
+    }
+
+    public interface NoticeDialogListener {
+        /**
+         * Metodo para recibir los callbacks del boton postivo
+         *
+         * @param dialog
+         */
+        void setPositiveButton(OpinionDialog dialog);
+
+        /**
+         * Metodo para recibir los callbacks del boton negativo
+         *
+         * @param dialog
+         */
+        void setNegativeButton(OpinionDialog dialog);
     }
 }

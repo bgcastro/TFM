@@ -23,30 +23,32 @@ import es.uvigo.esei.bgcastro.tfm.app.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 17/5/16.
+ * Fragment que lista mantenimientos pendientes
  */
 public class MantenimientosFragment extends ListFragment {
     private static final String TAG = "MantenimientosFragment";
-    private SimpleCursorAdapter simpleCursorAdapter;
-    private Cursor cursor;
-
-    private Vehiculo vehiculo;
-
-    private Typeface font;
-
     private static String[] projection = {};
+    //Se buscan los estado no reparados
     private static String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?" +
             " AND " + MantenimientosContentProvider.ESTADO_REPARACION +"!=" + "?";
-    private String[] whereArgs;
     private static String sortOrder = MantenimientosContentProvider.ID_MANTENIMIENTO + " ASC LIMIT 5";
-
     private static String[] fromColumns = new String[]{
             VehiculosSQLite.COL_NOMBRE,
             VehiculosSQLite.COL_ESTADO_REPARACION};
-
     private static int[] into = new int[]{
             R.id.nombreMantenimientoItemFragment,
             R.id.estadoMantenimientoItemFragment};
+    private SimpleCursorAdapter simpleCursorAdapter;
+    private Cursor cursor;
+    private Vehiculo vehiculo;
+    private Typeface font;
+    private String[] whereArgs;
 
+    /**
+     * Metodo que implementa la logica del fragment
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -60,10 +62,12 @@ public class MantenimientosFragment extends ListFragment {
 
         simpleCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.mantenimiento_item_fragment,cursor,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
+        //Modificamos algunos elementos de la vista del item
         simpleCursorAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 switch (view.getId()) {
+                    //Estado del mantenimiento
                     case R.id.estadoMantenimientoItemFragment: {
                         ((TextView) view).setText(cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO)));
 
@@ -86,6 +90,9 @@ public class MantenimientosFragment extends ListFragment {
         ((TextView) getListView().getEmptyView()).setTextSize(TypedValue.COMPLEX_UNIT_SP,11);
     }
 
+    /**
+     * Metodo llamado cuando el fragment pasa a resumed
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -95,6 +102,13 @@ public class MantenimientosFragment extends ListFragment {
         simpleCursorAdapter.swapCursor(cursor);
     }
 
+    /**
+     * Metodo llamado cuando se hace click en un item
+     * @param l No usado
+     * @param v No usado
+     * @param position Posicion del click en la lista
+     * @param id Id de la fila donde se hace click
+     */
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -112,6 +126,7 @@ public class MantenimientosFragment extends ListFragment {
 
         Log.d(TAG, "onItemClick: position" + position);
 
+        //Se lanza la activity GestionMantenimientosActivity
         startActivity(intentModificarMantenimiento);
     }
 }

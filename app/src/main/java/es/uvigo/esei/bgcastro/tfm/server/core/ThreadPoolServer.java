@@ -16,9 +16,11 @@ import es.uvigo.esei.bgcastro.tfm.server.db_controler.DBController;
 
 /**
  * Created by braisgallegocastro on 19/5/16.
+ * Clase principal del servidor
  */
 public class ThreadPoolServer {
-	private final static String DB_USER_NAME = "opiniones";
+    //Datos BD
+    private final static String DB_USER_NAME = "opiniones";
 	private final static String DB_PASSWORD = "opiniones";
 	private final static String DB_NAME = "opiniones";
 	private static final String HOST = "localhost";
@@ -31,16 +33,17 @@ public class ThreadPoolServer {
 
 		System.out.println("El servidor está arrancado");
 
-		try {
+        //Se abre una conexion y se esperan peticiones
+        try {
 			serverSocket = new ServerSocket(22291);
 
 			dbController = new DBController(new MySQLConnectionConfiguration(DB_USER_NAME, DB_PASSWORD, HOST, DB_NAME, -1));
-			//dbController = new DBController(new JavaDBConnectionConfiguration(DB_USER_NAME, DB_PASSWORD, null, DB_NAME));
 
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
 
-				threadPool.execute(new ServiceThread(clientSocket, dbController));
+                //Cuando llega una peticion nueva se atiende
+                threadPool.execute(new ServiceThread(clientSocket, dbController));
 			}
 		} catch (IOException e) {
 			System.err.println("No se ha podido crear el server socket");
@@ -59,16 +62,28 @@ public class ThreadPoolServer {
 		}
 	}
 
-	private static class ServiceThread implements Runnable {
+    /**
+     * Hilo de servicio
+     */
+    private static class ServiceThread implements Runnable {
 		private final Socket socket;
 		private DBController dbController;
 
-		public ServiceThread(Socket clientSocket, DBController dbController) {
+        /**
+         * Constructor
+         *
+         * @param clientSocket Socket
+         * @param dbController Contralador de la BD
+         */
+        public ServiceThread(Socket clientSocket, DBController dbController) {
 			this.socket = clientSocket;
 			this.dbController = dbController;
-		}
+        }
 
-		@Override
+        /**
+         * Metodo que implementa la logica
+         */
+        @Override
 		public void run() {
 
 			try {

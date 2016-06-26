@@ -29,12 +29,11 @@ import es.uvigo.esei.bgcastro.tfm.app.entities.Vehiculo;
 import es.uvigo.esei.bgcastro.tfm.app.preferences.VehiculosPreferences;
 
 public class VehiculosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static String TAG = "VehiculosActivity";
-
     public static final String VEHICULO = "VEHICULO";
     public static final int MODIFICAR_VEHICULO = 1;
     private static final int URL_LOADER = 0;
-
+    private static String TAG = "VehiculosActivity";
+    //Adapter
     private SimpleCursorAdapter adapter;
 
     @Override
@@ -71,16 +70,18 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
 
         adapter = new SimpleCursorAdapter(this,R.layout.vehiculo_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
+        //Modificamos algunos elementos de la vista
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 switch (view.getId()) {
+                    //Imagen
                     case R.id.imagenVehiculo:
                         byte[] img = cursor.getBlob(cursor.getColumnIndex(VehiculosSQLite.COL_IMAGEN_VEHICULO));
                         ((ImageView)view).setImageBitmap(BitmapFactory.decodeByteArray(img, 0, img.length));
 
                         return true;
-                    
+                    //Estado del vehiculo
                     case R.id.estadoVehiculo:
                         ((TextView)view).setText(cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO)));
 
@@ -91,6 +92,7 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
 
                         return true;
 
+                    //Kilometraje
                     case R.id.kilometraje:
                         SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
                         StringBuilder kilometraje = new StringBuilder();
@@ -136,17 +138,24 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * Metodo llamado cuando la activity pasa a resumed
+     */
     @Override
     protected void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(URL_LOADER, null, this);
-        //getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 
+    /**
+     * Inicializacion del loader
+     *
+     * @param id   ID del loader
+     * @param args No usado
+     * @return Los datos
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // Construct the new query in the form of a Cursor Loader. Use the id
-        // parameter to construct and return different loaders.
         switch (id) {
             case URL_LOADER:
                 String[] projection = null;
@@ -157,7 +166,7 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
                 // Query URI
                 Uri queryUri = VehiculoContentProvider.CONTENT_URI;
 
-                // Create the new Cursor loader.
+                // Nuevo Cursor loader.
                 CursorLoader cursorLoader = new CursorLoader(VehiculosActivity.this, queryUri, projection, where, whereArgs, sortOrder);
                 Log.d(TAG, "onCreateLoader: " + cursorLoader.getUri());
                 return cursorLoader;
@@ -168,23 +177,31 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * Metodo llamado al terminar la busqueda de datos
+     * @param loader No usado
+     * @param data Datos encontrados
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Replace the result Cursor displayed by the Cursor Adapter with the new result set.
         adapter.swapCursor(data);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
-
     }
 
+    /**
+     * Metodo llamado en el reset de loader
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Remove the existing result Cursor from the List Adapter.
         adapter.swapCursor(null);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }
 
+    /**
+     * Inicializa el menu
+     *
+     * @param menu Menu en el que colocar items.
+     * @return Boolean para mostrar el menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vehiculos, menu);
@@ -192,6 +209,11 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -206,6 +228,9 @@ public class VehiculosActivity extends BaseActivity implements LoaderManager.Loa
         }
     }
 
+    /**
+     * Metodo que lanza la activity GestionVehiculosActivity
+     */
     private void nuevoVehiculo() {
         Intent nuevoVehiculoIntent;
         Log.d(TAG, "onClick: anadir vehiculo");

@@ -23,20 +23,18 @@ import es.uvigo.esei.bgcastro.tfm.app.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 19/3/16.
+ * Servicio que se encarga de las notificaciones
  */
 public class AlarmReceiverService extends Service{
+    public static final String TITULO = "titulo";
+    public static final String CONTENIDO = "contenido";
+    public static final String MANTENIMIENTO = "mantenimiento";
     private static final String TAG = "AlarmReceiverService";
-
+    public static int requestCode = 1;
     private String titulo;
     private Mantenimiento mantenimiento;
     private Vehiculo vehiculo;
     private String contenido;
-
-    public static final String TITULO = "titulo";
-    public static final String CONTENIDO = "contenido";
-    public static final String MANTENIMIENTO = "mantenimiento";
-
-    public static int requestCode = 1;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

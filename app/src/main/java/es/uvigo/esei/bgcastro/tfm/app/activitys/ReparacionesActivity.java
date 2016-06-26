@@ -29,8 +29,11 @@ import es.uvigo.esei.bgcastro.tfm.app.entities.Reparacion;
 public class ReparacionesActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int URL_LOADER = 2;
     private static final String TAG = "ReparacionesActivity";
+
+    //Entities
     private Mantenimiento mantenimiento;
 
+    //Elementos de UI
     private TextView textViewPrecioTotal;
     private ListView listViewReparaciones;
     private SimpleCursorAdapter adapter;
@@ -80,8 +83,10 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
 
         adapter = new SimpleCursorAdapter(this,R.layout.reparacion_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
+        //Viculacion del adapter
         listViewReparaciones.setAdapter(adapter);
 
+        //OnClick de item
         listViewReparaciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,12 +104,19 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
 
                 Log.d(TAG, "onItemClick: position" + position);
 
+                //Lanzamiento de la activity GestionReparacionesActivity
                 startActivity(intentModificarMantenimiento);
             }
         });
 
     }
 
+    /**
+     * Inicializa el menu
+     *
+     * @param menu Menu en el que colocar items.
+     * @return Boolean para mostrar el menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_reparaciones, menu);
@@ -112,19 +124,28 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     *
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //Nueva reparacion
             case R.id.action_add_reparacion:{
                 nuevaReparacion();
                 return true;
             }
 
+            //Atras
             case android.R.id.home: {
                 this.onBackPressed();
                 return true;
             }
 
+            //Otros
             default: {
                 return super.onOptionsItemSelected(item);
             }
@@ -160,6 +181,11 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
         }
     }
 
+    /**
+     * Metodo llamado al terminar la busqueda de datos
+     * @param loader No usado
+     * @param data Datos encontrados
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         int totalPrecio = 0;
@@ -178,20 +204,21 @@ public class ReparacionesActivity extends BaseActivity implements LoaderManager.
 
         Log.d(TAG, "onLoadFinished: string builder " + stringBuilder);
 
-        // Replace the result Cursor displayed by the Cursor Adapter with the new result set.
         adapter.swapCursor(data);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }
 
+    /**
+     * Metodo llamado en el reset de loader
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Remove the existing result Cursor from the List Adapter.
         adapter.swapCursor(null);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }
 
+    /**
+     * Metodo que arranca la activity GestionReparacionesActivity
+     */
     private void nuevaReparacion() {
         Log.d(TAG, "nuevaReparacion: nuevaReparacion");
         Intent intentNuevaReparacion = new Intent(ReparacionesActivity.this,GestionReparacionesActivity.class);

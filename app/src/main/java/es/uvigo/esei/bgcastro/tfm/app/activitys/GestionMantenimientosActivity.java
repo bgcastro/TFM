@@ -36,33 +36,43 @@ import es.uvigo.esei.bgcastro.tfm.app.preferences.VehiculosPreferences;
 
 /**
  * Created by braisgallegocastro on 20/2/16.
+ * Activity para la gestion de mantenimientos
  */
 public class GestionMantenimientosActivity extends BaseActivity{
+    //nombre para la recuperacio de un parcelable
+    public static final String MANTENIMIENTO = "mantenimiento";
     private static final String DATEPICKER_TAG = "datepicker";
     private static final String TAG = "GMantenimientosActivity";
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
+    //elementos de UI
     private EditText editTextNombreMantenimiento;
     private EditText editTextDescripcionMantenimiento;
     private EditText editTextKilometrajeMantenimiento;
     private TextView textViewFechaMantenimiento;
     private TextView textViewRepar;
-
+    //Variables para la gestion de fecha
     private Calendar calendar = Calendar.getInstance();
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
+    //PendingIntent para las notificaciones
     private PendingIntent pendingIntent;
-
+    //entities
     private Vehiculo vehiculo;
     private Mantenimiento mantenimiento;
-
+    //variable para el control de la edcion
     private boolean edicionActivada = true;
 
-    public static final String MANTENIMIENTO = "mantenimiento";
-
+    /**
+     * Implementacion principal de la funcionalidad
+     *
+     * @param savedInstanceState Estado anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //inflamos la UI
         setContentView(R.layout.activity_gestion_mantenimientos);
 
+        //intent de arranque de la activity
         final Intent intent = getIntent();
 
         if (intent != null) {
@@ -78,26 +88,32 @@ public class GestionMantenimientosActivity extends BaseActivity{
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbarGestionMantenimientos);
         actionBar.setTitle(getString(R.string.titulo_toolbar_gestion_mantenimientos_activity));
         setSupportActionBar(actionBar);
+        //habilitar boton de atras
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //elementos de la UI
         editTextNombreMantenimiento = (EditText) findViewById(R.id.editTextNombreMantenimiento);
         editTextDescripcionMantenimiento = (EditText) findViewById(R.id.editTextDescripcionMantenimiento);
         editTextKilometrajeMantenimiento = (EditText) findViewById(R.id.editTextKilometrajeMantenimiento);
         textViewFechaMantenimiento = (TextView) findViewById(R.id.fechaMantenimiento);
         textViewRepar = (TextView) findViewById(R.id.reparar);
 
+        //tipografia
         final Typeface font = Typeface.createFromAsset(getAssets(), "fontawesome-webfont.ttf");
         textViewRepar.setTypeface(font);
-        textViewRepar.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
+        textViewRepar.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
 
+        //OnClick del boton reparar
         textViewRepar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: reparar");
 
-                if (mantenimiento.getId() < 0){
+                if (mantenimiento.getId() < 0) {
+                    //si aun esta sin guardar
                     Toast.makeText(getApplicationContext(),R.string.mantenimiento_no_creado,Toast.LENGTH_LONG).show();
-                }else {
+                } else {
+                    //sino comenzar ReparacionesActivity
                     Intent intentReparar = new Intent(GestionMantenimientosActivity.this, ReparacionesActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putParcelable(GestionMantenimientosActivity.MANTENIMIENTO, mantenimiento);
@@ -126,6 +142,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
 
         textViewFechaMantenimiento.setText(diaActual.toString());
 
+        // OnClick para el dialogo selector de fechas
         textViewFechaMantenimiento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +158,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             }
         });
 
+        //si ya se selecciona uno ya creado
         if (intent.hasExtra(MANTENIMIENTO)){
             //Rellenar UI
             rellenarUI();
@@ -150,6 +168,12 @@ public class GestionMantenimientosActivity extends BaseActivity{
         }
     }
 
+    /**
+     * Inicializa el menu
+     *
+     * @param menu Menu en el que colocar items.
+     * @return Boolean para mostrar el menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_gestion_mantenimientos, menu);
@@ -157,37 +181,53 @@ public class GestionMantenimientosActivity extends BaseActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //Guardar
             case R.id.action_save_mantenimiento:{
                 guardarMantenimiento();
                 return true;
             }
 
+            //Modificar
             case R.id.action_modify_mantenimiento:
                 activarEdicion();
                 invalidateOptionsMenu();
                 return true;
 
+            //Eliminar
             case R.id.action_remove_mantenimiento: {
                 eliminarMantenimiento();
                 return true;
             }
 
+            //Boton atras
             case android.R.id.home: {
                 this.onBackPressed();
                 return true;
             }
 
+            //Otras opciones
             default: {
                 return super.onOptionsItemSelected(item);
             }
         }
     }
 
+    /**
+     * Metodo llamado antes de mostrar el menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        //Se elige que mostrar en funcion del estado de edicion
         if (!edicionActivada){
             //si el vehiculo se modifica
             menu.removeItem(R.id.action_save_mantenimiento);
@@ -200,6 +240,10 @@ public class GestionMantenimientosActivity extends BaseActivity{
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Guardado del estado
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -207,6 +251,10 @@ public class GestionMantenimientosActivity extends BaseActivity{
         outState.putParcelable(VehiculosActivity.VEHICULO,vehiculo);
     }
 
+    /**
+     * Recuperacion del estado
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -214,6 +262,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
     }
 
+    /**
+     * Guardado del mantenimiento
+     */
     private void guardarMantenimiento(){
         if (mantenimiento != null && mantenimiento.getId() != -1) {
             modificarMantenimiento();
@@ -222,6 +273,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         }
     }
 
+    /**
+     * Creacion y guardado en BD de un nuevo mantemiento
+     */
     private void nuevoMantenimiento() {
         //Si los datos introducidos por el usuario son correctos procedemos a guardar
         if (uiToMantenimiento()) {
@@ -238,15 +292,7 @@ public class GestionMantenimientosActivity extends BaseActivity{
             //completamos el mantenimiento con el nuevo id asignado por la bd
             mantenimiento.setId(Integer.parseInt(uri.getLastPathSegment()));
 
-            /*//Actualizamos el estado del vehiculo que ahora pasa a estar pendiente de mantenimiento
-            ContentValues contentValuesVehiculo = new ContentValues();
-            if (mantenimiento.getEstado().hashCode() == getString(R.string.fa_exclamation_triangle).hashCode()){
-                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_exclamation_triangle));
-            }else {
-                contentValuesVehiculo.put(VehiculoContentProvider.ESTADO, getString(R.string.fa_wrench));
-            }
-            getContentResolver().update(Uri.withAppendedPath(VehiculoContentProvider.CONTENT_URI, Integer.toString(mantenimiento.getVehiculo().getId())),contentValuesVehiculo,null,null);
-*/
+            //actualizacion del estado
             actualizarEstado(mantenimiento.getVehiculo().getId());
 
             Log.d(TAG, "nuevoMantenimiento: " + mantenimiento.toString());
@@ -256,7 +302,6 @@ public class GestionMantenimientosActivity extends BaseActivity{
                 setNotification(calendar, mantenimiento);
             }
 
-
             //Cambiamos el menu
             invalidateOptionsMenu();
 
@@ -265,6 +310,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         }
     }
 
+    /**
+     * Modificacion y guardado en BD de un mantemiento
+     */
     private void modificarMantenimiento(){
         //Si los datos introducidos por el usuario son correctos procedemos a guardar
         if (uiToMantenimiento()) {
@@ -304,6 +352,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         }
     }
 
+    /**
+     * Eliminacion de un mantenimiento
+     */
     private void eliminarMantenimiento(){
         String deleteID = Integer.toString(mantenimiento.getId());
         getContentResolver().delete( Uri.withAppendedPath(MantenimientosContentProvider.CONTENT_URI,deleteID), null, null);
@@ -315,6 +366,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         finish();
     }
 
+    /**
+     * Se rellena la UI con datos existentes
+     */
     private void rellenarUI() {
 
         editTextNombreMantenimiento.setText(mantenimiento.getNombre());
@@ -323,6 +377,10 @@ public class GestionMantenimientosActivity extends BaseActivity{
         textViewFechaMantenimiento.setText(simpleDateFormat.format(mantenimiento.getFecha()));
     }
 
+    /**
+     * Creacion de un mantenimiento a partir de la UI
+     * @return Si se ha construido con exito
+     */
     private boolean uiToMantenimiento(){
         boolean success = true;
 
@@ -366,6 +424,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         return success;
     }
 
+    /**
+     * Desabilita la UI
+     */
     private void desactivarEdicion() {
         edicionActivada = false;
 
@@ -375,6 +436,9 @@ public class GestionMantenimientosActivity extends BaseActivity{
         textViewFechaMantenimiento.setEnabled(false);
     }
 
+    /**
+     * Habilita la UI
+     */
     private void activarEdicion() {
         edicionActivada = true;
 
@@ -384,12 +448,16 @@ public class GestionMantenimientosActivity extends BaseActivity{
         textViewFechaMantenimiento.setEnabled(true);
     }
 
+    /**
+     * Crea la notificacion
+     * @param fechaNotificacion fecha de la notificacion
+     * @param mantenimiento Mantenimiento relacionado
+     */
     private void setNotification(Calendar fechaNotificacion, Mantenimiento mantenimiento) {
         AlarmManager alarmManager ;
         Intent intent;
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
 
         Toast.makeText(getApplicationContext(),
                 getString(R.string.notificacion) + " " +
@@ -400,21 +468,22 @@ public class GestionMantenimientosActivity extends BaseActivity{
                 ":" + fechaNotificacion.get(Calendar.MINUTE),
                 Toast.LENGTH_LONG).show();
 
-
+        //Datos a mostrar en la notificacion
         intent = new Intent(getApplicationContext(),AlarmReceiverService.class);
         intent.putExtra(AlarmReceiverService.TITULO, mantenimiento.getNombre());
         intent.putExtra(AlarmReceiverService.CONTENIDO, mantenimiento.getDescripcion());
         intent.putExtra(AlarmReceiverService.MANTENIMIENTO,mantenimiento);
 
+        //PendingIntent para cuando se haga click en la notificacion
         pendingIntent = PendingIntent.getService(getApplicationContext(), mantenimiento.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
-
-        /*//TODO trampa para pruebas
-        fechaNotificacion = GregorianCalendar.getInstance();
-        fechaNotificacion.add(Calendar.SECOND, 40);*/
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, fechaNotificacion.getTimeInMillis(), pendingIntent);
     }
 
+    /**
+     * Metodo que actualiza los estados
+     * @param idVehiculo
+     */
     private void actualizarEstado(int idVehiculo){
         String[] projection = {MantenimientosContentProvider.ID_MANTENIMIENTO,MantenimientosContentProvider.ESTADO_REPARACION};
         String where = MantenimientosContentProvider.ID_VEHICULO + "=" + "?";

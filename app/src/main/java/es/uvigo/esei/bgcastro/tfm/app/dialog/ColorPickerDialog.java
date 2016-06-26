@@ -21,11 +21,16 @@ import es.uvigo.esei.bgcastro.tfm.R;
 public class ColorPickerDialog extends DialogFragment {
     private static final String TAG = "ColorPickerDialog";
     private static final String COLOR_ACTUAL = "color_actual";
+    NoticeDialogListener noticeDialogListener;
     private LobsterPicker lobsterPicker;
     private int colorActual;
 
-    NoticeDialogListener noticeDialogListener;
-
+    /**
+     * Metodo que crea una nueva instancia de selector de color
+     *
+     * @param color
+     * @return
+     */
     public static ColorPickerDialog newInstace(int color){
         ColorPickerDialog dialog = new ColorPickerDialog();
 
@@ -37,27 +42,20 @@ public class ColorPickerDialog extends DialogFragment {
         return dialog;
     }
 
-
+    /**
+     * Metodo que devuelve el color seleccionado
+     * @return
+     */
     public int getSelectedColor(){
         colorActual = lobsterPicker.getColor();
 
         return colorActual;
     }
 
-    public interface NoticeDialogListener{
-        /**
-         * Metodo para recibir los callbacks del boton postivo
-         * @param dialog
-         */
-        void setPositiveButton(ColorPickerDialog dialog);
-
-        /**
-         * Metodo para recibir los callbacks del boton negativo
-         * @param dialog
-         */
-        void setNegativeButton(ColorPickerDialog dialog);
-    }
-
+    /**
+     * Metodo de creacion de dialogo
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +65,10 @@ public class ColorPickerDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Metodo llamado cuando es dialogo es vinculado al contexto
+     * @param activity Activity con la interfaz implementada
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -78,6 +80,11 @@ public class ColorPickerDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Metodo llamado cuando se crea el dialogo
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -111,5 +118,21 @@ public class ColorPickerDialog extends DialogFragment {
         lobsterPicker.setColor(colorActual);
 
         return builder.create();
+    }
+
+    public interface NoticeDialogListener {
+        /**
+         * Metodo para recibir los callbacks del boton postivo
+         *
+         * @param dialog
+         */
+        void setPositiveButton(ColorPickerDialog dialog);
+
+        /**
+         * Metodo para recibir los callbacks del boton negativo
+         *
+         * @param dialog
+         */
+        void setNegativeButton(ColorPickerDialog dialog);
     }
 }

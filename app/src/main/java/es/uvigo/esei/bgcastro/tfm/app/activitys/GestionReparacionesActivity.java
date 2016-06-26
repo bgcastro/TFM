@@ -34,28 +34,33 @@ import es.uvigo.esei.bgcastro.tfm.app.preferences.VehiculosPreferences;
 
 /**
  * Created by braisgallegocastro on 9/5/16.
+ * Activity para la gestion de reparaciones
  */
 public class GestionReparacionesActivity extends BaseActivity implements OpinionDialog.NoticeDialogListener{
+    public static final String REPARACION = "reparacion";
     private static final String TAG = "GestionReparActivity";
-    private Mantenimiento mantenimiento;
-
-    private Reparacion reparacion;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
-
+    private Mantenimiento mantenimiento;
+    private Reparacion reparacion;
+    //elementos de UI
     private EditText editTextReparacion;
     private EditText editTextDescripcionReparacion;
     private EditText editTextReferencia;
     private EditText editTextTaller;
     private EditText editTextPrecio;
-
+    //control de edicion
     private boolean edicionActivada = true;
 
-    public static final String REPARACION = "reparacion";
-
+    /**
+     * Implementacion principal de la funcionalidad
+     *
+     * @param savedInstanceState Estado anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Inflamos el layout
         setContentView(R.layout.activity_gestion_reparaciones);
 
         //asociamos la toolbar
@@ -65,6 +70,7 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //intent de inicio
         Intent intent = getIntent();
         if (intent != null) {
             mantenimiento = intent.getParcelableExtra(MantenimientosActivity.MANTENIMIENTO);
@@ -75,12 +81,14 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
             reparacion = new Reparacion();
         }
 
+        //asociamos los elementos de la vista
         editTextReparacion = (EditText) findViewById(R.id.editTextReparacion);
         editTextDescripcionReparacion = (EditText) findViewById(R.id.editTextDescripcionReparacion);
         editTextReferencia = (EditText) findViewById(R.id.editTextReferencia);
         editTextTaller = (EditText) findViewById(R.id.editTextTaller);
         editTextPrecio = (EditText) findViewById(R.id.editTextPrecio);
 
+        //si se selecciona uno ya creado
         if (intent.hasExtra(REPARACION)){
             //Rellenar UI
             rellenarUI();
@@ -91,6 +99,12 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
 
     }
 
+    /**
+     * Inicializa el menu
+     *
+     * @param menu Menu en el que colocar items.
+     * @return Boolean para mostrar el menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_gestion_reparaciones, menu);
@@ -98,9 +112,15 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //nueva reparacion
             case R.id.action_nueva_reparacion:{
                 if (reparacion != null && reparacion.getId() != -1) {
                     modificarReparacion();
@@ -110,22 +130,26 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
                 return true;
             }
 
+            //modificar reparacion
             case R.id.action_modify_reparacion: {
                 activarEdicion();
                 invalidateOptionsMenu();
                 return true;
             }
 
+            //eliminar reparacion
             case R.id.action_remove_reparacion: {
                 eliminarReparacion();
                 return true;
             }
 
+            //boton atras
             case android.R.id.home: {
                 this.onBackPressed();
                 return true;
             }
 
+            //otros
             default: {
                 return super.onOptionsItemSelected(item);
             }
@@ -133,6 +157,11 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
 
     }
 
+    /**
+     * Metodo llamado antes de mostrar el menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (!edicionActivada){
@@ -147,6 +176,10 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Metodo llamado cuando se acepta el dialogo de comentar
+     * @param dialog
+     */
     @Override
     public void setPositiveButton(OpinionDialog dialog) {
         Opinion opinion = new Opinion(dialog.getPuntuacion(), reparacion.getPrecio(), reparacion.getTaller(), dialog.getComentario());
@@ -155,11 +188,14 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        //si hay conectividad
         if (networkInfo != null && networkInfo.isConnected()) {
             SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
             String address = preferences.getString(VehiculosPreferences.SERVER_ADDRESS, VehiculosPreferences.SERVER_ADDRESS_DEFAULT);
             int port = preferences.getInt(VehiculosPreferences.SERVER_PORT, VehiculosPreferences.SERVER_PORT_DEFAULT);
 
+            //Se llama a la AsyncTask
             UploadOpinionTask uploadOpinion = new UploadOpinionTask(getApplicationContext(), address, port);
             uploadOpinion.execute(opinion);
         } else {
@@ -170,9 +206,12 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
 
     @Override
     public void setNegativeButton(OpinionDialog dialog) {
-
     }
 
+    /**
+     * Metodo que crea una reparacion a partir de la UI
+     * @return true si ha tenido exito
+     */
     private boolean uiToReparacion(){
         boolean success = true;
         String nombreReparacion = editTextReparacion.getText().toString();
@@ -216,6 +255,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         return success;
     }
 
+    /**
+     * metodo que crea y guarda una reparacion en la bd
+     */
     private void nuevaReparacion(){
         //si los datos introducidos son validos podemos guardar la reparacion
         if (uiToReparacion() && reparacion.getId() == -1){
@@ -250,6 +292,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         }
     }
 
+    /**
+     * Metodo que modifica una reparacion y la guarda en BD
+     */
     private void modificarReparacion(){
         //si los datos introducidos son validos podemos guardar la reparacion
         if (uiToReparacion() && reparacion.getId() == -1){
@@ -277,6 +322,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         }
     }
 
+    /**
+     * Metodo que elimina una reparacion
+     */
     private void eliminarReparacion(){
         String deleteID = Integer.toString(reparacion.getId());
         getContentResolver().delete( Uri.withAppendedPath(ReparacionesContentProvider.CONTENT_URI,deleteID), null, null);
@@ -288,6 +336,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         finish();
     }
 
+    /**
+     * Metodo que actualiza el estado del mantenimiento y del vehiculo asociado
+     */
     private void actualizarEstado(){
         ContentValues contentValuesMantenimientos = new ContentValues();
         contentValuesMantenimientos.put(MantenimientosContentProvider.ESTADO_REPARACION,getString(R.string.fa_check));
@@ -330,6 +381,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         }
     }
 
+    /**
+     * Metodo que actualiza el estado cuando se borra la reparacion
+     */
     private void actualizarEstadoBorrado(){
         ContentValues contentValuesMantenimientos = new ContentValues();
         ContentValues contentValuesVehiculo = new ContentValues();
@@ -370,6 +424,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         }
     }
 
+    /**
+     * Metodo para desactivar la edicion
+     */
     private void desactivarEdicion() {
         edicionActivada = false;
 
@@ -380,6 +437,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         editTextPrecio.setEnabled(false);
     }
 
+    /**
+     * Metodo para activar la edicion
+     */
     private void activarEdicion() {
         edicionActivada = true;
 
@@ -390,6 +450,9 @@ public class GestionReparacionesActivity extends BaseActivity implements Opinion
         editTextPrecio.setEnabled(true);
     }
 
+    /**
+     * Metodo que rellena la UI a partir de una reparacion ya creada
+     */
     private void rellenarUI() {
         editTextReparacion.setText(reparacion.getNombreReparacion());
         editTextDescripcionReparacion.setText(reparacion.getDescripcion());

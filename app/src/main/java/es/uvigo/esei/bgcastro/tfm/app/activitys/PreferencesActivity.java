@@ -9,6 +9,7 @@ import es.uvigo.esei.bgcastro.tfm.app.fragment.PreferencesFragment;
 
 /**
  * Created by braisgallegocastro on 17/5/16.
+ * Activity para cambiar las preferencias
  */
 public class PreferencesActivity extends BaseActivity {
     @Override
@@ -24,12 +25,19 @@ public class PreferencesActivity extends BaseActivity {
         setSupportActionBar(actionBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        //Fragmento con las interfaz de las preferencias
         getFragmentManager().beginTransaction().replace(R.id.contentPreferencias, new PreferencesFragment()).commit();
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     *
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Boton atras
         if (item.getItemId() == android.R.id.home){
             this.onBackPressed();
             return true;

@@ -14,14 +14,22 @@ import es.uvigo.esei.bgcastro.tfm.common.socket_manager.SocketIOManager;
 
 /**
  * Created by braisgallegocastro on 23/5/16.
+ * Clase loader que descarga opiniones del servidor
  */
 public class OpinionesListLoader extends AsyncTaskLoader<List<Opinion>>{
-    private String nombreTaller;
     private final String serverAddress;
     private final int port;
-
+    private String nombreTaller;
     private ArrayList<Opinion> opinions;
 
+    /**
+     * Constructor
+     *
+     * @param context       Contexto
+     * @param serverAddress Direccion del servidor
+     * @param port          Puerto
+     * @param nombreTaller  Nobre taller
+     */
     public OpinionesListLoader(Context context,String serverAddress, int port, String nombreTaller) {
         super(context);
         this.nombreTaller = nombreTaller;
@@ -29,11 +37,16 @@ public class OpinionesListLoader extends AsyncTaskLoader<List<Opinion>>{
         this.port = port;
     }
 
+    /**
+     * Tarea en segundo plano que se encarga de cargar en background las opiniones
+     * @return
+     */
     @Override
     public List<Opinion> loadInBackground() {
         Socket socket = null;
         ArrayList<Opinion> opinionArrayList = null;
 
+        //Conexion y descarga de datos
         try {
             socket = new Socket(InetAddress.getByName(serverAddress), port);
 
@@ -69,6 +82,10 @@ public class OpinionesListLoader extends AsyncTaskLoader<List<Opinion>>{
         }
     }
 
+    /**
+     * Metodo llamado cuando se acaba de obtener los resultados
+     * @param data Datos cargados
+     */
     @Override
     public void deliverResult(List<Opinion> data) {
         //para que el recolector de basura no las elimine antes de tiempo
@@ -81,20 +98,29 @@ public class OpinionesListLoader extends AsyncTaskLoader<List<Opinion>>{
         opinionesViejas = null;
     }
 
+    /**
+     * Metodo llamado al inicio de la carga de datos
+     */
    @Override
     protected void onStartLoading() {
         if (takeContentChanged())
             forceLoad();
-    }
+   }
 
+    /**
+     * Metodo llamado cuando se cancela la carga de datos
+     */
     @Override
     protected void onStopLoading() {
         cancelLoad();
     }
 
+    /**
+     * Metodo llamado cuando se hace un reset
+     */
     @Override
     protected void onReset() {
-        // Ensure the loader has been stopped.
+        // Asegurarse de que esta parado
         onStopLoading();
         opinions = null;
     }

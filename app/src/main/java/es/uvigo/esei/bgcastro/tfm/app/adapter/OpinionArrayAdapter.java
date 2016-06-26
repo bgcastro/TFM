@@ -16,12 +16,19 @@ import es.uvigo.esei.bgcastro.tfm.app.viewholder.OpinionViewHolder;
 
 /**
  * Created by braisgallegocastro on 23/5/16.
+ * Array adapter que hace uso de viewholders para mejorar la velocidad en el mostrado objetos opinion
  */
 public class OpinionArrayAdapter extends ArrayAdapter<Opinion> {
     private ArrayList<Opinion> opinionArrayList;
     private Context contexto;
     private int vistaItem;
 
+    /**
+     * Constructor
+     *
+     * @param context  Contexto
+     * @param resource Id de vista
+     */
     public OpinionArrayAdapter(Context context, int resource) {
         super(context, resource);
 
@@ -30,6 +37,12 @@ public class OpinionArrayAdapter extends ArrayAdapter<Opinion> {
         vistaItem = resource;
     }
 
+    /**
+     * Constructor
+     * @param context Contexto
+     * @param resource Id de vista
+     * @param opinionArrayList Array inicial
+     */
     public OpinionArrayAdapter(Context context, int resource, ArrayList<Opinion> opinionArrayList) {
         super(context, resource, opinionArrayList);
 
@@ -38,11 +51,19 @@ public class OpinionArrayAdapter extends ArrayAdapter<Opinion> {
         this.vistaItem = resource;
     }
 
-
+    /**
+     * Metodo que construye la vista de los items
+     * @param position Posicion de la vista
+     * @param convertView Elemento a de la vista
+     * @param parent Elemento contenedor
+     * @return Vista a mostrar
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         OpinionViewHolder holder;
+        //Inflar elementos es costoso
+        //De este modo se recicla la vista y se ahorra el inflado cada vez que recarga la vista
         if (view == null) {
             LayoutInflater layoutInflater = (LayoutInflater)contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(vistaItem,parent,false);
@@ -71,11 +92,19 @@ public class OpinionArrayAdapter extends ArrayAdapter<Opinion> {
         return view;
     }
 
+    /**
+     * Metodo que devuelve el numero de elementos
+     * @return Numero de elementos
+     */
     @Override
     public int getCount() {
         return opinionArrayList.size();
     }
 
+    /**
+     * Setter del array de elementos
+     * @param opinionArrayList Array de elementos
+     */
     public void setOpinionArrayList(ArrayList<Opinion> opinionArrayList) {
         this.opinionArrayList = opinionArrayList;
     }

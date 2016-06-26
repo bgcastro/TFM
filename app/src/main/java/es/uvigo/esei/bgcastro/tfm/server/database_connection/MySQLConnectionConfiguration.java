@@ -5,21 +5,36 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Clase que representa la conexion con una BD MySQL
+ */
 public class MySQLConnectionConfiguration extends AbstractConnectionConfiguration implements ConnectionConfiguration {
-	public static final Integer[] MYSQL_IGNORED_CREATION_ERRORS = new Integer[] { 1050 };
+    //Configuracion
+    public static final Integer[] MYSQL_IGNORED_CREATION_ERRORS = new Integer[] { 1050 };
 	public static final File OPINIONES_MYSQL_SQL_FILE = new File(DIR_SQL, "opiniones.mysql.sql");
-	
-	private String serverName;
+    private final Map<String, String> properties;
+    private String serverName;
 	private String dbName;
 	private int portNumber;
-	private final Map<String, String> properties;
 
-	public MySQLConnectionConfiguration() {
+    /**
+     * Constructor
+     */
+    public MySQLConnectionConfiguration() {
 		this(null, null, null, null, -1);
 	}
-	
-	public MySQLConnectionConfiguration(
+
+    /**
+     * Contructor
+     *
+     * @param userName   Usuario
+     * @param password   Contraseña
+     * @param serverName Servidor
+     * @param dbName     Nombre BD
+     * @param portNumber Pueto
+     * @throws IllegalArgumentException
+     */
+    public MySQLConnectionConfiguration(
 		String userName, String password,
 		String serverName, String dbName, int portNumber
 	) throws IllegalArgumentException {
@@ -30,53 +45,103 @@ public class MySQLConnectionConfiguration extends AbstractConnectionConfiguratio
 		this.setPortNumber(portNumber);
 		
 		this.properties = new HashMap<String, String>();
-	}
-	
-	public String getServerName() {
+    }
+
+    /**
+     * Metodo que devuelve el servidor
+     * @return Servidor
+     */
+    public String getServerName() {
 		return serverName;
-	}
+    }
 
-	public void setServerName(String serverName) {
+    /**
+     * Metodo para cambiar el nombre del servidor
+     * @param serverName Nombre servidor
+     */
+    public void setServerName(String serverName) {
 		this.serverName = serverName;
-	}
+    }
 
-	public String getDbName() {
+    /**
+     * Metodo que devuelve el nombre de la BD
+     * @return Nombre BD
+     */
+    public String getDbName() {
 		return dbName;
-	}
+    }
 
-	public void setDbName(String dbName) {
+    /**
+     * Metodo para cambiar el nombre de la BD
+     * @param dbName Nombre de la bd
+     */
+    public void setDbName(String dbName) {
 		this.dbName = dbName;
-	}
+    }
 
-	public int getPortNumber() {
+    /**
+     * Metodo que devuelve el numero de puerto
+     * @return Numero de puertp
+     */
+    public int getPortNumber() {
 		return portNumber;
-	}
-	
-	public Map<String, String> getProperties() {
+    }
+
+    /**
+     * Metodo para cambiar el puerto
+     *
+     * @param portNumber Numero de puerto
+     * @throws IllegalArgumentException
+     */
+    public void setPortNumber(int portNumber)
+            throws IllegalArgumentException {
+        if (portNumber > 65535)
+            throw new IllegalAccessError("Port number must be in range [0, 65535] or negative for disable");
+
+        this.portNumber = portNumber;
+    }
+
+    /**
+     * Metodo que devuelve el conjunto de propiedades
+     * @return Propiedades
+     */
+    public Map<String, String> getProperties() {
 		return Collections.unmodifiableMap(this.properties);
-	}
-	
-	public String putProperty(String property, String value) {
+    }
+
+    /**
+     * Metodo para cambiar el conjunto de propiedades
+     * @param property Propiedades
+     * @param value Valores
+     * @return
+     */
+    public String putProperty(String property, String value) {
 		return this.properties.put(property, value);
-	}
-	
-	public String getProperty(String property) {
+    }
+
+    /**
+     * Metodo que devuelve una propiedad
+     * @param property Nombre propiedad
+     * @return Valor
+     */
+    public String getProperty(String property) {
 		return this.properties.get(property);
-	}
-	
-	public String removeProperty(String property) {
+    }
+
+    /**
+     * Metodo para eliminar una propiedad
+     * @param property Nombre de la propiedad
+     * @return El valor borrado o null
+     */
+    public String removeProperty(String property) {
 		return this.properties.remove(property);
-	}
+    }
 
-	public void setPortNumber(int portNumber) 
-	throws IllegalArgumentException {
-		if (portNumber > 65535)
-			throw new IllegalAccessError("Port number must be in range [0, 65535] or negative for disable");
-		
-		this.portNumber = portNumber;
-	}
-
-	@Override
+    /**
+     * Metodo que genera un String con la conexion para JDBC
+     * @return String de conexion
+     */
+    @Override
 	public String getConnectionString() {
 		final StringBuilder sb = new StringBuilder("jdbc:mysql://");
 		

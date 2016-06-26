@@ -24,30 +24,35 @@ import es.uvigo.esei.bgcastro.tfm.app.entities.Vehiculo;
 
 /**
  * Created by braisgallegocastro on 17/5/16.
+ * Activity para la generacion de informes
  */
 public class InformeActvity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final int URL_LOADER = 3;
     private static final String TAG = "InformeActvity";
     private static final String DATEPICKER_INICIO_TAG = "fechaInicioDialog";
     private static final String DATEPICKER_FIN_TAG = "fechaFinDialog";
-
-    private Vehiculo vehiculo;
-
+    //Variables para fechas
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
+    //Relacionados con UI
+    private static String[] fromColumns = new String[]{VehiculosSQLite.COL_NOMBRE, VehiculosSQLite.COL_PRECIO};
+    private static int[] into = new int[]{R.id.nombreMantenimientoInformeItem, R.id.totalMantenimientoInformeItem};
+    String stringFechaFin;
+    //Entities
+    private Vehiculo vehiculo;
     private Calendar fechaInicio = Calendar.getInstance();
     private Calendar fechaFin = Calendar.getInstance();
     private String stringFechaInicio;
-    String stringFechaFin;
-
+    //Adapter
     private SimpleCursorAdapter adapter;
-
-    private static String[] fromColumns = new String[]{ VehiculosSQLite.COL_NOMBRE, VehiculosSQLite.COL_PRECIO};
-    private static int[] into = new int[]{R.id.nombreMantenimientoInformeItem,R.id.totalMantenimientoInformeItem};
-
     private TextView textViewPrecioTotal;
     private TextView textViewFechaInicio;
     private TextView textViewFechaFin;
 
+    /**
+     * Implementacion principal de la funcionalidad
+     *
+     * @param savedInstanceState Estado anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +72,10 @@ public class InformeActvity extends BaseActivity implements LoaderManager.Loader
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fechaInicio.add(Calendar.MONTH,-3);
+        //Fecha de inicio
+        fechaInicio.add(Calendar.MONTH, -3);
 
+        //Elementos de UI
         textViewFechaInicio = (TextView) findViewById(R.id.fechaInicio);
         textViewFechaFin = (TextView) findViewById(R.id.fechaFin);
         ListView listViewGastos = (ListView) findViewById(R.id.listViewInformes);
@@ -79,8 +86,10 @@ public class InformeActvity extends BaseActivity implements LoaderManager.Loader
 
         adapter = new SimpleCursorAdapter(this,R.layout.informe_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
+        //Vinculacion del adapter
         listViewGastos.setAdapter(adapter);
 
+        //Fechas de inicio y fin en la UI
         stringFechaInicio = simpleDateFormat.format(fechaInicio.getTime());
         stringFechaFin = simpleDateFormat.format(fechaFin.getTime());
 
@@ -91,6 +100,7 @@ public class InformeActvity extends BaseActivity implements LoaderManager.Loader
         final LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(URL_LOADER, null, this);
 
+        //Dialogo selector de fecha de inicio
         textViewFechaInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +117,7 @@ public class InformeActvity extends BaseActivity implements LoaderManager.Loader
             }
         });
 
+        //Dialogo selector de fecha de fin
         textViewFechaFin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +160,11 @@ public class InformeActvity extends BaseActivity implements LoaderManager.Loader
         }
     }
 
+    /**
+     * Inicializacion del loader
+     * @param loader No usado
+     * @param data No usado
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
@@ -168,20 +184,22 @@ public class InformeActvity extends BaseActivity implements LoaderManager.Loader
 
         Log.d(TAG, "onLoadFinished: string builder " + stringBuilder);
 
-        // Replace the result Cursor displayed by the Cursor Adapter with the new result set.
+        // Ponemos los resultados en la UI
         adapter.swapCursor(data);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }
 
+    /**
+     * Metodo llamado en el reset que se encarga de resetear el Adapter
+     * @param loader no usado
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Remove the existing result Cursor from the List Adapter.
         adapter.swapCursor(null);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }
 
+    /**
+     * Metodo que vuelve a recargar los datos de nuevo
+     */
     private void updateResults(){
         getLoaderManager().restartLoader(URL_LOADER, null, this);
     }

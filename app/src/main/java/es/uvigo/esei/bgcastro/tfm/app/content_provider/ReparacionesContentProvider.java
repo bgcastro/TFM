@@ -18,17 +18,25 @@ import es.uvigo.esei.bgcastro.tfm.app.DAO.VehiculosSQLite;
 
 /**
  * Created by braisgallegocastro on 7/5/16.
+ * Content provider para las reparaciones
  */
 public class ReparacionesContentProvider extends ContentProvider {
 
+    //URI de acceso
+    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm.reparaciones/reparaciones");
+    //Campos
+    public static final String ID_REPARACION = "_id";
+    public static final String NOMBRE_REPARACION = "nombre_reparacion";
+    public static final String DESCRIPCION_REPARACION = "descripcion_reparacion";
+    public static final String REFERENCIA = "referencia";
+    public static final String TALLER = "taller";
+    public static final String PRECIO = "precio";
+    public static final String ID_MANTENIMIENTO_REPARACION = "id_mantenimiento";
     private static final String TAG = "ReparacionesContProv";
-    private VehiculosSQLite bddHelper;
-
-    private final String CONTENT_PROVIDER_MIME_ALLROWS = "vnd.android.cursor.dir/es.uvigo.esei.bgcastro.tfm.reparaciones";
-    private final String CONTENT_PROVIDER_MIME_SINGLE_ROW = "vnd.android.cursor.item/es.uvigo.esei.bgcastro.tfm.reparaciones";
-
+    // Constantes para diferenciar las URI
     private static final int ALLROWS = 1;
     private static final int SINGLE_ROW = 2;
+    // URImatcher
     private static final UriMatcher uriMatcher;
 
     static {
@@ -37,16 +45,16 @@ public class ReparacionesContentProvider extends ContentProvider {
         uriMatcher.addURI("es.uvigo.esei.bgcastro.tfm.reparaciones", "reparaciones/#", SINGLE_ROW);
     }
 
-    public static final Uri CONTENT_URI = Uri.parse("content://es.uvigo.esei.bgcastro.tfm.reparaciones/reparaciones");
+    //URIs
+    private final String CONTENT_PROVIDER_MIME_ALLROWS = "vnd.android.cursor.dir/es.uvigo.esei.bgcastro.tfm.reparaciones";
+    private final String CONTENT_PROVIDER_MIME_SINGLE_ROW = "vnd.android.cursor.item/es.uvigo.esei.bgcastro.tfm.reparaciones";
+    private VehiculosSQLite bddHelper;
 
-    public static final String ID_REPARACION = "_id";
-    public static final String NOMBRE_REPARACION = "nombre_reparacion";
-    public static final String DESCRIPCION_REPARACION = "descripcion_reparacion";
-    public static final String REFERENCIA = "referencia";
-    public static final String TALLER = "taller";
-    public static final String PRECIO = "precio";
-    public static final String ID_MANTENIMIENTO_REPARACION = "id_mantenimiento";
-
+    /**
+     * Metodo de inicializacion
+     *
+     * @return True si exito
+     */
     @Override
     public boolean onCreate() {
         bddHelper = new VehiculosSQLite(getContext(),VehiculosSQLite.NOMBRE_BBDD,null,VehiculosSQLite.VERSION);
@@ -54,6 +62,15 @@ public class ReparacionesContentProvider extends ContentProvider {
         return bddHelper != null;
     }
 
+    /**
+     * Metodo de busqueda
+     * @param uri URI
+     * @param projection Proyeccion
+     * @param selection Campos de selecion
+     * @param selectionArgs Argumentos de seleccion
+     * @param sortOrder Orden
+     * @return Cursor con resultados
+     */
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -86,6 +103,11 @@ public class ReparacionesContentProvider extends ContentProvider {
         return cursor;
     }
 
+    /**
+     * Metodo que devuelve si es consulta unica o de todos los elementos
+     * @param uri Uri
+     * @return Tipo
+     */
     @Nullable
     @Override
     public String getType(Uri uri) {
@@ -99,40 +121,42 @@ public class ReparacionesContentProvider extends ContentProvider {
         }
     }
 
+    /**
+     * Metodo que devuelve si es consulta unica o de todos los elementos
+     * @param uri Uri
+     * @return Tipo
+     */
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-
-        // Open a read / write database to support the transaction.
         SQLiteDatabase bdd = bddHelper.getWritableDatabase();
 
-        // To add empty rows to your database by passing in an empty
-        // Content Values object you must use the null column hack
-        // parameter to specify the name of the column that can be set to null.
         String nullColumnHack = null;
 
-        // Insert the values into the table
         long id = bdd.insert(VehiculosSQLite.TABLA_REPARACIONES, nullColumnHack, values);
 
         Log.d(TAG, "insert: "+ id);
 
-        // Construct and return the URI of the newly inserted row.
         if (id > -1) {
-            // Construct and return the URI of the newly inserted row.
             Uri insertedId = ContentUris.withAppendedId(CONTENT_URI, id);
 
-            // Notify any observers of the change in the data set.
             getContext().getContentResolver().notifyChange(insertedId, null);
             return insertedId;
         } else
             return null;
     }
 
+    /**
+     * Metodo para borrar elementos
+     * @param uri URI
+     * @param selection Campos de seleccion
+     * @param selectionArgs Argumentos de seleccion
+     * @return Numero de borrados
+     */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase bdd = bddHelper.getWritableDatabase();
 
-        // If this is a row URI, limit the deletion to the specified row.
         switch (uriMatcher.match(uri)) {
             case SINGLE_ROW :
                 String rowID = uri.getPathSegments().get(1);
@@ -140,27 +164,30 @@ public class ReparacionesContentProvider extends ContentProvider {
             default:
                 break;
         }
-        // To return the number of deleted items you must specify a where // clause. To delete all rows and return a value pass in “1”.
+
         if (selection == null) {
             selection = "1";
         }
 
-        // Perform the deletion.
         int deleteCount = bdd.delete(VehiculosSQLite.TABLA_REPARACIONES, selection, selectionArgs);
 
-        // Notify any observers of the change in the data set.
         getContext().getContentResolver().notifyChange(uri, null);
 
-        // Return the number of deleted items.
         return deleteCount;
     }
 
+    /**
+     * Metodo para actualizar elementos
+     * @param uri URI
+     * @param values Valores nuevos
+     * @param selection Campos de seleccion
+     * @param selectionArgs Argumentos
+     * @return Numero de actualizaciones
+     */
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // Open a read / write database to support the transaction.
         SQLiteDatabase db = bddHelper.getWritableDatabase();
 
-        // If this is a row URI, limit the deletion to the specified row.
         switch (uriMatcher.match(uri)) {
             case SINGLE_ROW :
                 String rowID = uri.getPathSegments().get(1); selection = VehiculosSQLite.COL_ID_REPARACION + "=" + rowID
@@ -168,9 +195,8 @@ public class ReparacionesContentProvider extends ContentProvider {
             default: break;
         }
 
-        // Perform the update.
         int updateCount = db.update(VehiculosSQLite.TABLA_REPARACIONES, values, selection, selectionArgs);
-        // Notify any observers of the change in the data set.
+
         getContext().getContentResolver().notifyChange(uri, null);
         return updateCount;
     }

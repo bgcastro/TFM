@@ -37,19 +37,24 @@ import static java.lang.Math.abs;
 
 /**
  * Created by braisgallegocastro on 20/2/16.
+ * Activity para mostrar
  */
 public class MantenimientosActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String MANTENIMIENTO = "mantenimiento";
     private static final String TAG = "MantenimientosActivity";
     private static final int URL_LOADER = 1;
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
-
+    //Elementos de UI
     private ListView listViewMantenimientos;
     private SimpleCursorAdapter adapter;
-
+    //Entities
     private Vehiculo vehiculo;
 
-    public static final String MANTENIMIENTO = "mantenimiento";
-
+    /**
+     * Implementacion principal de la funcionalidad
+     *
+     * @param savedInstanceState Estado anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,10 +105,12 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
         adapter = new SimpleCursorAdapter(this,R.layout.mantenimiento_item,null,fromColumns,into,SimpleCursorAdapter.NO_SELECTION);
 
+        //Modificamos algunos elementos
         adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 switch (view.getId()) {
+                    //Estado del mantenimietno
                     case R.id.estadoMantenimientoItem: {
                         ((TextView) view).setText(cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_ESTADO)));
 
@@ -115,6 +122,7 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                         return true;
                     }
 
+                    //Kilometraje
                     case R.id.kilometrajeMantenimientoItem:{
                         SharedPreferences preferences = getSharedPreferences(VehiculosPreferences.PREFERENCES_FILE,MODE_PRIVATE);
                         StringBuilder kilometraje = new StringBuilder();
@@ -148,6 +156,7 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                         return  true;
                     }
 
+                    //Fecha de mantenimiento
                     case R.id.fechaMantenimientoItem: {
                         DateTime fechaReparacion = new DateTime();
                         String fecha = cursor.getString(cursor.getColumnIndex(VehiculosSQLite.COL_FECHA));
@@ -187,8 +196,10 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
             }
         });
 
+        //Se vincula el adapter
         listViewMantenimientos.setAdapter(adapter);
 
+        //On click de un item
         listViewMantenimientos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -206,17 +217,25 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
 
                 Log.d(TAG, "onItemClick: position" + position);
 
+                //Arrancar la activity de modificar el mantenimiento
                 startActivity(intentModificarMantenimiento);
             }
         });
     }
 
+    /**
+     * Metodo llamado cuando se pasa por el estado resumed
+     */
     @Override
     public void onResume() {
         super.onResume();
         getLoaderManager().getLoader(URL_LOADER).forceLoad();
     }
 
+    /**
+     * Guardado del estado
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -224,6 +243,10 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         outState.putParcelable(VehiculosActivity.VEHICULO, vehiculo);
     }
 
+    /**
+     * Recuperacion del estado
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -231,6 +254,12 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         vehiculo = savedInstanceState.getParcelable(VehiculosActivity.VEHICULO);
     }
 
+    /**
+     * Inicializa el menu
+     *
+     * @param menu Menu en el que colocar items.
+     * @return Boolean para mostrar el menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mantenimientos, menu);
@@ -238,20 +267,30 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * LLamado cuando se pulsa un item
+     * @param item Item seleccionado
+     * @return true si se ha atendido la accion.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //Añadir un mantenimiento
             case R.id.action_add_mantenimiento:{
                 nuevoMantenimiento();
                 return true;
             }
 
+            //Otros
             default: {
                 return super.onOptionsItemSelected(item);
             }
         }
     }
 
+    /**
+     * Metodo que arranca la activity GestionMantenimientosActivity
+     */
     private void nuevoMantenimiento() {
         Log.d(TAG, "nuevoMantenimiento: vehiculo" + vehiculo);
 
@@ -261,10 +300,14 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         startActivity(intent);
     }
 
+    /**
+     * Inicializacion del loader
+     * @param id ID del loader
+     * @param args No usado
+     * @return Los datos
+     */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // Construct the new query in the form of a Cursor Loader. Use the id
-        // parameter to construct and return different loaders.
         switch (id) {
             case URL_LOADER:
                 int idVehiculo = vehiculo.getId();
@@ -273,10 +316,8 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
                 String[] whereArgs = {Integer.toString(idVehiculo)};
                 String sortOrder = null;
 
-                // Query URI
                 Uri queryUri = MantenimientosContentProvider.CONTENT_URI;
 
-                // Create the new Cursor loader.
                 return new CursorLoader(MantenimientosActivity.this, queryUri, projection, where, whereArgs, sortOrder);
 
             default:
@@ -284,20 +325,22 @@ public class MantenimientosActivity extends BaseActivity implements LoaderManage
         }
     }
 
+    /**
+     * Metodo llamado al terminar la busqueda de datos
+     * @param loader No usado
+     * @param data Datos encontrados
+     */
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Replace the result Cursor displayed by the Cursor Adapter with the new result set.
         adapter.swapCursor(data);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
-
     }
 
+    /**
+     * Metodo llamado en el reset de loader
+     * @param loader
+     */
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Remove the existing result Cursor from the List Adapter.
         adapter.swapCursor(null);
-        // This handler is not synchronized with the UI thread, so you
-        // will need to synchronize it before modifying any UI elements directly.
     }
 }

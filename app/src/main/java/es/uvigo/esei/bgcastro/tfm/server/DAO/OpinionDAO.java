@@ -10,26 +10,44 @@ import java.util.List;
 
 import es.uvigo.esei.bgcastro.tfm.app.entities.Opinion;
 
+/**
+ * Clase para el acceso a BD
+ */
 public class OpinionDAO {
     private static final String NOMBRE_TABLA = "Opiniones";
 
+    //Campos BD
     private static final String ID = "_id";
     private static final String VALORACION = "valoracion";
     private static final String PRECIO_VALORACION = "precioReparacion";
     private static final String NOMBRE_TALLER = "nombreTaller";
     private static final String OPINION = "opinion";
 
-	private static final String QUERY_EXISTS_OPINION = "SELECT "+ ID +" FROM " + NOMBRE_TABLA + " WHERE "+ ID +" = ?";
+    //Querys
+    private static final String QUERY_EXISTS_OPINION = "SELECT "+ ID +" FROM " + NOMBRE_TABLA + " WHERE "+ ID +" = ?";
 	private static final String QUERY_CREATE_OPINION = "INSERT INTO " + NOMBRE_TABLA + " ("+ ID +", " + VALORACION + ","
             + PRECIO_VALORACION + ", " + NOMBRE_TALLER + ", " + OPINION + ") VALUES (?, ?, ?, ?, ?)";
-	
-	private final Connection connection;
-	
-	public OpinionDAO(Connection connection) throws SQLException {
+
+    //Conexion
+    private final Connection connection;
+
+    /**
+     * Constructor
+     *
+     * @param connection Conexion BD
+     * @throws SQLException
+     */
+    public OpinionDAO(Connection connection) throws SQLException {
 		this.connection = connection;
-	}
-	
-	public boolean existsOpinion(int id) throws SQLException {
+    }
+
+    /**
+     * Metodo para comprabarsi existe una opinion
+     * @param id ID
+     * @return True si existe
+     * @throws SQLException
+     */
+    public boolean existsOpinion(int id) throws SQLException {
 		final PreparedStatement queryOpinionExists = this.connection.prepareStatement(QUERY_EXISTS_OPINION);
         
         queryOpinionExists.setInt(1, id);
@@ -39,13 +57,19 @@ public class OpinionDAO {
 			return result.next();
 		} finally {
 			result.close();
-		}
-	}
-	
-	public boolean insertOpinion(Opinion opinion) throws SQLException {
+        }
+    }
+
+    /**
+     * Metodo para guardar una opinion
+     * @param opinion Opinion
+     * @return True si se guarda
+     * @throws SQLException
+     */
+    public boolean insertOpinion(Opinion opinion) throws SQLException {
 		if (this.existsOpinion(opinion.getId())) {
-			// Already exists
-			return false;
+            // Ya existe
+            return false;
 		} else {
 			final PreparedStatement queryCreateOpinion = this.connection.prepareStatement(OpinionDAO.QUERY_CREATE_OPINION);
 			
@@ -56,10 +80,16 @@ public class OpinionDAO {
 			queryCreateOpinion.setString(5, opinion.getOpinion());
 
 			return queryCreateOpinion.executeUpdate() > 0;
-		}
-	}
+        }
+    }
 
-	public List<Opinion> listOpinionesFromTaller(String nombreTallerSearch) throws SQLException {
+    /**
+     * Metodo para buscar opiniones a partir del nombre del taller
+     * @param nombreTallerSearch Nombre taller
+     * @return Lista de coincidencias
+     * @throws SQLException
+     */
+    public List<Opinion> listOpinionesFromTaller(String nombreTallerSearch) throws SQLException {
         final PreparedStatement queryOpinion = this.connection.prepareStatement("SELECT * FROM " + NOMBRE_TABLA +
                 " WHERE " + NOMBRE_TALLER + " LIKE ?");
 		
@@ -80,9 +110,14 @@ public class OpinionDAO {
 		result.close();
 	
 		return opinions;
-	}
+    }
 
-	public List<Opinion> listOpinions() throws SQLException {
+    /**
+     * Metodo para buscar todas las opiniones
+     * @return Lista de opiniones
+     * @throws SQLException
+     */
+    public List<Opinion> listOpinions() throws SQLException {
 		final Statement statement = this.connection.createStatement(); 
 		final ResultSet result = statement.executeQuery("SELECT * FROM " + NOMBRE_TABLA);
 		

@@ -14,25 +14,42 @@ import es.uvigo.esei.bgcastro.tfm.common.socket_manager.SocketIOManager;
 
 /**
  * Created by braisgallegocastro on 22/5/16.
+ * Tarea en segundo plano que se encarga de subir una opinion al servidor
  */
 public class UploadOpinionTask extends AsyncTask<Opinion,Void,Boolean> {
     Context context;
     String serverAddres;
     int puerto;
 
+    /**
+     * Constructor
+     */
     public UploadOpinionTask() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param context      Contexto
+     * @param serverAddres Direccion del servidor
+     * @param puerto       Numero de puerto
+     */
     public UploadOpinionTask(Context context, String serverAddres, int puerto) {
         this.context = context;
         this.serverAddres = serverAddres;
         this.puerto = puerto;
     }
 
+    /**
+     * Metodo que realiza la subida al servidor
+     * @param params
+     * @return
+     */
     @Override
     protected Boolean doInBackground(Opinion... params) {
         Socket socket = null;
 
+        //Conexion y subida de datos
         try {
             socket = new Socket(InetAddress.getByName(serverAddres), puerto);
 
@@ -63,11 +80,17 @@ public class UploadOpinionTask extends AsyncTask<Opinion,Void,Boolean> {
             }
         }
 
+        //Se ha tenido exito al subir los datos
         return true;
     }
 
+    /**
+     * Metodo llamado al realizarse la subida
+     * @param aBoolean Exito de la subida
+     */
     @Override
     protected void onPostExecute(Boolean aBoolean) {
+        //Si exito
         if (aBoolean){
             Toast.makeText(context, R.string.upload_succes, Toast.LENGTH_SHORT).show();
         }else {

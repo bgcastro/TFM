@@ -9,8 +9,14 @@ import es.uvigo.esei.bgcastro.tfm.app.preferences.VehiculosPreferences;
 
 /**
  * Created by braisgallegocastro on 17/5/16.
+ * Fragment para la gestion de las preferencias de usuario
  */
 public class PreferencesFragment extends PreferenceFragment {
+    /**
+     * Metodo que reune la logica principal
+     *
+     * @param savedInstanceState Estado guardado
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
